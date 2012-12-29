@@ -1,2 +1,2 @@
-apartmentAutomation
-===================
+Apartment Automation
+====================
