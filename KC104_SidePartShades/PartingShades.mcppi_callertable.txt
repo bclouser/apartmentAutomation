@@ -1,0 +1,7 @@
+main
+	init_ports
+	getCommand
+		blinkLights
+	openShades
+	closeShades
+	sendStatus

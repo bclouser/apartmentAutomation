@@ -1,0 +1,18 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pP16F690 -DL -O11111114 -fo8 -N"C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_Lights_WSerialCommands\KC104_Lights-2.mcppi" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -SP"C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_Lights_WSerialCommands\" -SP"C:\Users\ben\Google Drive\Freelance_MicroProcessing\KC104_Lights_WSerialCommands\" -SP"C:\Users\Ben\Google Drive\Freelance_MicroProcessing\KC104_Lights2-0\" -SP"C:\Users\Ben\Desktop\KC104_Lights\" "KC104_Lights-2.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CType.mcl" "__Lib_CString.mcl" "__Lib_CStdlib.mcl" "__Lib_CMath.mcl" "__Lib_MemManager.mcl" "__Lib_Conversions.mcl" "__Lib_Sprinti.mcl" "__Lib_Sprintl.mcl" "__Lib_Time.mcl" "__Lib_Trigonometry.mcl" "__Lib_Button.mcl" "__Lib_Keypad4x4.mcl" "__Lib_Manchester.mcl" "__Lib_OneWire.mcl" "__Lib_PS2.mcl" "__Lib_Sound.mcl" "__Lib_SoftI2C.mcl" "__Lib_SoftSPI.mcl" "__Lib_SoftUART.mcl" "__Lib_ADC_A_B.mcl" "__Lib_EEPROM.mcl" "__Lib_FLASH_R.mcl" "__Lib_PWM_c5.mcl" "__Lib_SPI_b64c7.mcl" "__Lib_UART_b75.mcl" "__Lib_PortExpander.mcl" "__Lib_CANSPI.mcl" "__Lib_CF.mcl" "__Lib_GlcdFonts.mcl" "__Lib_Glcd.mcl" "__Lib_LcdConsts.mcl" "__Lib_Lcd.mcl" "__Lib_RS485.mcl" "__Lib_S1D13700.mcl" "__Lib_T6963C.mcl" "__Lib_SPIGlcd.mcl" "__Lib_SPILcd.mcl" "__Lib_SPILcd8.mcl" "__Lib_SPIT6963C.mcl" "__Lib_TouchPanel.mcl"	 
+warning: 0	1501	Specified search path does not exist: 'C:\Users\ben\Google Drive\Freelance_MicroProcessing\KC104_Lights_WSerialCommands'	 
+warning: 0	1501	Specified search path does not exist: 'C:\Users\Ben\Google Drive\Freelance_MicroProcessing\KC104_Lights2-0'	 
+warning: 0	1501	Specified search path does not exist: 'C:\Users\Ben\Desktop\KC104_Lights'	 
+hint: 0	1139	Available RAM: 240 [bytes], Available ROM: 4096 [bytes]	 
+diagnostics: 0	126	All files Preprocessed in 93 ms	 
+diagnostics: 0	122	Compilation Started	KC104_Lights-2.c
+diagnostics: 191	123	Compiled Successfully	KC104_Lights-2.c
+hint: 95	1164	Variable 'j' has been eliminated by optimizer	KC104_Lights-2.c
+hint: 97	1164	Variable 'k' has been eliminated by optimizer	KC104_Lights-2.c
+hint: 99	1164	Variable 'timeOut' has been eliminated by optimizer	KC104_Lights-2.c
+diagnostics: 0	127	All files Compiled in 141 ms	 
+hint: 0	1144	Used RAM (bytes): 52 (22%)  Free RAM (bytes): 188 (78%)	Used RAM (bytes): 52 (22%)  Free RAM (bytes): 188 (78%)
+hint: 0	1144	Used ROM (program words): 581 (14%)  Free ROM (program words): 3515 (86%)	Used ROM (program words): 581 (14%)  Free ROM (program words): 3515 (86%)
+diagnostics: 0	125	Project Linked Successfully	KC104_Lights-2.mcppi
+diagnostics: 0	128	Linked in 171 ms	 
+diagnostics: 0	129	Project 'KC104_Lights-2.mcppi' completed: 483 ms	 
+diagnostics: 0	103	Finished successfully: 27 Nov 2012, 17:40:12	KC104_Lights-2.mcppi
