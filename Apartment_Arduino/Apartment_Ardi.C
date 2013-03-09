@@ -9,8 +9,7 @@
 ////////////////////////////////////////////////////////////////////////
 byte server[] = { 153 , 42, 193, 63 }; //ip Address of the server you will connect to. THIS WILL CHANGE FROM PLACE TO PLACE
 byte ip[] = { 153, 42, 193, 177 };  //assignes the ardi this ip address
-
-String serverIP = "153.42.193.63";
+//commenting
 
 //The location to go to on the server
 //make sure to keep HTTP/1.0 at the end, this is telling it what type of file it is
