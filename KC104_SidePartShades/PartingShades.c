@@ -1,6 +1,5 @@
-
-
-
+/*This code is written for a PIC16F690 microchip.
+  It controlls the opening and closing of the shades in Kelly C102*/
 
 static const int dataPin = 0b00010000;
 static const int pulsePin = 0b00100000;
@@ -9,125 +8,138 @@ static const int flashDelay = 200;
 static const int pulseDelay = 20;
 
 void init_ports(void){
-      OSCCON = 0x71;   //configures the internal oscillator
-      ANSEL=0x00;        // Set inputs to digital
-      ANSELH = 0x00;     //disables something that is holding pins RB5 and RB6
-      CM1CON0 = 0x00;
-      CM2CON0 = 0x00;
-      IOCB = 0b00000000;
+	OSCCON = 0x71;   //configures the internal oscillator
+	ANSEL=0x00;        // Set inputs to digital
+	ANSELH = 0x00;     //disables something that is holding pins RB5 and RB6
+	CM1CON0 = 0x00;
+	CM2CON0 = 0x00;
+	IOCB = 0b00000000;
 
-      TRISA=0x00;        // port a is an output
+	TRISA=0x00;        // port a is an output
 
-      PORTB = 0x00;
-      TRISB=0xFF; //all of port B is an input... woot
-      PORTC = 0x00;
-      TRISC=0b10000111; //pins 3-6 are output, 0-2, 7 are input
+	PORTB = 0x00;
+	TRISB=0xFF; //all of port B is an input... woot
+	PORTC = 0x00;
+	TRISC=0b10000111; //pins 3-6 are output, 0-2, 7 are input
 
-      PORTA = 0x00;
+	PORTA = 0x00;
 }
 
 
-void blinkLights(void){  // this is called to simply flash lights
-								PORTA = 0xFF;
-                                delay_ms(flashDelay);
-                                PORTA = 0x00;
-                                delay_ms(flashDelay);
-                                PORTA = 0xFF;
-                                delay_ms(flashDelay);
-                                PORTA = 0x00;
-                                delay_ms(flashDelay);
-                                PORTA = 0xFF;
-                                delay_ms(flashDelay);
-                                PORTA = 0x00;
-                                delay_ms(flashDelay);
-                                PORTA = 0xFF;
-                                delay_ms(flashDelay);
-                                PORTA = 0x00;
-                                delay_ms(flashDelay);
-                                PORTA = 0xFF;
-                                delay_ms(flashDelay);
-                                PORTA = 0x00;
-                                delay_ms(flashDelay);
-                                PORTA = 0xFF;
-                                delay_ms(flashDelay);
-                                PORTA = 0x00;
+void blinkLights(void){  // this is called to simply click the relays
+	PORTA = 0xFF;
+    delay_ms(flashDelay);
+    PORTA = 0x00;
+    delay_ms(flashDelay);
+    PORTA = 0xFF;
+    delay_ms(flashDelay);
+    PORTA = 0x00;
+    delay_ms(flashDelay);
+    PORTA = 0xFF;
+    delay_ms(flashDelay);
+    PORTA = 0x00;
+    delay_ms(flashDelay);
+    PORTA = 0xFF;
+    delay_ms(flashDelay);
+    PORTA = 0x00;
+    delay_ms(flashDelay);
+    PORTA = 0xFF;
+    delay_ms(flashDelay);
+    PORTA = 0x00;
+    delay_ms(flashDelay);
+    PORTA = 0xFF;
+    delay_ms(flashDelay);
+    PORTA = 0x00;
 }
 
 
 int *getCommand(void){
-        int commandTemp[9];
-        static int commandFinal[9];
-        long j = 0;
-        int i = 0;
-        int k = 0;
-        long timeOut = 50000;
-        int error = 0;
+    int commandTemp[9];
+    static int commandFinal[9];
+    long j = 0;
+    int i = 0;
+    int k = 0;
+    long timeOut = 50000;
+    int error = 0;
 
-        j = 0; //clear the counter
-        for(i = 0; i < 9; i++ ){  //all 8 bits of data and the closing bracket. 9 total
-                while((!(PORTB & pulsePin))  ){ //  && (j < timeOut)){ // wait till pulse starts
-                        j++;
-                }
-                delay_ms(1); //tiny delay to ensure we have good data before writing it
-
-                if( i < 8)
-                        commandTemp[i] = (PORTB & dataPin); // WRITE DATA
-                else if(i == 8)
-                        commandTemp[i] = (PORTB & (dataPin + parityPin));  // closing bracket
-
-                while((PORTB & pulsePin)  ){   //&& (j < timeOut)){ // wait till pulse is over
-                        j++;
-                }
-                delay_ms(1); //tiny delay to ensure pulse is really over before starting again
-
-                /* if(j >= timeOut)
-                        break; // leaves the FOR loop because we timed out */
-
+    j = 0; //clear the counter
+    for(i = 0; i < 9; i++ ){  //all 8 bits of data and the closing bracket. 9 total
+        while((!(PORTB & pulsePin))  ){ //  && (j < timeOut)){ // wait till pulse starts
+                j++;
         }
+        delay_ms(1); //tiny delay to ensure we have good data before writing it
 
-        if((commandTemp[8] == (dataPin + parityPin))   ){  // && (j < timeOut)){  //all went well
-			for(i = 0; i < 8; i++) {                           //put temp into final array
-				commandFinal[i] = commandTemp[i];
-			}
+        if( i < 8)
+                commandTemp[i] = (PORTB & dataPin); // WRITE DATA
+        else if(i == 8)
+                commandTemp[i] = (PORTB & (dataPin + parityPin));  // closing bracket
 
-			return commandFinal;
+        while((PORTB & pulsePin)  ){   //&& (j < timeOut)){ // wait till pulse is over
+                j++;
         }
-        else{
-			blinkLights();
-			while(PORTB & 0b01110000);  // wait until port B is clean before continuing
-            return 0;  //something is wrong
-        }
+        delay_ms(1); //tiny delay to ensure pulse is really over before starting again
+
+        /* if(j >= timeOut)
+                break; // leaves the FOR loop because we timed out */
+    }
+
+    if((commandTemp[8] == (dataPin + parityPin))   ){  // && (j < timeOut)){  //all went well
+		for(i = 0; i < 8; i++) {                           //put temp into final array
+			commandFinal[i] = commandTemp[i];
+		}
+
+		return commandFinal;
+    }
+    else{
+		blinkLights();
+		while(PORTB & 0b01110000);  // wait until port B is clean before continuing
+        return 0;  //something is wrong
+    }
 }
 
 void openShades(long setTimeOut){
 	long timeOut = 0;
-	PORTA = 0b00000001;
-		while(!(PORTC & 0b10000000) && (timeOut < setTimeOut)){
-				//keep the shades opening until the sensors
-				//produce logical 1 indicating the shades are now open
-				//Or until ot times out
-				timeOut++;
+	PORTA = 0b00000001; //turns on the motor
+	while(!(PORTC & 0b10000000) && (timeOut < setTimeOut)){
+		delay_ms(300);
+		//keep the shades opening until the sensors
+		//produce logical 1 indicating the shades are now open
+		//Or until it times out
+
+		if(PORTC & 0b00000001){
+			delay_ms(50);  //debounce
+			if(PORTC & 0b00000001){  
+				//button hit again... stop opening
+				timeOut=setTimeOut; //this will end the while loop early
+			}
 		}
-		//delay_ms(100);
-		PORTA = 0x00;  // turn motor off becuase of time out or sensor triggered
-		timeOut = 0;
+
+		timeOut++;
+	}
+	PORTA = 0x00;  // turn motor off because of time out or sensor triggered
+	timeOut = 0;
 }
 
 void closeShades(long setTimeOut){
 	long timeOut = 0;
 	PORTA = 0b00000010;
 	while(!(PORTB & 0b10000000) && (timeOut < setTimeOut)){
-		delay_ms(1);
-			//keep the shades closing until the sensors
-			//produce logical 1 indicating the shades are now closed
-			//or until it times out
-			timeOut++;
+		delay_ms(300);
+		//keep the shades closing until the sensors
+		//produce logical 1 indicating the shades are now closed
+		//or until it times out
+
+		if(PORTC & 0b00000001){
+			delay_ms(50);  //debounce
+			if(PORTC & 0b00000001){  
+				//button hit again... stop opening
+				timeOut=setTimeOut; //this will end the while loop early
+			}
+		}
+		timeOut++;
 	}
-	delay_ms(1);
-	if(PORTB & 0b10000000){
-		PORTA = 0x00; // turn motor off becuase of time out or sensor triggered
-		timeOut = 0;
-	}
+	PORTA = 0x00; // turn motor off becuase of time out or sensor triggered
+	timeOut = 0;
 }
 
 void sendStatus(char shadeStatus){  // o = open, c = closed
@@ -181,19 +193,21 @@ void sendStatus(char shadeStatus){  // o = open, c = closed
 	return;
 }
 
+/****************************************BEGIN OF MAIN**************************************/
 main(){
-        long timeOut = 0;
-		//safety precaution, the motor won't spin forever
-		long setTimeOut = 1000000; //default 1000000
-		int *currentCommand;
-		char currentSetting = 'c'; //shades always start closed.
-        int k = 0;
-		int i = 0;
+    long timeOut = 0;
+	//safety precaution, the motor won't spin forever
+	long setTimeOut = 1000000; //default 1000000
+	int *currentCommand;
+	char currentSetting = 'c'; //shades always start closed.
+    int k = 0;
+	int i = 0;
 
-        init_ports();
+    init_ports();
 
 
 	while(1){
+		       //this is a command coming from the arduino
 		if((PORTB & 0b01110000) == (dataPin + parityPin)){ //initialization bracket
 			currentCommand = getCommand();
 
@@ -222,8 +236,8 @@ main(){
 			while(PORTB & 0b01110000);  // wait until port B is clean before continuing
 		}
 
-		else if(PORTC & 0b00000001){
-		delay_ms(1); //debounce
+		else if(PORTC & 0b00000001){  //the button on the console
+			delay_ms(1); //debounce
 			if(PORTC & 0b00000001){  // OPEN THE SHADES
 				if(currentSetting == 'c'){
 					openShades(setTimeOut);

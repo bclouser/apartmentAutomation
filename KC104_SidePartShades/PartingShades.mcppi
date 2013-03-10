@@ -33,12 +33,13 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=5
+Count=6
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\
-Path2=C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_SidePartShades\
-Path3=C:\Users\Home\Google Drive\Freelance_MicroProcessing\SidePartShades\
-Path4=C:\Users\ben\Google Drive\Freelance_MicroProcessing\SidePartShades\
+Path2=C:\Users\Home\apartmentAutomation\KC104_SidePartShades\
+Path3=C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_SidePartShades\
+Path4=C:\Users\Home\Google Drive\Freelance_MicroProcessing\SidePartShades\
+Path5=C:\Users\ben\Google Drive\Freelance_MicroProcessing\SidePartShades\
 [HEADER_PATH]
 Count=0
 [HEADERS]

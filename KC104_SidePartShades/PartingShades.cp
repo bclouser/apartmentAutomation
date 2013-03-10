@@ -1,8 +1,5 @@
-#line 1 "C:/Users/Home/Google Drive/Freelance_MicroProcessing/KC104_SidePartShades/PartingShades.c"
-
-
-
-
+#line 1 "C:/Users/Home/apartmentAutomation/KC104_SidePartShades/PartingShades.c"
+#line 4 "C:/Users/Home/apartmentAutomation/KC104_SidePartShades/PartingShades.c"
 static const int dataPin = 0b00010000;
 static const int pulsePin = 0b00100000;
 static const int parityPin = 0b01000000;
@@ -80,7 +77,7 @@ int *getCommand(void){
  j++;
  }
  delay_ms(1);
-#line 86 "C:/Users/Home/Google Drive/Freelance_MicroProcessing/KC104_SidePartShades/PartingShades.c"
+#line 84 "C:/Users/Home/apartmentAutomation/KC104_SidePartShades/PartingShades.c"
  }
 
  if((commandTemp[8] == (dataPin + parityPin)) ){
@@ -101,8 +98,18 @@ void openShades(long setTimeOut){
  long timeOut = 0;
  PORTA = 0b00000001;
  while(!(PORTC & 0b10000000) && (timeOut < setTimeOut)){
+ delay_ms(300);
 
 
+
+
+ if(PORTC & 0b00000001){
+ delay_ms(50);
+ if(PORTC & 0b00000001){
+
+ timeOut=setTimeOut;
+ }
+ }
 
  timeOut++;
  }
@@ -115,17 +122,23 @@ void closeShades(long setTimeOut){
  long timeOut = 0;
  PORTA = 0b00000010;
  while(!(PORTB & 0b10000000) && (timeOut < setTimeOut)){
- delay_ms(1);
+ delay_ms(300);
 
 
+
+
+ if(PORTC & 0b00000001){
+ delay_ms(50);
+ if(PORTC & 0b00000001){
+
+ timeOut=setTimeOut;
+ }
+ }
 
  timeOut++;
  }
- delay_ms(1);
- if(PORTB & 0b10000000){
  PORTA = 0x00;
  timeOut = 0;
- }
 }
 
 void sendStatus(char shadeStatus){
@@ -179,6 +192,7 @@ void sendStatus(char shadeStatus){
  return;
 }
 
+
 main(){
  long timeOut = 0;
 
@@ -192,9 +206,10 @@ main(){
 
 
  while(1){
+
  if((PORTB & 0b01110000) == (dataPin + parityPin)){
  currentCommand = getCommand();
-#line 214 "C:/Users/Home/Google Drive/Freelance_MicroProcessing/KC104_SidePartShades/PartingShades.c"
+#line 230 "C:/Users/Home/apartmentAutomation/KC104_SidePartShades/PartingShades.c"
  if (*currentCommand == dataPin){
  openShades(setTimeOut);
  currentSetting = 'o';
