@@ -43,7 +43,7 @@ int binaryArray[8]={128,64,32,16,8,4,2,1};
 
 
 //////////////////DELAYS/////////////
-int reconnectDelay = 8000; // wait before reconnect and repolling server, had it as low as 2
+int reconnectDelay = 80; // wait before reconnect and repolling server, had it as low as 2
 int listenDelay = 80; //(80) how long to listen to each client when looking for any changes
 int pulseDelay = 20;  //this is set at 8 usually, pulse time during communication
 
@@ -81,7 +81,10 @@ void loop(){
 	int doorCmd;
 	int displayCmd;
 	
-	while(!connectAndRead());  // chill here until a connection is established
+	while(!connectAndRead()){ // chill here until a connection is established
+		Ethernet.begin(mac, ip);  //try restarting the network connection
+	}  
+
 
 	String pageValue = readPage(); //connect to the server and read the output
 	
@@ -517,7 +520,6 @@ int getCommand(void){
 	}
 	
 	else{
-		//blinkLights();
 		while(PIND & B01110000);  // wait until port B is clean before continuing
 		DDRD |= B01110000;  //turn comm pins back to output
 		return -1;  //something is wrong   
@@ -607,7 +609,7 @@ int listenToDoor(){
 void updateDB_Lights(){
 	Serial.println("connecting for DB update");
 	if (client.connect(server, 80)) {
-		client.print("GET http://153.42.193.63/m_bridge.php?lights=");
+		client.print("GET http://153.42.193.63/ardi_db_update.php?lights=");
 		if(clientLights)
 			client.print(clientLights,BIN);
 		else{
@@ -632,7 +634,7 @@ void updateDB_Lights(){
 void updateDB_Shades(){	
 	Serial.println("connecting for DB update");
 	if (client.connect(server, 80)) {
-		client.print("GET http://153.42.193.63/m_bridge.php?shades=");
+		client.print("GET http://153.42.193.63/ardi_db_update.php?shades=");
 		if(clientShades)
 			client.print(clientShades,BIN);
 		else{
@@ -656,7 +658,7 @@ void updateDB_Shades(){
 void updateDB_Door(){	
 	Serial.println("connecting for DB update");
 	if (client.connect(server, 80)) {
-		client.print("GET http://153.42.193.63/m_bridge.php?door=");
+		client.print("GET http://153.42.193.63/ardi_db_update.php?door=");
 		if(clientDoor)
 			client.print(clientDoor,BIN);
 		else{
@@ -679,7 +681,7 @@ void updateDB_Door(){
 void updateDB_Display(){	
 	Serial.println("connecting for DB update");
 	if (client.connect(server, 80)) {
-		client.print("GET http://153.42.193.63/m_bridge.php?display=");
+		client.print("GET http://153.42.193.63/ardi_db_update.php?display=");
 		client.print(clientDisplay, BIN);
 		client.print(" HTTP/1.0");
 		client.println("Host: http://153.42.193.63");
