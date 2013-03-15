@@ -1,0 +1,7 @@
+main
+	__CC2DW
+		____DoICP
+	init_ports
+	capitalR
+		____DoICP
+		Mul_16x16_U
