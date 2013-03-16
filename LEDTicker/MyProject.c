@@ -1,4 +1,4 @@
-//Benjamin Clouser presents, the "TICKER"
+//Benjamin Clouser presents, the "TICKER" THIS IS THE BEST THING EVA!
 
 int counter = 0x00;
 
