@@ -1,5 +1,3 @@
-//Benjamin Clouser presents, the "TICKER" THIS IS THE BEST THING EVA! 
-//Jacob Francis?
 
 int counter = 0x00;
 
@@ -42,40 +40,244 @@ const int column[90] = { //this will hold the dmux command for every column... i
  the 2nd option refers to PORTD (row9).
 
  */
-const int characters[1][12] = {
-	{    //R 17
-		allRows, row9, row1 + row5, 0, row1 + row5, 0, row1 + row5 + row6, 0,
-		  row1 + row5 + row7, 0, row4 + row3 + row2 + row8, row9  },  
-	/*{
-	},  //A 0
-
-	{},  //B 1
-	{},  //C 2 
-	{},  //D 3
-	{},  //E 4
-	{},  //F 5
-	{},  //G 6
-	{},  //H 7
-	{},  //I 8
-	{},  //J 9
-	{},  //K 10
-	{},  //L 11 
-	{},  //M 12
-	{},  //N 13
-	{},  //0 14
-	{},  //P 15
-	{},  //Q 16
-	{    //R 17
-		allRows, row9, row1 + row5, 0, row1 + row5, 0, row1 + row5 + row6, 0,
-		  row1 + row5 + row7, 0, row4 + row3 + row2 + row8, row9  },  
-	{},  //S 18
-	{},  //T 19
-	{},  //U 20
-	{},  //V 21
-	{},  //W 22
-	{},  //X 23
-	{},  //Y 24
-	{}  //Z 25  */
+const int characters[1][12] =
+	 
+	 
+	{ 
+	// {rows 1-8, row 9}
+	
+	//A 0
+	row3+row4+row5+row6+row7+row8, row9, 
+	row2+row5, 0, 
+	row1+5, 0,
+	row1+5, 0,
+	row2+row5, 0,
+	row3+row4+row5+row6+row7+row8, row9
+	},
+	{ 
+	//B 1
+	allRows, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row2+row3+row4+row6+row7+row8, 0
+	},  
+	{	
+	//C 2
+	row2+row3+row4+row5+row6+row7+row8, 0,
+	row1, row9,
+	row1, row9,
+	row1, row9,
+	row1, row9,
+	row2+row8, 0	
+	},   
+	{	
+	//D 3
+	allRows, row9,
+	row1, row9,
+	row1, row9,
+	row1, row9,
+	row2+row8, 0,
+	row3+row4+row6, 0
+	},
+	{
+	//E 4
+	allRows, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row1, row9,
+	row1, row9
+	},  
+	{ 
+	//F 5
+	allRows, row9,
+	row1+row5, 0,
+	row1+row5, 0,
+	row1+row5, 0,
+	row1, 0,
+	row1, 0	
+	},
+	{
+	//G 6
+	row2+row3+row4+row6+row7, 0,
+	row1, row9,
+	row1, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row2+row5+row6+row7+row8, 0
+	},
+	{
+	//H 7
+	allRows, row9,
+	row5, 0,
+	row5, 0,
+	row5, 0,
+	row5, 0,
+	allRows, row9
+	},
+	{ 
+	//I 8
+	row1, row9,
+	row1, row9,
+	allRows, row9,
+	row1, row9,
+	row1, row9,
+	0, 0
+	},
+	{ 
+	//J 9
+	row1+row8, 0,
+	row1, row9,
+	row1, row9,
+	allRows, 0,
+	row1, 0,
+	row1, 0
+	},
+	{
+	//K 10
+	allRows, row9,
+	row5, 0,
+	row5, 0, 
+	row4+row6, 0,
+	row3+row7, 0,
+	row1+row2+row8, row9
+	},
+	{
+	//L 11 
+	allRows, row9,
+	0, row9,
+	0, row9,
+	0, row9,
+	0, row9,
+	0, row9
+	},
+	{  
+	//M 12
+	allRows, row9,
+	row2+row3, 0,
+	row4, 0,
+	row4, 0,
+	row2+row3, 0,
+	allRows, row9	
+	},
+	{  
+	//N 13
+	allRows, row9,
+	row2+row3, 0,
+	row4+row5, 0,
+	row6+row7, 0,
+	row8, row9,
+	allRows, row9
+	},
+	{
+	//0 14
+	row3+row4+row5+row6+row7, 0,
+	row2+row7, 0,
+	row1, row9,
+	row1, row9,
+	row2+row7, 0,
+	row3+row4+row5+row6+row7, 0
+	},
+	{  
+	//P 15
+	allRows, row9,
+	row1+row5, 0,
+	row1+row5, 0,
+	row1+row5, 0,
+	row1+row5, 0,
+	row2+row3+row4, 0
+	},
+	{
+	//Q 16
+	row3+row4+row5+row6+row7, 0,
+	row2+row8, 0,
+	row1, row9,
+	row1+row7, row9,
+	row2+row8, 0,
+	row3+row4+row5+row6+row7, row9
+	},
+	{  
+	//R 17
+	allRows, row9, 
+	row1 + row5, 0, 
+	row1 + row5, 0, 
+	row1 + row5 + row6, 0,
+	row1 + row5 + row7, 0, 
+	row4 + row3 + row2 + row8, row9  
+	},  
+	{
+	//S 18
+	row2+row3+row4+row8, 0,
+	row1+row5, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row1+row5, row9,
+	row2+row6+row7+row8, 0
+	},
+	{
+	//T 19
+	row1, 0,
+	row1, 0, 
+	allRows, row9,
+	row1, 0,
+	row1, 0,
+	0, 0
+	},
+	{  
+	//U 20
+	allRows, 0,
+	0, row9,
+	0, row9,
+	0, row9,
+	0, row9,
+	allRows, 0
+	},
+	{
+	//V 21
+	row1+row2+row3+row4+row5+row6, 0,
+	row7+row8, 0,
+	0, row9,
+	0, row9,
+	row7+row8, 0,
+	row1+row2+row3+row4+row5+row6, 0
+	},
+	{
+	//W 22
+	allRows, 0,
+	0, row9,
+	row8, 0,
+	row8, 0,
+	0, row9,
+	allRows, 0
+	},
+	{
+	//X 23
+	row1+row2+row8, row9,
+	row3+row4+row6+row7, 0,
+	row5, 0,
+	row5, 0,
+	row3+row4+row6+row7, 0,
+	row1+row2+row8, row9
+	},
+	{
+	//Y 24
+	row1+row2, 0,
+	row3+row4, 0, 
+	row5+row6+row7+row8, row9,
+	row3+row4, 0, 
+	row1+row2, 0
+	},
+	{
+	//Z 25  
+	row1+row8, row9,
+	row1+row7, row9,
+	row1+row5+row6, row9,
+	row1+row4+row5, row9,
+	row1+row3, row9,
+	row1+row2, row9
+	}
 };
 
 int index = 0;
