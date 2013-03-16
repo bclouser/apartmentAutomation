@@ -318,7 +318,7 @@ void test(int start){
 	PORTB = 0x00;
 
 	PORTB = row1 + row5;
-	*portSelection &= column[start++]; //reference column 3
+	*portSelection &= column[start++]; //reference column 3  []
 	delay_ms(1);
 	PORTD &= ~row9;
 	PORTB = 0x00;
