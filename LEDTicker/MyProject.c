@@ -14,10 +14,11 @@ const int row9 = 0b10000000;  //PORTD
 const int allRows = 0xFF;
 
 const int column[80] = { //this will hold the dmux command for every column... lots of work
-	0b00010000, 0b00100000, 0b00110000, 0b01000000, 0b01010000, 0b01100000, 0b01110000,  //PORTD
-	0b00100000, 0b01000000, 0b01100000, 0b10000000, 0b10100000, 0b11000000, 0b11100000,  //PORTC
-	0b00001111, 0b00001110, 0b00001101, 0b00001100, 0b00001011, 0b00001010, 0b00001001,  //PORTA
-	0b00001000, 0b00000111, 0b00000110, 0b00000101, 0b00000100, 0b00000011, 0b00000010, 0b00000001 //PORTA
+	0b00010000, 0b00100000, 0b00110000, 0b01000000, 0b01010000, 0b01100000, 0b01110000,  //DMUX 1
+	0b10000000, 0b10010000, 0b10100000, 0b10110000, 0b11000000, 0b11010000, 0b11100000, 0b11110000,  //DMUX 1
+
+	0b00001111, 0b00001110, 0b00001101, 0b00001100, 0b00001011, 0b00001010, 0b00001001,  //DMUX 2
+	0b00001000, 0b00000111, 0b00000110, 0b00000101, 0b00000100, 0b00000011, 0b00000010, 0b00000001 //DMUX 2
 };
 
 /*
@@ -93,10 +94,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 	PORTA = 0x00;
 
 /************************* REFERENCE COLUMN 1 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -113,15 +115,15 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 	PORTD |= characters[charNum][1];
 	for(i=0; i<20; i++);  //homebrew delay
 	PORTB = 0x00;
-	PORTD = 0x00;
-/********************* END OF REFERENCE COLUMN 1 ***********************/	
+	PORTD = 0x00;	
 
 
 /************************* REFERENCE COLUMN 2 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -143,10 +145,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 
 
 /************************* REFERENCE COLUMN 3 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -167,10 +170,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 
 
 /************************* REFERENCE COLUMN 4 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -191,10 +195,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 
 
 /************************* REFERENCE COLUMN 5 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -215,10 +220,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 
 
 /************************* REFERENCE COLUMN 6 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -239,10 +245,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 
 
 /************************* REFERENCE COLUMN 7 **************************/
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -262,10 +269,11 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 	PORTD = 0x00;
 
 
-	if(start < 7){
-		PORTD = column[start];  //holds address of PORTD, columns 0-7
-		PORTA = 0x00;
-		PORTC = 0x00;
+	if(start < 16){
+	   PORTC = column[start];  //holds address of PORTD, columns 0-7
+	   PORTD |= 0b01000000;   //control line for DMUX 1
+	   PORTA = 0x00;
+
 	}
 	else if (start < 14){
 		PORTC = column[start];  //columns 7-13
@@ -289,6 +297,9 @@ void capitalR(int charNum, int start){  //ignites a capital R starting at column
 
 
 void test(int start){
+
+
+
 
 	portSelection = &PORTA;	
 

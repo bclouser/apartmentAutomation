@@ -16,16 +16,17 @@ const int allRows = 0xFF;
 
 const int column[80] = {
  0b00010000, 0b00100000, 0b00110000, 0b01000000, 0b01010000, 0b01100000, 0b01110000,
- 0b00100000, 0b01000000, 0b01100000, 0b10000000, 0b10100000, 0b11000000, 0b11100000,
+ 0b10000000, 0b10010000, 0b10100000, 0b10110000, 0b11000000, 0b11010000, 0b11100000, 0b11110000,
+
  0b00001111, 0b00001110, 0b00001101, 0b00001100, 0b00001011, 0b00001010, 0b00001001,
  0b00001000, 0b00000111, 0b00000110, 0b00000101, 0b00000100, 0b00000011, 0b00000010, 0b00000001
 };
-#line 30 "C:/Users/Home/apartmentAutomation/LEDTicker/MyProject.c"
+#line 31 "C:/Users/Home/apartmentAutomation/LEDTicker/MyProject.c"
 const int characters[1][12] = {
  {
  allRows, row9, row1 + row5, 0, row1 + row5, 0, row1 + row5 + row6, 0,
  row1 + row5 + row7, 0, row4 + row3 + row2 + row8, row9 },
-#line 64 "C:/Users/Home/apartmentAutomation/LEDTicker/MyProject.c"
+#line 65 "C:/Users/Home/apartmentAutomation/LEDTicker/MyProject.c"
 };
 
 int index = 0;
@@ -58,10 +59,11 @@ void capitalR(int charNum, int start){
  PORTA = 0x00;
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -82,11 +84,11 @@ void capitalR(int charNum, int start){
 
 
 
-
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -108,10 +110,11 @@ void capitalR(int charNum, int start){
 
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -132,10 +135,11 @@ void capitalR(int charNum, int start){
 
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -156,10 +160,11 @@ void capitalR(int charNum, int start){
 
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -180,10 +185,11 @@ void capitalR(int charNum, int start){
 
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -204,10 +210,11 @@ void capitalR(int charNum, int start){
 
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -227,10 +234,11 @@ void capitalR(int charNum, int start){
  PORTD = 0x00;
 
 
- if(start < 7){
- PORTD = column[start];
+ if(start < 16){
+ PORTC = column[start];
+ PORTD |= 0b01000000;
  PORTA = 0x00;
- PORTC = 0x00;
+
  }
  else if (start < 14){
  PORTC = column[start];
@@ -254,7 +262,7 @@ void capitalR(int charNum, int start){
 
 
 void test(int start){
-#line 335 "C:/Users/Home/apartmentAutomation/LEDTicker/MyProject.c"
+
  portSelection = &PORTA;
 
 
