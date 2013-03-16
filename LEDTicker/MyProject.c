@@ -1,4 +1,4 @@
-
+//Benjamin Clouser presents, the "TICKER"
 
 int counter = 0x00;
 
