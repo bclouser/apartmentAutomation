@@ -29,15 +29,15 @@ const int column[80] = { //this will hold the dmux command for every column... l
  */
 const int characters[1][12] =
 	 
-	 
+{	 
 	{ 
 	// {rows 1-8, row 9}
 	
 	//A 0
 	row3+row4+row5+row6+row7+row8, row9, 
 	row2+row5, 0, 
-	row1+5, 0,
-	row1+5, 0,
+	row1+row5, 0,
+	row1+row5, 0,
 	row2+row5, 0,
 	row3+row4+row5+row6+row7+row8, row9
 	},
@@ -264,6 +264,243 @@ const int characters[1][12] =
 	row1+row4+row5, row9,
 	row1+row3, row9,
 	row1+row2, row9
+	},
+	
+	
+	
+	
+	{
+	//a 26 (25+1)
+	row5+row6+row7+row8, 0,
+	row4, row9,
+	row4, row9,
+	row4, row9,
+	row5+row8, 0
+	},
+	{
+	//b 27 (25+2)
+	allRows, row9,
+	row5+row8, 0,
+	row4, 0, 
+	row4, 0, 
+	row4, 0,
+	row5+row6+row7+row8, 0
+	},
+	{
+	//c 28 (25+
+	row5+row6+row7+row8, 0,
+	row4, row9,
+	row4, row9,
+	row4, row9, 
+	row4, row9,
+	row5+row8, 0
+	},
+	{
+	//d 29
+	row5+row6+row7+row8, 0,
+	row4, row9,
+	row4, row9,
+	row4, row9,
+	row5+row8, 0,
+	allRows, row9
+	},
+	{
+	//e 30
+	row6+row7+row8, 0,
+	row5+row7, row9,
+	row4+row7, row9,
+	row4+row7, row9,
+	row5+row7, row9,
+	row6, 0
+	},
+	{
+	//f 31
+	row6, 0,
+	row3+row4+row5+row6+row7+row8, row9,
+	row2+row6, 0,
+	row2, 0,
+	row3, 0,
+	0, 0
+	},
+	{
+	//g
+	row6, row9,
+	row5+row7, 0,
+	row4+row8, 0,
+	row4+row8, 0,
+	row5+row7, 0,
+	row6+row7+row8, row9
+	},
+	{
+	//h
+	allRows, row9,
+	row5, 0, 
+	row4, 0, 
+	row4, 0,
+	row4, 0, 
+	row5+row6+row7+row8, row9
+	},
+	{
+	//i
+	0, 0,
+	0, 0,
+	row3+row6+row7+row8, row9,
+	0, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//j
+	row8, 0,
+	0, row9,
+	0, row9,
+	row2+row5+row6+row7+row8, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//k
+	row3+row4+row5+row6+row7+row8, row9,
+	row6, 0, 
+	row6, 0, 
+	row5+row7, 0,
+	row4+row8, row9,
+	0, 0
+	},
+	{
+	//l
+	0, 0,
+	0, 0,
+	row3+row4+row5+row6+row7+row8, row9,
+	0, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//m
+	row4+row5+row6+row7+row8, row9,
+	row5+row6, 0,
+	row7, 0,
+	row7, 0,
+	row5+row6, 0,
+	row4+row5+row6+row7+row8, row9
+	},
+	{
+	//n
+	row4+row5+row6+row7+row8, row9, 
+	row5, 0,
+	row4, 0,
+	row4, 0,
+	row5, 0,
+	row6+row7+row8, row9
+	},
+	{
+	//o
+	row6+row7, 0,
+	row5+row8, 0,
+	row4, row9,
+	row4, row9,
+	row5+row8, 0,
+	row6+row7, 0
+	},
+	{
+	//p
+	row6+row7+row8, row9
+	row5+row7, 0,
+	row4+row8, 0,
+	row4+row8, 0,
+	row5+row7, 0,
+	row6, 0
+	},
+	{
+	//q
+	row6, 0,
+	row5+row7, 0,
+	row4+row8, 0,
+	row4+row8, 0,
+	row5+row7, 0,
+	row6+row7+row8, row9
+	},
+	{
+	//r
+	row6+row7+row8, row9,
+	row5, 0,
+	row4, 0,
+	row4, 0,
+	row5, 0,
+	0, 0
+	},
+	{
+	//s
+	row5, row9,
+	row4+row6, row9,
+	row4+row6, row9,
+	row4+row6, row9,
+	row4+row7+row8, 0,
+	0, 0
+	},
+	{
+	//t 
+	0, 0,
+	row5, 0,
+	row3+row4+row5+row6+row7+row8, row9,
+	row5, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//u
+	row4+row5+row6+row7+row8, 0,
+	0, row9,
+	0, row9,
+	0, row9,
+	row4+row5+row6+row7+row8, 0,
+	0, 0
+	},
+	{
+	//v
+	row4+row5+row6+row7, 0,
+	row8, 0,
+	0, row9,
+	row8, 0, 
+	row4+row5+row6+row7, 0,
+	0, 0
+	},
+	{
+	//w
+	row4+row5+row6+row7+row8, 0,
+	0, row9,
+	row8, 0,
+	row8, 0,
+	0, row9,
+	row4+row5+row6+row7+row8, 0
+	},
+	{
+	//x 
+	row4, row9,
+	row5+row8, 0,
+	row6+row7, 0, 
+	row5+row8, 0,
+	row4, row9,
+	0, 0
+	},
+	{
+	//y
+	row4+row5, 0,
+	row6, row9,
+	row7+row8, 0,
+	row6, 0,
+	row4+row5, 0,
+	0, 0
+	},
+	{
+	//z
+	0, 0,
+	row4+row8, row9,
+	row4+row7, row9,
+	row4+row6, row9,
+	row5, row9,
+	0, 0
 	}
 };
 
