@@ -27,11 +27,17 @@ const int column[80] = { //this will hold the dmux command for every column... l
  the 2nd option refers to PORTD (row9).
 
  */
-const int characters[52][12] =
+const int characters[93][12] =
 	 
 {	 
 	{ 
 	// {rows 1-8, row 9}
+	
+	
+	/*
+	UPPERCASE LETTERS
+	*/
+	
 	
 	//A 0
 	row3+row4+row5+row6+row7+row8, row9, 
@@ -267,6 +273,9 @@ const int characters[52][12] =
 	},
 	
 	
+	/*
+	LOWERCASE LETTERS
+	*/
 	
 	
 	{
@@ -501,7 +510,390 @@ const int characters[52][12] =
 	row4+row6, row9,
 	row5, row9,
 	0, 0
-	}
+	},
+	
+	
+	/*
+	NUMBERS
+	*/
+	
+	
+	},
+	{
+	//0 52 (25+26+1)
+	row2+row3+row4+row5+row6+row7+row8, 0,
+	row1+row7, row9,
+	row1+row5+row6, row9,
+	row1+row3+row4, row9,
+	row1+row2, row9,
+	row2+row3+row4+row5+row6+row7+row8, 0
+	},
+	{
+	//1 53  (25+26+2)
+	0, row9,
+	row1, row9,
+	row1, row9,
+	allRows, row9,
+	0, row9,
+	0, row9
+	},
+	{
+	//2 54  (25+26+3)
+	row2+row8, row9,
+	row1+row7, row9,
+	row1+row6, row9,
+	row1+row5, row9,
+	row1+row4, row9,
+	row2+row3, row9
+	},
+	{
+	//3 55  (25+26+4)
+	row2+row8, 0,
+	row1, row9,
+	row1+row4, row9,
+	row1+row4, row9,
+	row1+row4, row9,
+	row2+row3+row4+row5+row6+row7+row8, 0
+	},
+	{
+	//4 56 (25+26+5)
+	row4+row5, 0,
+	row3+row5, 0,
+	row2+row5, 0, 
+	row1+row5, 0, 
+	allRows, row9,
+	row5, 0
+	},
+	{
+	//5 57 (25+26+6)
+	row2+row3+row4+row5, 0,
+	row1+row5, row9,
+	row1+row3, row9,
+	row1+row3, row9,
+	row1+row4row8, 0,
+	row1+row6+row7, 0
+	},
+	{
+	//6 58 (25+26+7)
+	row3+row4+row5+row6+row7, 0,
+	row2+row5+row8, 0,
+	row1+row4, row9,
+	row1+row4, row9,
+	row1+row5+row8, 0,
+	row1+row6+row7, 0
+	},
+	{
+	//7 59 (25+26+8)
+	row2, 0,
+	row1, 0,
+	row1, 0,
+	row1+row7+row8, row9,
+	row1+row4+row5, 0,
+	row2+row3+row4, 0
+	},
+	{
+	//8 60  (25+26+9)
+	row3+row7, 0,
+	row2+row4+row6+row8, 0,
+	row1+row4, row9,
+	row1+row4, row9,
+	row2+row4+row6+row8, 0,
+	row3+row7, 0
+	},
+	{
+	//9 61 (25+26+10)
+	row3, 0,
+	row2+row4+row8, 0,
+	row1+row5, row9,
+	row1+row5, row9,
+	row2+row4+row8, 0,
+	row3+row4+row5+row6+row7, 0
+	},
+	
+	
+	/*
+	SYMBOLS
+	*/
+	{
+	//) 62  (25+26+11)
+	0, 0,
+	row1, row9,
+	row2+row8, 0,
+	row3+row4+row5+row6+row7, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//! 63  (25+26+12)
+	0, 0,
+	0, 0,
+	row2+row3+row4+row5+row6+row8, 0,
+	0, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//@ 64  (25+26+13)
+	row3+row4+row5+row6, 0,
+	row2+row7, 0,
+	row1+row4+row5+row8, 0,
+	row1+row3+row6+row8, 0,
+	row1+row4+row5+row8, 0,
+	row2+row3+row4+row5+row6, 0
+	},
+	{
+	//# 65  (25+26+14)
+	row4+row7, 0,
+	row2+row3+row4+row5+row6+row7+row8, row9,
+	row4+row7, 0,
+	row2+row3+row4+row5+row6+row7+row8, row9,
+	row4+row7, 0,
+	0, 0
+	},
+	{
+	//$ 66  (25+26+15)
+	row3+row4+row7, 0,
+	row2+row5+row8, 0,
+	row1+row2+row5+row8, row9,
+	row2+row5+row8, 0,
+	row3+row6+row7, 0,
+	0, 0
+	},
+	{
+	//% 67 (25+26+16)
+	row2+row8, row9,
+	row1+row3+row7, 0,
+	row2+row6, 0,
+	row4+row5+row8, 0,
+	row3+row7, row9,
+	row1+row2+row8, 0
+	},
+	{
+	//^ 68 (25+26+17)
+	row4, 0,
+	row3, 0,
+	row2, 0,
+	row3, 0,
+	row4, 0,
+	0, 0
+	},
+	{
+	//& 69 (25+26+18)
+	row3+row7+row8, 0,
+	row2+row4+row6, row9,
+	row1+row5, row9,
+	row1+row4+row6+row8, 0,
+	row2+row3+row7, 0,
+	row6+row8, row9
+	},
+	{
+	//* 70 (25+26+19)
+	row3+row5+row7, 0,
+	row4+row6, 0,
+	row5, 0,
+	row4+row6, 0,
+	row3+row5+row7, 0,
+	0, 0
+	},
+	{
+	//( 71 (25+26+20)
+	0, 0,
+	row3+row4+row5+row6+row7, 0,
+	row2+row8, 0,
+	row1, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//` 72 (25+26+21)
+	0, 0,
+	0, 0,
+	row2, 0,
+	row3, 0,
+	0, 0, 
+	0, 0
+	},
+	{
+	//~ 73 (25+26+22)
+	row4, 0,
+	row3, 0,
+	row4, 0,
+	row5, 0,
+	row6, 0,
+	row5, 0
+	},
+	{
+	//- 74 (25+26+23)
+	0, 0,
+	row5, 0,
+	row5, 0,
+	row5, 0,
+	row5, 0,
+	0, 0
+	},
+	{
+	//_ 75  (25+26+24)
+	0, row9,
+	0, row9,
+	0, row9,
+	0, row9,
+	0, row9,
+	0, row9
+	},
+	{
+	//= 76 (25+26+25)
+	0, 0,
+	row4+row6, 0,
+	row4+row6, 0,
+	row4+row6, 0,
+	row4+row6, 0,
+	0, 0
+	},
+	{
+	//+ 77 (25+26+26)
+	row5, 0,
+	row5, 0,
+	row3+row4+row5+row6+row7, 0,
+	row5, 0,
+	row5, 0,
+	0, 0
+	},
+	{
+	//[ 78 (25+26+27)
+	0, 0,
+	row2+row3+row4+row5+row6+row7+row8, 0,
+	row2, row8,
+	row2, row8,
+	0, 0, 
+	0, 0
+	},
+	{
+	//{ 79 (25+26+28)
+	0, 0,
+	0, 0,
+	row5, 0,
+	row2+row3+row4+row6+row7+row8, 0,
+	row2+row8,
+	0, 0
+	},
+	{
+	//] 80 (25+26+29)
+	0, 0, 
+	0, 0,
+	row2+row8, 0,
+	row2+row8, 0, 
+	row2+row3+row4+row5+row6+row7+row8, 0,
+	0, 0, 
+	0, 0
+	},
+	{
+	//} 81 (25+26+30)
+	0, 0,
+	row2+row8, 0,
+	row2+row3+row4+row6+row7+row8, 0,
+	row5, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//\ 82  (25+26+31)
+	0, 0,
+	row2+row3, 0,
+	row4+row5, 0,
+	row6+row7, 0,
+	row8, row9,
+	0, 0
+	},
+	{
+	//| 83  (25+26+32)
+	0, 0, 
+	0, 0,
+	0, 0,
+	row1+row2+row3+row4+row6+row7+row8, row9,
+	0, 0,
+	0, 0
+	},
+	{
+	//; 84  (25+26+33)
+	0, 0,
+	0, 0,
+	row8, 0,
+	row4+row7, 0,
+	0, 0, 
+	0, 0
+	},
+	{
+	//: 85 (25+26+34)
+	0, 0,
+	0, 0,
+	0, 0, 
+	row4+row7, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//" 86 (25+26+35)
+	0, 0,
+	row2+row3, 0,
+	0, 0,
+	0, 0,
+	row2+row3, 0,
+	0, 0
+	},
+	{
+	//' 87 (25+26+36)
+	0, 0,
+	row2+row3, 0,
+	0, 0,
+	0, 0,
+	0, 0,
+	0, 0
+	},
+	{
+	//< 88 (25+26+37)
+	0, 0,
+	row5, 0,
+	row4+row6, 0,
+	row3+row7, 0,
+	row2+row8, 0,
+	0, 0
+	},
+	{
+	//. 89 (25+26+38)
+	0, 0, 
+	0, 0,
+	0, 0,
+	0, 0,
+	row8, 0,
+	0, 0
+	},
+	{
+	//> 90 (25+26+39)
+	0, 0,
+	row2+row8, 0,
+	row3+row7, 0,
+	row4+row6, 0,
+	row5, 0,
+	0, 0
+	},
+	{
+	/// 91 (25+26+40)
+	0, 0,
+	row8, row9,
+	row6+row7, 0,
+	row4+row5, 0,
+	row2+row3, 0,
+	0, 0
+	},
+	{
+	//? 92 (25+26+41)
+	0, 0, 
+	row3, 0,
+	row2, 0,
+	row1+row5+row6, row9,
+	row2+row4, 0,
+	row3, 0
+	}	
 };
 
 int index = 0;
