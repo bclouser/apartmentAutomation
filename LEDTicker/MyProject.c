@@ -27,7 +27,7 @@ const int column[80] = { //this will hold the dmux command for every column... l
  the 2nd option refers to PORTD (row9).
 
  */
-const int characters[1][12] =
+const int characters[52][12] =
 	 
 {	 
 	{ 
@@ -287,7 +287,7 @@ const int characters[1][12] =
 	row5+row6+row7+row8, 0
 	},
 	{
-	//c 28 (25+
+	//c 28 (25+3)
 	row5+row6+row7+row8, 0,
 	row4, row9,
 	row4, row9,
@@ -296,7 +296,7 @@ const int characters[1][12] =
 	row5+row8, 0
 	},
 	{
-	//d 29
+	//d 29 (25+4)
 	row5+row6+row7+row8, 0,
 	row4, row9,
 	row4, row9,
@@ -305,7 +305,7 @@ const int characters[1][12] =
 	allRows, row9
 	},
 	{
-	//e 30
+	//e 30 (25+5)
 	row6+row7+row8, 0,
 	row5+row7, row9,
 	row4+row7, row9,
@@ -314,7 +314,7 @@ const int characters[1][12] =
 	row6, 0
 	},
 	{
-	//f 31
+	//f 31 (25+6)
 	row6, 0,
 	row3+row4+row5+row6+row7+row8, row9,
 	row2+row6, 0,
@@ -323,7 +323,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//g
+	//g 32(25+7)
 	row6, row9,
 	row5+row7, 0,
 	row4+row8, 0,
@@ -332,7 +332,7 @@ const int characters[1][12] =
 	row6+row7+row8, row9
 	},
 	{
-	//h
+	//h 33(25+8)
 	allRows, row9,
 	row5, 0, 
 	row4, 0, 
@@ -341,7 +341,7 @@ const int characters[1][12] =
 	row5+row6+row7+row8, row9
 	},
 	{
-	//i
+	//i 34 (25+9)
 	0, 0,
 	0, 0,
 	row3+row6+row7+row8, row9,
@@ -350,7 +350,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//j
+	//j 35 (25+10)
 	row8, 0,
 	0, row9,
 	0, row9,
@@ -359,7 +359,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//k
+	//k 36 (25+11)
 	row3+row4+row5+row6+row7+row8, row9,
 	row6, 0, 
 	row6, 0, 
@@ -368,7 +368,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//l
+	//l 37 (25+12)
 	0, 0,
 	0, 0,
 	row3+row4+row5+row6+row7+row8, row9,
@@ -377,7 +377,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//m
+	//m 38 (25+13)
 	row4+row5+row6+row7+row8, row9,
 	row5+row6, 0,
 	row7, 0,
@@ -386,7 +386,7 @@ const int characters[1][12] =
 	row4+row5+row6+row7+row8, row9
 	},
 	{
-	//n
+	//n 39 (25+14)
 	row4+row5+row6+row7+row8, row9, 
 	row5, 0,
 	row4, 0,
@@ -395,7 +395,7 @@ const int characters[1][12] =
 	row6+row7+row8, row9
 	},
 	{
-	//o
+	//o 40 (25+15)
 	row6+row7, 0,
 	row5+row8, 0,
 	row4, row9,
@@ -404,7 +404,7 @@ const int characters[1][12] =
 	row6+row7, 0
 	},
 	{
-	//p
+	//p 41 (25+16)
 	row6+row7+row8, row9
 	row5+row7, 0,
 	row4+row8, 0,
@@ -413,7 +413,7 @@ const int characters[1][12] =
 	row6, 0
 	},
 	{
-	//q
+	//q 42 (25+17)
 	row6, 0,
 	row5+row7, 0,
 	row4+row8, 0,
@@ -422,7 +422,7 @@ const int characters[1][12] =
 	row6+row7+row8, row9
 	},
 	{
-	//r
+	//r 43 (25+18)
 	row6+row7+row8, row9,
 	row5, 0,
 	row4, 0,
@@ -431,7 +431,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//s
+	//s 44 (25+19)
 	row5, row9,
 	row4+row6, row9,
 	row4+row6, row9,
@@ -440,7 +440,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//t 
+	//t 45 (25+20)
 	0, 0,
 	row5, 0,
 	row3+row4+row5+row6+row7+row8, row9,
@@ -449,7 +449,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//u
+	//u 46 (25+21)
 	row4+row5+row6+row7+row8, 0,
 	0, row9,
 	0, row9,
@@ -458,7 +458,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//v
+	//v 47 (25+22)
 	row4+row5+row6+row7, 0,
 	row8, 0,
 	0, row9,
@@ -467,7 +467,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//w
+	//w 48 (25+23)
 	row4+row5+row6+row7+row8, 0,
 	0, row9,
 	row8, 0,
@@ -476,7 +476,7 @@ const int characters[1][12] =
 	row4+row5+row6+row7+row8, 0
 	},
 	{
-	//x 
+	//x 49 (25+24)
 	row4, row9,
 	row5+row8, 0,
 	row6+row7, 0, 
@@ -485,7 +485,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//y
+	//y 50 (25+25)
 	row4+row5, 0,
 	row6, row9,
 	row7+row8, 0,
@@ -494,7 +494,7 @@ const int characters[1][12] =
 	0, 0
 	},
 	{
-	//z
+	//z 51 (25+26)
 	0, 0,
 	row4+row8, row9,
 	row4+row7, row9,
