@@ -455,8 +455,8 @@
 `uc 1 EEPGD 1 0 :1:7 
 ]
 [u S1215 . 1 `S1208 1 . 1 0 ]
-"71 LED_Ticker.c
-[v F1275 `DC[12]i  0a t 24 ]
+"73 LED_Ticker.c
+[v F1276 `DC[12]i  0a t 24 ]
 "5 C:\Program Files\HI-TECH Software\PICC\9.83\sources\abdiv.c
 [v ___abdiv `(c  1 e 1 0 ]
 "5 C:\Program Files\HI-TECH Software\PICC\9.83\sources\abmod.c
@@ -557,11 +557,13 @@
 [v ___fttoee `(f  1 e 3 0 ]
 "132
 [v ___fltoee `(d  1 e 3 0 ]
-"313 LED_Ticker.c
+"955 LED_Ticker.c
 [v _init_ports `(v  1 e 0 0 ]
-"324
+"966
 [v _display `(v  1 e 0 0 ]
-"702
+"1029
+[v _test `(v  1 e 0 0 ]
+"1071
 [v _main `(v  1 e 0 0 ]
 "82 /hitech/products/compilers/pic/pro/9.83/dist/linux/include/pic16f877a.h
 [v _INDF `VEuc  1 e 1 @0 ]
@@ -1246,39 +1248,43 @@
 "1163
 [v _EECON1bits `VES1215  1 e 1 @396 ]
 "28 LED_Ticker.c
+[v _flickerDelay `i  1 e 2 0 ]
+"30
 [v _column `DC[171]i  1 e 342 0 ]
-"71
-[v _characters `DC[26][12]i  1 e 624 0 ]
-"309
+"73
+[v _characters `DC[94][12]i  1 e 2256 0 ]
+"951
 [v _index `i  1 e 2 0 ]
-"702
+"1071
 [v _main `(v  1 e 0 0 ]
 {
-"763
-[v main@j `i  1 a 2 24 ]
-"756
-[v main@i `i  1 a 2 32 ]
-"705
-[v main@streamChars `[9]i  1 a 18 6 ]
-"704
-[v main@offset `i  1 a 2 30 ]
-"706
-[v main@numChars `i  1 a 2 28 ]
-"703
-[v main@counter `i  1 a 2 26 ]
-"705
-[v main@F1286 `[9]i  1 s 18 F1286 ]
-"780
+"1104
+[v main@j `i  1 a 2 35 ]
+"1097
+[v main@i `i  1 a 2 43 ]
+"1074
+[v main@streamChars `[12]i  1 a 24 11 ]
+"1073
+[v main@offset `i  1 a 2 41 ]
+"1075
+[v main@numChars `i  1 a 2 39 ]
+"1072
+[v main@counter `i  1 a 2 37 ]
+"1074
+[v main@F1291 `[12]i  1 s 24 F1291 ]
+"1121
 } 0
-"324
+"966
 [v _display `(v  1 e 0 0 ]
 {
-"326
-[v display@i `i  1 a 2 0 ]
-"324
+"975
+[v display@k `i  1 a 2 12 ]
+"968
+[v display@i `i  1 a 2 10 ]
+"966
 [v display@charNum `i  1 p 2 6 ]
 [v display@start `i  1 p 2 8 ]
-"613
+"1024
 } 0
 "3 C:\Program Files\HI-TECH Software\PICC\9.83\sources\wmul.c
 [v ___wmul `(ui  1 e 2 0 ]
@@ -1290,8 +1296,8 @@
 [v ___wmul@multiplicand `ui  1 p 2 2 ]
 "13
 } 0
-"313 LED_Ticker.c
+"955 LED_Ticker.c
 [v _init_ports `(v  1 e 0 0 ]
 {
-"322
+"964
 } 0
