@@ -6208,18 +6208,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _displayTesting ]
 [v _start `i  1 r1 ]
 [f ]
-[; ;LED_Ticker.c: 1150: PORTD = 0b01011111;
+[; ;LED_Ticker.c: 1150: PORTD = 0b01111110;
 "1150
-[e = _PORTD -> -> 95 `i `uc ]
+[e = _PORTD -> -> 126 `i `uc ]
 [; ;LED_Ticker.c: 1151: PORTB = 0b10000000+0b01000000+0b00100000+ 0b00000010+0b00000001;
 "1151
 [e = _PORTB -> + + + + -> 128 `i -> 64 `i -> 32 `i -> 2 `i -> 1 `i `uc ]
 [; ;LED_Ticker.c: 1152: PORTD |= 0b10000000;
 "1152
 [e =| _PORTD -> -> 128 `i `uc ]
-[; ;LED_Ticker.c: 1153: PORTC = column[1020 + start];
+[; ;LED_Ticker.c: 1153: PORTC = column[1070 + start];
 "1153
-[e = _PORTC *U + &U _column * -> -> + -> 1020 `i _start `ui `ux -> -> # *U &U _column `ui `ux ]
+[e = _PORTC *U + &U _column * -> -> + -> 1070 `i _start `ui `ux -> -> # *U &U _column `ui `ux ]
 [; ;LED_Ticker.c: 1154: return;
 "1154
 [e $UE 136  ]
@@ -6262,36 +6262,44 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;LED_Ticker.c: 1164: int charEnd = 0;
 [e = _charEnd -> 0 `i ]
 "1165
-[v _sevensCounter `i  1 a ]
-[; ;LED_Ticker.c: 1165: int sevensCounter = 0;
-[e = _sevensCounter -> 0 `i ]
+[v _zeroCounter `i  1 a ]
+[; ;LED_Ticker.c: 1165: int zeroCounter = 0;
+[e = _zeroCounter -> 0 `i ]
 "1167
 [v _numChars1 `i  1 a ]
-[; ;LED_Ticker.c: 1167: int numChars1 = 15;
-[e = _numChars1 -> 15 `i ]
+[; ;LED_Ticker.c: 1167: int numChars1 = 30;
+[e = _numChars1 -> 30 `i ]
 "1168
 [v _numChars2 `i  1 a ]
 [; ;LED_Ticker.c: 1168: int numChars2 = 0;
 [e = _numChars2 -> 0 `i ]
 "1169
-[v _commandTemp `uc  -> 8 `i a ]
-[; ;LED_Ticker.c: 1169: char commandTemp[8];
-[; ;LED_Ticker.c: 1170: init_ports();
+[v _spacesCounter1 `i  1 a ]
+[; ;LED_Ticker.c: 1169: int spacesCounter1 = 0;
+[e = _spacesCounter1 -> 0 `i ]
 "1170
-[e ( _init_ports ..  ]
-[; ;LED_Ticker.c: 1172: index = 1099;
+[v _spacesCounter2 `i  1 a ]
+[; ;LED_Ticker.c: 1170: int spacesCounter2 = 0;
+[e = _spacesCounter2 -> 0 `i ]
+"1171
+[v _commandTemp `uc  -> 8 `i a ]
+[; ;LED_Ticker.c: 1171: char commandTemp[8];
+[; ;LED_Ticker.c: 1172: init_ports();
 "1172
-[e = _index -> 1099 `i ]
-[; ;LED_Ticker.c: 1174: while(1){
+[e ( _init_ports ..  ]
+[; ;LED_Ticker.c: 1174: index = 1099;
 "1174
+[e = _index -> 1099 `i ]
+[; ;LED_Ticker.c: 1176: while(1){
+"1176
 [e :U 139 ]
 {
-[; ;LED_Ticker.c: 1197: if(PORTA & (dataPin + parityPin)){
-"1197
+[; ;LED_Ticker.c: 1199: if(PORTA & (dataPin + parityPin)){
+"1199
 [e $ ! != & -> _PORTA `i + _dataPin _parityPin -> 0 `i 141  ]
 {
-[; ;LED_Ticker.c: 1198: for(int t=0; t<2; t++){;}
-"1198
+[; ;LED_Ticker.c: 1200: for(int t=0; t<2; t++){;}
+"1200
 {
 [v _t `i  1 a ]
 [e = _t -> 0 `i ]
@@ -6304,41 +6312,41 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $ < _t -> 2 `i 142  ]
 [e :U 143 ]
 }
-[; ;LED_Ticker.c: 1199: if(PORTA & (dataPin + parityPin)){
-"1199
+[; ;LED_Ticker.c: 1201: if(PORTA & (dataPin + parityPin)){
+"1201
 [e $ ! != & -> _PORTA `i + _dataPin _parityPin -> 0 `i 145  ]
 {
-[; ;LED_Ticker.c: 1200: PORTA = 0x00;
-"1200
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;LED_Ticker.c: 1201: TRISA = 0b11111101;
-"1201
-[e = _TRISA -> -> 253 `i `uc ]
-[; ;LED_Ticker.c: 1202: PORTA = 0b00000010;
+[; ;LED_Ticker.c: 1202: PORTA = 0x00;
 "1202
-[e = _PORTA -> -> 2 `i `uc ]
-[; ;LED_Ticker.c: 1203: for(int t=0; t<5; t++){;}
+[e = _PORTA -> -> 0 `i `uc ]
+[; ;LED_Ticker.c: 1203: TRISA = 0b11111101;
 "1203
+[e = _TRISA -> -> 253 `i `uc ]
+[; ;LED_Ticker.c: 1204: PORTA = 0b00000010;
+"1204
+[e = _PORTA -> -> 2 `i `uc ]
+[; ;LED_Ticker.c: 1205: for(int t=0; t<3; t++){;}
+"1205
 {
 [v _t `i  1 a ]
 [e = _t -> 0 `i ]
-[e $ < _t -> 5 `i 146  ]
+[e $ < _t -> 3 `i 146  ]
 [e $U 147  ]
 [e :U 146 ]
 {
 }
 [e ++ _t -> 1 `i ]
-[e $ < _t -> 5 `i 146  ]
+[e $ < _t -> 3 `i 146  ]
 [e :U 147 ]
 }
-[; ;LED_Ticker.c: 1207: PORTA = 0x00;
-"1207
+[; ;LED_Ticker.c: 1209: PORTA = 0x00;
+"1209
 [e = _PORTA -> -> 0 `i `uc ]
-[; ;LED_Ticker.c: 1208: TRISA = 0b00000111;
-"1208
-[e = _TRISA -> -> 7 `i `uc ]
-[; ;LED_Ticker.c: 1210: while(!(PORTA & (dataPin+pulsePin+parityPin))){;}
+[; ;LED_Ticker.c: 1210: TRISA = 0b00000111;
 "1210
+[e = _TRISA -> -> 7 `i `uc ]
+[; ;LED_Ticker.c: 1212: while(!(PORTA & (dataPin+pulsePin+parityPin))){;}
+"1212
 [e $U 149  ]
 [e :U 150 ]
 {
@@ -6346,8 +6354,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 149 ]
 [e $ ! != & -> _PORTA `i + + _dataPin _pulsePin _parityPin -> 0 `i 150  ]
 [e :U 151 ]
-[; ;LED_Ticker.c: 1211: while(PORTA & (dataPin+pulsePin+parityPin)){;}
-"1211
+[; ;LED_Ticker.c: 1213: while(PORTA & (dataPin+pulsePin+parityPin)){;}
+"1213
 [e $U 152  ]
 [e :U 153 ]
 {
@@ -6355,8 +6363,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 152 ]
 [e $ != & -> _PORTA `i + + _dataPin _pulsePin _parityPin -> 0 `i 153  ]
 [e :U 154 ]
-[; ;LED_Ticker.c: 1212: while(PORTA & (dataPin+pulsePin+parityPin)){;}
-"1212
+[; ;LED_Ticker.c: 1214: while(PORTA & (dataPin+pulsePin+parityPin)){;}
+"1214
 [e $U 155  ]
 [e :U 156 ]
 {
@@ -6364,8 +6372,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U 155 ]
 [e $ != & -> _PORTA `i + + _dataPin _pulsePin _parityPin -> 0 `i 156  ]
 [e :U 157 ]
-[; ;LED_Ticker.c: 1213: for(int streamNum = 0; streamNum < 140; streamNum++){
-"1213
+[; ;LED_Ticker.c: 1215: for(int streamNum = 0; streamNum < 140; streamNum++){
+"1215
 {
 [v _streamNum `i  1 a ]
 [e = _streamNum -> 0 `i ]
@@ -6373,8 +6381,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 159  ]
 [e :U 158 ]
 {
-[; ;LED_Ticker.c: 1214: for(int k=0; k<9; k++){
-"1214
+[; ;LED_Ticker.c: 1216: for(int k=0; k<9; k++){
+"1216
 {
 [v _k `i  1 a ]
 [e = _k -> 0 `i ]
@@ -6382,342 +6390,446 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 162  ]
 [e :U 161 ]
 {
-[; ;LED_Ticker.c: 1215: displayLoading(k);
-"1215
-[e ( _displayLoading (1 _k ]
-[; ;LED_Ticker.c: 1217: while(!(PORTA & pulsePin));
+[; ;LED_Ticker.c: 1217: displayLoading(k);
 "1217
+[e ( _displayLoading (1 _k ]
+[; ;LED_Ticker.c: 1219: while(!(PORTA & pulsePin));
+"1219
 [e $U 164  ]
 [e :U 165 ]
 [e :U 164 ]
 [e $ ! != & -> _PORTA `i _pulsePin -> 0 `i 165  ]
 [e :U 166 ]
-[; ;LED_Ticker.c: 1218: while(!(PORTA & pulsePin));
-"1218
+[; ;LED_Ticker.c: 1220: while(!(PORTA & pulsePin));
+"1220
 [e $U 167  ]
 [e :U 168 ]
 [e :U 167 ]
 [e $ ! != & -> _PORTA `i _pulsePin -> 0 `i 168  ]
 [e :U 169 ]
-[; ;LED_Ticker.c: 1219: if( k < 8){
-"1219
+[; ;LED_Ticker.c: 1221: if( k < 8){
+"1221
 [e $ ! < _k -> 8 `i 170  ]
 {
-[; ;LED_Ticker.c: 1220: commandTemp[k] = (PORTA & dataPin);
-"1220
-[e = *U + &U _commandTemp * -> -> _k `ui `ux -> -> # *U &U _commandTemp `ui `ux -> & -> _PORTA `i _dataPin `uc ]
-"1221
-}
-[; ;LED_Ticker.c: 1221: }
-[e $U 171  ]
+[; ;LED_Ticker.c: 1222: commandTemp[k] = (PORTA & dataPin);
 "1222
+[e = *U + &U _commandTemp * -> -> _k `ui `ux -> -> # *U &U _commandTemp `ui `ux -> & -> _PORTA `i _dataPin `uc ]
+"1223
+}
+[; ;LED_Ticker.c: 1223: }
+[e $U 171  ]
+"1224
 [e :U 170 ]
-[; ;LED_Ticker.c: 1222: else if(k == 8){
+[; ;LED_Ticker.c: 1224: else if(k == 8){
 [e $ ! == _k -> 8 `i 172  ]
 {
-[; ;LED_Ticker.c: 1223: commandTemp[k] = (PORTA & (dataPin + parityPin));
-"1223
-[e = *U + &U _commandTemp * -> -> _k `ui `ux -> -> # *U &U _commandTemp `ui `ux -> & -> _PORTA `i + _dataPin _parityPin `uc ]
-[; ;LED_Ticker.c: 1225: if(commandTemp[8] == (dataPin + parityPin)){
+[; ;LED_Ticker.c: 1225: commandTemp[k] = (PORTA & (dataPin + parityPin));
 "1225
+[e = *U + &U _commandTemp * -> -> _k `ui `ux -> -> # *U &U _commandTemp `ui `ux -> & -> _PORTA `i + _dataPin _parityPin `uc ]
+[; ;LED_Ticker.c: 1227: if(commandTemp[8] == (dataPin + parityPin)){
+"1227
 [e $ ! == -> *U + &U _commandTemp * -> -> -> 8 `i `ui `ux -> -> # *U &U _commandTemp `ui `ux `i + _dataPin _parityPin 173  ]
 {
-[; ;LED_Ticker.c: 1226: displaySuccess();
-"1226
+[; ;LED_Ticker.c: 1228: displaySuccess();
+"1228
 [e ( _displaySuccess ..  ]
-"1227
+"1229
 }
 [e :U 173 ]
-"1228
+"1230
 }
 [e :U 172 ]
-"1230
+"1231
 [e :U 171 ]
-[; ;LED_Ticker.c: 1227: }
-[; ;LED_Ticker.c: 1228: }
-[; ;LED_Ticker.c: 1230: while(PORTA & pulsePin);
+[; ;LED_Ticker.c: 1229: }
+[; ;LED_Ticker.c: 1230: }
+[; ;LED_Ticker.c: 1231: while(PORTA & pulsePin);
 [e $U 174  ]
 [e :U 175 ]
 [e :U 174 ]
 [e $ != & -> _PORTA `i _pulsePin -> 0 `i 175  ]
 [e :U 176 ]
-"1231
+"1232
 }
-"1214
+"1216
 [e ++ _k -> 1 `i ]
 [e $ < _k -> 9 `i 161  ]
 [e :U 162 ]
-"1231
+"1232
 }
-[; ;LED_Ticker.c: 1231: }
-[; ;LED_Ticker.c: 1233: for (int z = 0; z<8; z++){
-"1233
-{
-[v _z `i  1 a ]
-[e = _z -> 0 `i ]
-[e $ < _z -> 8 `i 177  ]
-[e $U 178  ]
-[e :U 177 ]
-{
-[; ;LED_Ticker.c: 1234: if (commandTemp[z]){
-"1234
-[e $ ! != -> *U + &U _commandTemp * -> -> _z `ui `ux -> -> # *U &U _commandTemp `ui `ux `i -> -> -> 0 `i `uc `i 180  ]
-{
-[; ;LED_Ticker.c: 1235: if(streamNum < 70){
-"1235
-[e $ ! < _streamNum -> 70 `i 181  ]
-{
-[; ;LED_Ticker.c: 1236: streamChars1[streamNum] = 0;
+[; ;LED_Ticker.c: 1232: }
+[; ;LED_Ticker.c: 1236: if(streamNum < 70){
 "1236
-[e = *U + &U _streamChars1 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars1 `ui `ux -> -> 0 `i `uc ]
-[; ;LED_Ticker.c: 1237: streamChars1[streamNum] += binaryArray[7-z];
+[e $ ! < _streamNum -> 70 `i 177  ]
+{
+[; ;LED_Ticker.c: 1237: streamChars1[streamNum] = 0;
 "1237
-[e =+ *U + &U _streamChars1 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars1 `ui `ux -> *U + &U _binaryArray * -> -> - -> 7 `i _z `ui `ux -> -> # *U &U _binaryArray `ui `ux `uc ]
+[e = *U + &U _streamChars1 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars1 `ui `ux -> -> 0 `i `uc ]
 "1238
 }
 [; ;LED_Ticker.c: 1238: }
-[e $U 182  ]
+[e $U 178  ]
 "1239
-[e :U 181 ]
-[; ;LED_Ticker.c: 1239: else{
+[e :U 177 ]
+[; ;LED_Ticker.c: 1239: else {
 {
-[; ;LED_Ticker.c: 1240: streamChars2[streamNum] = 0;
+[; ;LED_Ticker.c: 1240: streamChars2[streamNum -70] = 0;
 "1240
-[e = *U + &U _streamChars2 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars2 `ui `ux -> -> 0 `i `uc ]
-[; ;LED_Ticker.c: 1241: streamChars2[streamNum] += binaryArray[7-z];
+[e = *U + &U _streamChars2 * -> -> - _streamNum -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux -> -> 0 `i `uc ]
 "1241
-[e =+ *U + &U _streamChars2 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars2 `ui `ux -> *U + &U _binaryArray * -> -> - -> 7 `i _z `ui `ux -> -> # *U &U _binaryArray `ui `ux `uc ]
-"1242
 }
-[e :U 182 ]
-"1243
-}
-[e :U 180 ]
-"1244
-}
-"1233
-[e ++ _z -> 1 `i ]
-[e $ < _z -> 8 `i 177  ]
 [e :U 178 ]
+[; ;LED_Ticker.c: 1241: }
+[; ;LED_Ticker.c: 1244: for (int z = 0; z<8; z++) {
 "1244
-}
+{
+[v _z `i  1 a ]
+[e = _z -> 0 `i ]
+[e $ < _z -> 8 `i 179  ]
+[e $U 180  ]
+[e :U 179 ]
+{
+[; ;LED_Ticker.c: 1245: if (commandTemp[z]){
 "1245
+[e $ ! != -> *U + &U _commandTemp * -> -> _z `ui `ux -> -> # *U &U _commandTemp `ui `ux `i -> -> -> 0 `i `uc `i 182  ]
+{
+[; ;LED_Ticker.c: 1246: if(streamNum < 70){
+"1246
+[e $ ! < _streamNum -> 70 `i 183  ]
+{
+[; ;LED_Ticker.c: 1247: streamChars1[streamNum] += binaryArray[z];
+"1247
+[e =+ *U + &U _streamChars1 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars1 `ui `ux -> *U + &U _binaryArray * -> -> _z `ui `ux -> -> # *U &U _binaryArray `ui `ux `uc ]
+"1248
 }
-"1213
+[; ;LED_Ticker.c: 1248: }
+[e $U 184  ]
+"1249
+[e :U 183 ]
+[; ;LED_Ticker.c: 1249: else{
+{
+[; ;LED_Ticker.c: 1250: streamChars2[streamNum-70] += binaryArray[z];
+"1250
+[e =+ *U + &U _streamChars2 * -> -> - _streamNum -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux -> *U + &U _binaryArray * -> -> _z `ui `ux -> -> # *U &U _binaryArray `ui `ux `uc ]
+"1251
+}
+[e :U 184 ]
+"1252
+}
+[; ;LED_Ticker.c: 1251: }
+[; ;LED_Ticker.c: 1252: }
+[e $U 185  ]
+"1253
+[e :U 182 ]
+[; ;LED_Ticker.c: 1253: else{
+{
+[; ;LED_Ticker.c: 1254: zeroCounter ++;
+"1254
+[e ++ _zeroCounter -> 1 `i ]
+"1255
+}
+[e :U 185 ]
+"1256
+}
+"1244
+[e ++ _z -> 1 `i ]
+[e $ < _z -> 8 `i 179  ]
+[e :U 180 ]
+"1256
+}
+[; ;LED_Ticker.c: 1255: }
+[; ;LED_Ticker.c: 1256: }
+[; ;LED_Ticker.c: 1259: if(zeroCounter == 8) {
+"1259
+[e $ ! == _zeroCounter -> 8 `i 186  ]
+{
+[; ;LED_Ticker.c: 1260: if(streamNum < 70){
+"1260
+[e $ ! < _streamNum -> 70 `i 187  ]
+{
+[; ;LED_Ticker.c: 1261: streamChars1[streamNum] =' ';
+"1261
+[e = *U + &U _streamChars1 * -> -> _streamNum `ui `ux -> -> # *U &U _streamChars1 `ui `ux -> -> 32 `ui `uc ]
+"1262
+}
+[; ;LED_Ticker.c: 1262: }
+[e $U 188  ]
+"1263
+[e :U 187 ]
+[; ;LED_Ticker.c: 1263: else{
+{
+[; ;LED_Ticker.c: 1264: streamChars2[streamNum-70] =' ';
+"1264
+[e = *U + &U _streamChars2 * -> -> - _streamNum -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux -> -> 32 `ui `uc ]
+"1265
+}
+[e :U 188 ]
+"1266
+}
+[e :U 186 ]
+[; ;LED_Ticker.c: 1265: }
+[; ;LED_Ticker.c: 1266: }
+[; ;LED_Ticker.c: 1267: zeroCounter = 0;
+"1267
+[e = _zeroCounter -> 0 `i ]
+"1268
+}
+"1215
 [e ++ _streamNum -> 1 `i ]
 [e $ < _streamNum -> 140 `i 158  ]
 [e :U 159 ]
-"1245
+"1268
 }
-[; ;LED_Ticker.c: 1242: }
-[; ;LED_Ticker.c: 1243: }
-[; ;LED_Ticker.c: 1244: }
-[; ;LED_Ticker.c: 1245: }
-[; ;LED_Ticker.c: 1255: if(streamChars1[0] < 118) {
-"1255
-[e $ ! < -> *U + &U _streamChars1 * -> -> -> 0 `i `ui `ux -> -> # *U &U _streamChars1 `ui `ux `i -> 118 `i 183  ]
+[; ;LED_Ticker.c: 1268: }
+[; ;LED_Ticker.c: 1271: for(int j = 0; j<140; j++){
+"1271
 {
-[; ;LED_Ticker.c: 1256: display('P',(980 + 50));
-"1256
-[e ( _display (2 , -> -> 80 `ui `i + -> 980 `i -> 50 `i ]
-"1257
-}
-[; ;LED_Ticker.c: 1257: }
-[e $U 184  ]
-"1258
-[e :U 183 ]
-[; ;LED_Ticker.c: 1258: else if(streamChars1[0] < 127) {
-[e $ ! < -> *U + &U _streamChars1 * -> -> -> 0 `i `ui `ux -> -> # *U &U _streamChars1 `ui `ux `i -> 127 `i 185  ]
-{
-[; ;LED_Ticker.c: 1259: display('F',(980 + 50));
-"1259
-[e ( _display (2 , -> -> 70 `ui `i + -> 980 `i -> 50 `i ]
-"1260
-}
-[e :U 185 ]
-"1263
-[e :U 184 ]
-[; ;LED_Ticker.c: 1260: }
-[; ;LED_Ticker.c: 1263: for (int f = 0; f<10000; f++) {
-{
-[v _f `i  1 a ]
-[e = _f -> 0 `i ]
-[e $ < _f -> 10000 `i 186  ]
-[e $U 187  ]
-[e :U 186 ]
-{
-[; ;LED_Ticker.c: 1264: for(int d=0; d<500; d++){;}
-"1264
-{
-[v _d `i  1 a ]
-[e = _d -> 0 `i ]
-[e $ < _d -> 500 `i 189  ]
+[v _j `i  1 a ]
+[e = _j -> 0 `i ]
+[e $ < _j -> 140 `i 189  ]
 [e $U 190  ]
 [e :U 189 ]
 {
+[; ;LED_Ticker.c: 1273: if(j < 70){
+"1273
+[e $ ! < _j -> 70 `i 192  ]
+{
+[; ;LED_Ticker.c: 1274: if(streamChars1[j] >= 32) {
+"1274
+[e $ ! >= -> *U + &U _streamChars1 * -> -> _j `ui `ux -> -> # *U &U _streamChars1 `ui `ux `i -> 32 `i 193  ]
+{
+[; ;LED_Ticker.c: 1275: streamChars1[j] -= 32;
+"1275
+[e =- *U + &U _streamChars1 * -> -> _j `ui `ux -> -> # *U &U _streamChars1 `ui `ux -> -> 32 `i `uc ]
+[; ;LED_Ticker.c: 1277: if(streamChars1[j] == 0){
+"1277
+[e $ ! == -> *U + &U _streamChars1 * -> -> _j `ui `ux -> -> # *U &U _streamChars1 `ui `ux `i -> 0 `i 194  ]
+{
+[; ;LED_Ticker.c: 1278: spacesCounter1++;
+"1278
+[e ++ _spacesCounter1 -> 1 `i ]
+"1279
 }
-[e ++ _d -> 1 `i ]
-[e $ < _d -> 500 `i 189  ]
-[e :U 190 ]
-}
-"1265
-}
-"1263
-[e ++ _f -> 1 `i ]
-[e $ < _f -> 10000 `i 186  ]
-[e :U 187 ]
-"1265
-}
-"1267
-}
-[e :U 145 ]
-"1268
-}
-[e :U 141 ]
-[; ;LED_Ticker.c: 1265: }
-[; ;LED_Ticker.c: 1267: }
-[; ;LED_Ticker.c: 1268: }
-[; ;LED_Ticker.c: 1280: if(totalCounter > (980-(numChars1+numChars2)*7)) {
+[; ;LED_Ticker.c: 1279: }
+[e $U 195  ]
 "1280
-[e $ ! > _totalCounter - -> 980 `i * + _numChars1 _numChars2 -> 7 `i 192  ]
+[e :U 194 ]
+[; ;LED_Ticker.c: 1280: else{
 {
-[; ;LED_Ticker.c: 1282: for(int i = 0; i < 17; i++){
+[; ;LED_Ticker.c: 1281: spacesCounter1 = 0;
+"1281
+[e = _spacesCounter1 -> 0 `i ]
 "1282
-{
-[v _i `i  1 a ]
-[e = _i -> 0 `i ]
-[e $ < _i -> 17 `i 193  ]
-[e $U 194  ]
-[e :U 193 ]
-{
-[; ;LED_Ticker.c: 1283: if(charCount<70){
+}
+[e :U 195 ]
 "1283
-[e $ ! < _charCount -> 70 `i 196  ]
-{
-[; ;LED_Ticker.c: 1284: display(streamChars1[charCount],(index + charOffset));
-"1284
-[e ( _display (2 , -> *U + &U _streamChars1 * -> -> _charCount `ui `ux -> -> # *U &U _streamChars1 `ui `ux `i + _index _charOffset ]
+}
+[e :U 193 ]
 "1285
 }
+[; ;LED_Ticker.c: 1282: }
+[; ;LED_Ticker.c: 1283: }
 [; ;LED_Ticker.c: 1285: }
-[e $U 197  ]
+[e $U 196  ]
 "1286
-[e :U 196 ]
-[; ;LED_Ticker.c: 1286: else if(charCount < 140){
-[e $ ! < _charCount -> 140 `i 198  ]
+[e :U 192 ]
+[; ;LED_Ticker.c: 1286: else{
 {
-[; ;LED_Ticker.c: 1287: display(streamChars2[charCount - 70],(index + charOffset));
+[; ;LED_Ticker.c: 1287: if(streamChars2[j-70] >= 32){
 "1287
-[e ( _display (2 , -> *U + &U _streamChars2 * -> -> - _charCount -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux `i + _index _charOffset ]
+[e $ ! >= -> *U + &U _streamChars2 * -> -> - _j -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux `i -> 32 `i 197  ]
+{
+[; ;LED_Ticker.c: 1288: streamChars2[j-70] -= 32;
 "1288
-}
-[e :U 198 ]
-"1289
-[e :U 197 ]
-[; ;LED_Ticker.c: 1288: }
-[; ;LED_Ticker.c: 1289: charCount++;
-[e ++ _charCount -> 1 `i ]
-[; ;LED_Ticker.c: 1290: charOffset += 7;
+[e =- *U + &U _streamChars2 * -> -> - _j -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux -> -> 32 `i `uc ]
+[; ;LED_Ticker.c: 1290: if(streamChars2[j-70] == 0){
 "1290
-[e =+ _charOffset -> 7 `i ]
+[e $ ! == -> *U + &U _streamChars2 * -> -> - _j -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux `i -> 0 `i 198  ]
+{
+[; ;LED_Ticker.c: 1291: spacesCounter2++;
 "1291
+[e ++ _spacesCounter2 -> 1 `i ]
+"1292
 }
-"1282
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 17 `i 193  ]
-[e :U 194 ]
-"1291
-}
-[; ;LED_Ticker.c: 1291: }
-[; ;LED_Ticker.c: 1293: totalCounter--;
+[; ;LED_Ticker.c: 1292: }
+[e $U 199  ]
 "1293
-[e -- _totalCounter -> 1 `i ]
-[; ;LED_Ticker.c: 1294: sevensCounter++;
+[e :U 198 ]
+[; ;LED_Ticker.c: 1293: else{
+{
+[; ;LED_Ticker.c: 1294: spacesCounter2 = 0;
 "1294
-[e ++ _sevensCounter -> 1 `i ]
-[; ;LED_Ticker.c: 1296: if(index > 973) {
-"1296
-[e $ ! > _index -> 973 `i 199  ]
-{
-[; ;LED_Ticker.c: 1297: charCount -= 17;
-"1297
-[e =- _charCount -> 17 `i ]
-[; ;LED_Ticker.c: 1298: charOffset = 0;
-"1298
-[e = _charOffset -> 0 `i ]
-[; ;LED_Ticker.c: 1299: index--;
-"1299
-[e -- _index -> 1 `i ]
-"1300
+[e = _spacesCounter2 -> 0 `i ]
+"1295
 }
-[; ;LED_Ticker.c: 1300: }
-[e $U 200  ]
-"1301
 [e :U 199 ]
-[; ;LED_Ticker.c: 1301: else {
-{
-[; ;LED_Ticker.c: 1302: charCount -= 17;
-"1302
-[e =- _charCount -> 17 `i ]
-[; ;LED_Ticker.c: 1303: charCount ++;
-"1303
-[e ++ _charCount -> 1 `i ]
-[; ;LED_Ticker.c: 1304: sevensCounter = 0;
-"1304
-[e = _sevensCounter -> 0 `i ]
-[; ;LED_Ticker.c: 1305: charOffset = 0;
-"1305
-[e = _charOffset -> 0 `i ]
-[; ;LED_Ticker.c: 1306: index = 979;
-"1306
-[e = _index -> 979 `i ]
-"1307
+"1296
 }
-[e :U 200 ]
-[; ;LED_Ticker.c: 1307: }
-[; ;LED_Ticker.c: 1309: for(int i = 0; i< 400; i++){;}
-"1309
+[e :U 197 ]
+"1297
+}
+[e :U 196 ]
+"1298
+}
+"1271
+[e ++ _j -> 1 `i ]
+[e $ < _j -> 140 `i 189  ]
+[e :U 190 ]
+"1298
+}
+[; ;LED_Ticker.c: 1295: }
+[; ;LED_Ticker.c: 1296: }
+[; ;LED_Ticker.c: 1297: }
+[; ;LED_Ticker.c: 1298: }
+[; ;LED_Ticker.c: 1299: numChars1 = 70-spacesCounter1;
+"1299
+[e = _numChars1 - -> 70 `i _spacesCounter1 ]
+[; ;LED_Ticker.c: 1300: numChars2 = 70-spacesCounter2;
+"1300
+[e = _numChars2 - -> 70 `i _spacesCounter2 ]
+"1301
+}
+[e :U 145 ]
+"1302
+}
+[e :U 141 ]
+[; ;LED_Ticker.c: 1301: }
+[; ;LED_Ticker.c: 1302: }
+[; ;LED_Ticker.c: 1325: if(totalCounter > (980-((numChars1+numChars2)*7))) {
+"1325
+[e $ ! > _totalCounter - -> 980 `i * + _numChars1 _numChars2 -> 7 `i 200  ]
+{
+[; ;LED_Ticker.c: 1327: for(int i = 0; i < 17; i++){
+"1327
 {
 [v _i `i  1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 400 `i 201  ]
+[e $ < _i -> 17 `i 201  ]
 [e $U 202  ]
 [e :U 201 ]
 {
+[; ;LED_Ticker.c: 1328: if(charCount<70){
+"1328
+[e $ ! < _charCount -> 70 `i 204  ]
+{
+[; ;LED_Ticker.c: 1329: display(streamChars1[charCount],(index + charOffset));
+"1329
+[e ( _display (2 , -> *U + &U _streamChars1 * -> -> _charCount `ui `ux -> -> # *U &U _streamChars1 `ui `ux `i + _index _charOffset ]
+"1330
+}
+[; ;LED_Ticker.c: 1330: }
+[e $U 205  ]
+"1331
+[e :U 204 ]
+[; ;LED_Ticker.c: 1331: else if(charCount < 140){
+[e $ ! < _charCount -> 140 `i 206  ]
+{
+[; ;LED_Ticker.c: 1332: display(streamChars2[charCount - 70],(index + charOffset));
+"1332
+[e ( _display (2 , -> *U + &U _streamChars2 * -> -> - _charCount -> 70 `i `ui `ux -> -> # *U &U _streamChars2 `ui `ux `i + _index _charOffset ]
+"1333
+}
+[e :U 206 ]
+"1334
+[e :U 205 ]
+[; ;LED_Ticker.c: 1333: }
+[; ;LED_Ticker.c: 1334: charCount++;
+[e ++ _charCount -> 1 `i ]
+[; ;LED_Ticker.c: 1335: charOffset += 7;
+"1335
+[e =+ _charOffset -> 7 `i ]
+"1336
+}
+"1327
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 17 `i 201  ]
+[e :U 202 ]
+"1336
+}
+[; ;LED_Ticker.c: 1336: }
+[; ;LED_Ticker.c: 1338: totalCounter--;
+"1338
+[e -- _totalCounter -> 1 `i ]
+[; ;LED_Ticker.c: 1340: if(index > 973) {
+"1340
+[e $ ! > _index -> 973 `i 207  ]
+{
+[; ;LED_Ticker.c: 1341: charCount -= 17;
+"1341
+[e =- _charCount -> 17 `i ]
+[; ;LED_Ticker.c: 1342: charOffset = 0;
+"1342
+[e = _charOffset -> 0 `i ]
+[; ;LED_Ticker.c: 1343: index--;
+"1343
+[e -- _index -> 1 `i ]
+"1344
+}
+[; ;LED_Ticker.c: 1344: }
+[e $U 208  ]
+"1345
+[e :U 207 ]
+[; ;LED_Ticker.c: 1345: else {
+{
+[; ;LED_Ticker.c: 1346: charCount -= 17;
+"1346
+[e =- _charCount -> 17 `i ]
+[; ;LED_Ticker.c: 1347: charCount ++;
+"1347
+[e ++ _charCount -> 1 `i ]
+[; ;LED_Ticker.c: 1348: charOffset = 0;
+"1348
+[e = _charOffset -> 0 `i ]
+[; ;LED_Ticker.c: 1349: index = 979;
+"1349
+[e = _index -> 979 `i ]
+"1350
+}
+[e :U 208 ]
+[; ;LED_Ticker.c: 1350: }
+[; ;LED_Ticker.c: 1352: for(int i = 0; i< 400; i++){;}
+"1352
+{
+[v _i `i  1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 400 `i 209  ]
+[e $U 210  ]
+[e :U 209 ]
+{
 }
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 400 `i 201  ]
-[e :U 202 ]
+[e $ < _i -> 400 `i 209  ]
+[e :U 210 ]
 }
-"1310
+"1353
 }
-[; ;LED_Ticker.c: 1310: }
-[e $U 204  ]
-"1312
-[e :U 192 ]
-[; ;LED_Ticker.c: 1312: else{
+[; ;LED_Ticker.c: 1353: }
+[e $U 212  ]
+"1355
+[e :U 200 ]
+[; ;LED_Ticker.c: 1355: else{
 {
-[; ;LED_Ticker.c: 1313: index = 1099;
-"1313
+[; ;LED_Ticker.c: 1356: index = 1099;
+"1356
 [e = _index -> 1099 `i ]
-[; ;LED_Ticker.c: 1314: totalCounter = 1099;
-"1314
+[; ;LED_Ticker.c: 1357: totalCounter = 1099;
+"1357
 [e = _totalCounter -> 1099 `i ]
-[; ;LED_Ticker.c: 1315: charCount = 0;
-"1315
+[; ;LED_Ticker.c: 1358: charCount = 0;
+"1358
 [e = _charCount -> 0 `i ]
-"1316
+"1359
 }
-[e :U 204 ]
-"1317
+[e :U 212 ]
+"1360
 }
 [e :U 138 ]
-"1174
+"1176
 [e $U 139  ]
 [e :U 140 ]
-[; ;LED_Ticker.c: 1316: }
-[; ;LED_Ticker.c: 1317: }
-[; ;LED_Ticker.c: 1318: }
-"1318
+[; ;LED_Ticker.c: 1359: }
+[; ;LED_Ticker.c: 1360: }
+[; ;LED_Ticker.c: 1361: }
+"1361
 [e :UE 137 ]
 }

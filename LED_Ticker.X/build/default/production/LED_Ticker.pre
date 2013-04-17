@@ -2275,10 +2275,10 @@ return;
 }
 
 void displayTesting(int start){
-PORTD = 0b01011111;
+PORTD = 0b01111110;
 PORTB = 0b10000000+0b01000000+0b00100000+ 0b00000010+0b00000001;
 PORTD |= 0b10000000;
-PORTC = column[1020 + start];
+PORTC = column[1070 + start];
 return;
 }
 
@@ -2290,10 +2290,12 @@ int totalOffset = 0;
 int charCount = 0;
 int charBegin = 0;
 int charEnd = 0;
-int sevensCounter = 0;
+int zeroCounter = 0;
 
-int numChars1 = 15;
+int numChars1 = 30;
 int numChars2 = 0;
+int spacesCounter1 = 0;
+int spacesCounter2 = 0;
 char commandTemp[8];
 init_ports();
 
@@ -2301,14 +2303,14 @@ index = 1099;
 
 while(1){
 
-# 1197
+# 1199
 if(PORTA & (dataPin + parityPin)){
 for(int t=0; t<2; t++){;}
 if(PORTA & (dataPin + parityPin)){
 PORTA = 0x00;
 TRISA = 0b11111101;
 PORTA = 0b00000010;
-for(int t=0; t<5; t++){;}
+for(int t=0; t<3; t++){;}
 
 
 
@@ -2334,42 +2336,81 @@ if(commandTemp[8] == (dataPin + parityPin)){
 displaySuccess();
 }
 }
-
 while(PORTA & pulsePin);
 }
 
-for (int z = 0; z<8; z++){
-if (commandTemp[z]){
+
+
 if(streamNum < 70){
 streamChars1[streamNum] = 0;
-streamChars1[streamNum] += binaryArray[7-z];
+}
+else {
+streamChars2[streamNum -70] = 0;
+}
+
+
+for (int z = 0; z<8; z++) {
+if (commandTemp[z]){
+if(streamNum < 70){
+streamChars1[streamNum] += binaryArray[z];
 }
 else{
-streamChars2[streamNum] = 0;
-streamChars2[streamNum] += binaryArray[7-z];
+streamChars2[streamNum-70] += binaryArray[z];
 }
 }
-}
-}
-
-# 1255
-if(streamChars1[0] < 118) {
-display('P',(980 + 50));
-}
-else if(streamChars1[0] < 127) {
-display('F',(980 + 50));
-}
-
-
-for (int f = 0; f<10000; f++) {
-for(int d=0; d<500; d++){;}
-}
-
+else{
+zeroCounter ++;
 }
 }
 
-# 1280
-if(totalCounter > (980-(numChars1+numChars2)*7)) {
+
+if(zeroCounter == 8) {
+if(streamNum < 70){
+streamChars1[streamNum] =' ';
+}
+else{
+streamChars2[streamNum-70] =' ';
+}
+}
+zeroCounter = 0;
+}
+
+
+for(int j = 0; j<140; j++){
+
+if(j < 70){
+if(streamChars1[j] >= 32) {
+streamChars1[j] -= 32;
+
+if(streamChars1[j] == 0){
+spacesCounter1++;
+}
+else{
+spacesCounter1 = 0;
+}
+}
+
+}
+else{
+if(streamChars2[j-70] >= 32){
+streamChars2[j-70] -= 32;
+
+if(streamChars2[j-70] == 0){
+spacesCounter2++;
+}
+else{
+spacesCounter2 = 0;
+}
+}
+}
+}
+numChars1 = 70-spacesCounter1;
+numChars2 = 70-spacesCounter2;
+}
+}
+
+# 1325
+if(totalCounter > (980-((numChars1+numChars2)*7))) {
 
 for(int i = 0; i < 17; i++){
 if(charCount<70){
@@ -2383,7 +2424,6 @@ charOffset += 7;
 }
 
 totalCounter--;
-sevensCounter++;
 
 if(index > 973) {
 charCount -= 17;
@@ -2393,7 +2433,6 @@ index--;
 else {
 charCount -= 17;
 charCount ++;
-sevensCounter = 0;
 charOffset = 0;
 index = 979;
 }

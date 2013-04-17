@@ -1147,10 +1147,10 @@ void displaySuccess(){
 }
 
 void displayTesting(int start){
-    PORTD = 0b01011111;   //control line for DMUX 2
+    PORTD = 0b01111110;   //control line for DMUX 2
     PORTB = row1+row2+row3+ row7+row8;
     PORTD |= row9;
-    PORTC = column[1020 + start];
+    PORTC = column[1070 + start];
     return;
 }
 
@@ -1162,10 +1162,12 @@ void main() {
     int charCount = 0;
     int charBegin = 0;
     int charEnd = 0;
-    int sevensCounter = 0;
+    int zeroCounter = 0;
      
-    int numChars1 = 15;  //this should be like arraysize(streamChars); it should return the number of actual characters used in array
+    int numChars1 = 30;  //this should be like arraysize(streamChars); it should return the number of actual characters used in array
     int numChars2 = 0;
+    int spacesCounter1 = 0;
+    int spacesCounter2 = 0;
     char commandTemp[8];
     init_ports();
 
@@ -1200,22 +1202,29 @@ void main() {
                 PORTA = 0x00;
                 TRISA = 0b11111101;  //A0, A2 are inputs for communication. A1 is output for reply
                 PORTA = 0b00000010;  //send back the yes signal
-                for(int t=0; t<5; t++){;}  //quick time to send back yes signal
+                for(int t=0; t<3; t++){;}  //quick time to send back yes signal
                 
                 //while(PORTA & (parityPin+dataPin)) {;}  //stay here until this opening frame goes away
                 
                 PORTA = 0x00;  //turn off yes signal   
                 TRISA = 0b00000111;  //changes all comm pins back to input
 
-                    while(!(PORTA & (dataPin+pulsePin+parityPin))){;} //wait for this to begin
-                    while(PORTA & (dataPin+pulsePin+parityPin)){;} //wait for this to end before entering the for loop.
-                    while(PORTA & (dataPin+pulsePin+parityPin)){;} //wait for this to end before entering the for loop.
+                    while(!(PORTA & (dataPin+pulsePin+parityPin))) && (timer < timeOut) { //wait for this to begin
+                        timer++;
+                    }
+                    timer = 0;    
+                    while((PORTA & (dataPin+pulsePin+parityPin)) && (timer < timeOut )){ //wait for this to end before entering the for loop.
+                        timer++;
+                    }
+                    timer = 0;
                 for(int streamNum = 0; streamNum < 140; streamNum++){  //for all ascii chars
                     for(int k=0; k<9; k++){
                         displayLoading(k);
                         
-                        while(!(PORTA & pulsePin)); //wait for the pulse pin
-                        while(!(PORTA & pulsePin)); //wait for the pulse pin
+                        while(!(PORTA & pulsePin) && (timer < timeOut)){ //wait for the pulse pin
+                            timer++;
+                        }  
+                        timer = 0;  
                         if( k < 8){
                             commandTemp[k] = (PORTA & dataPin); // WRITE DATA
                         }
@@ -1226,58 +1235,104 @@ void main() {
                                 displaySuccess(); //debug, this means it was a succesful frame
                             }
                         }
-                            
-                        while(PORTA & pulsePin); // wait till pulse from the last one is over 
+                        while((PORTA & pulsePin) && (timer < timeOut)){ // wait till pulse from the last one is over 
+                            timer++;
+                        }    
+                        timer = 0;
                     }
 
-                    for (int z = 0; z<8; z++){
+                    //PUT ZEROES IN ARRAY SPOTS SO OUR ADDITION BELOW STARTS FROM 0
+                    // and not whatever it was before.
+                    if(streamNum < 70){
+                        streamChars1[streamNum] = 0; 
+                    }
+                    else {
+                        streamChars2[streamNum -70] = 0;
+                    }
+                    
+                    //CONVERTS FROM BINARY INTO INTEGER AND PUTS THE VALUE INTO CORRECT ARRAY VALUE
+                    for (int z = 0; z<8; z++) {
                         if (commandTemp[z]){  //if its zero we dont care... so theres that.
                             if(streamNum < 70){
-                                streamChars1[streamNum] = 0; // put zeroes in every spot before adding data
-                                streamChars1[streamNum] += binaryArray[7-z]; //puts decimal value into asciiCode
+                                streamChars1[streamNum] += binaryArray[z]; //puts decimal value into asciiCode
                             }
                             else{
-                                streamChars2[streamNum] = 0; // put zeroes in every spot before adding data
-                                streamChars2[streamNum] += binaryArray[7-z]; //puts decimal value into asciiCode
+                                streamChars2[streamNum-70] += binaryArray[z]; //puts decimal value into asciiCode
                             }    
                         }
+                        else{
+                            zeroCounter ++;
+                        }
                     }
-                }
-                /*for(int j = 0; j<140; j++){ //deals with offset of ascii array
-                    if(streamChars1[j] > 32){
-                        streamChars1[j] -= 32;  
+
+                    //THIS WILL MAKE SPACES AT END OF STRING INSTEAD OF OLD DATA
+                    if(zeroCounter == 8) {
+                        if(streamNum < 70){
+                            streamChars1[streamNum] =' '; //puts decimal value into asciiCode
+                        }
+                        else{
+                            streamChars2[streamNum-70] =' '; //puts decimal value into asciiCode
+                        }    
                     }
-                    if(streamChars2[j] > 32){
-                        streamChars2[j] -= 32;    
-                    }                  
-                } */
-
-                if(streamChars1[0] < 118) {
-                    display('P',(980 + 50));
+                    zeroCounter = 0;
                 }
-                else if(streamChars1[0] < 127) {
-                    display('F',(980 + 50));
-                } 
 
-                                                        //delay loop
-                for (int f = 0; f<10000; f++) {
-                    for(int d=0; d<500; d++){;}
-                } 
+                //COMPENSATES FOR THE OFFSET OF OUR ASCII ARRAY... our characters[0] = "realWorldAscii[32]"
+                for(int j = 0; j<140; j++){ 
 
+                    if(j < 70){
+                        if(streamChars1[j] >= 32) {  //prevents out of bounds if faulty data
+                            streamChars1[j] -= 32;  //subtract ascii offset
+
+                            if(streamChars1[j] == 0){
+                                spacesCounter1++;  //only incremented if successive, these are the trailing zeroes
+                            }
+                            else{
+                                spacesCounter1 = 0; 
+                            }
+                        } 
+
+                    }
+                    else{
+                        if(streamChars2[j-70] >= 32){  //prevents out of bounds if faulty data
+                            streamChars2[j-70] -= 32;  //subtract the ascii offset
+
+                            if(streamChars2[j-70] == 0){
+                                spacesCounter2++;  //only incremented if successive, these are the trailing zeroes
+                            }  
+                            else{
+                                spacesCounter2 = 0;
+                            }
+                        }  
+                    }               
+                }
+                numChars1 = 70-spacesCounter1;
+                numChars2 = 70-spacesCounter2;
             }   
         }
 
         
 
-        //display(ascii character, start location )
 
+
+
+
+
+
+
+
+
+
+        //display(ascii character, start location )
        
          //number of characters times # of columns for each(6 columns + space) 
         //controls how far to go negative before restarting scroll.
 
         //854 = 1100-120.  
+
         
-        if(totalCounter > (980-(numChars1+numChars2)*7)) {  //number of characters times # of columns for each(6 columns + space) 
+        
+        if(totalCounter > (980-((numChars1+numChars2)*7))) {  //number of characters times # of columns for each(6 columns + space) 
 
             for(int i = 0; i < 17; i++){  //this is always running 17 times to populate the screen
                 if(charCount<70){
@@ -1291,7 +1346,6 @@ void main() {
             }
              
             totalCounter--;
-            sevensCounter++;
 
             if(index > 973) {  //this is only for the first descent of characters across the screen
                 charCount -= 17;
@@ -1301,7 +1355,6 @@ void main() {
             else {  // all other cases
                 charCount -= 17; //subtract 17 added from for loop
                 charCount ++;
-                sevensCounter = 0;
                 charOffset = 0;
                 index = 979;
             }
