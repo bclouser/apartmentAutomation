@@ -11,8 +11,6 @@
 
 __CONFIG(FOSC_HS & WDTE_OFF &  PWRTE_OFF & CP_OFF & BOREN_OFF & WRT_OFF & LVP_OFF);
 
-
-
 //#include <pic14/pic16f877a.h>
 
  #define row1 0b10000000  //PORTB
@@ -26,18 +24,11 @@ __CONFIG(FOSC_HS & WDTE_OFF &  PWRTE_OFF & CP_OFF & BOREN_OFF & WRT_OFF & LVP_OF
  #define row9 0b10000000  //PORTD
  #define allRows 0xFF
 
-
-//communication variables
-const int dataPin = 0b00000001;
-const int pulsePin = 0b00000010;
-const int parityPin = 0b00000100;
-
-int binaryArray[8]={128,64,32,16,8,4,2,1};
-
-int flickerDelay = 20;
+int flickerDelay = 1;
 //using these arrays to hold byte size integers
-char streamChars1[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32};
-char streamChars2[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32};
+char streamChars1[70] = {'n'-32,'o'-32,'a'-32,'h'-32,' '-32, 'i'-32, 's'-32, ' '-32, 'b'-32, 'a'-32, 'd'-32, ' '-32, 'a'-32, 't'-32,
+ ' '-32, 't'-32, 'h'-32, 'i'-32, 's'-32, ' '-32, 'g'-32, 'a'-32, 'm'-32, 'e'-32, '!'-32};
+char streamChars2[70] = {'s'-32,'u'-32,'c'-32,'k'-32,'s'-32,'.'-32};
 
 
 const char column[1100] = { //this will hold the dmux command for every column...the zeroes are for below 0
@@ -1005,19 +996,13 @@ int index = 0x00;
 
 void init_ports(){
     PORTA = 0x00;
-    TRISA = 0b00000111;  //A0, A1, A2 are inputs for communication.
+    TRISA = 0x00;
     PORTB = 0x00;
     TRISB = 0x00;      // data direction control, 0 for output 1 for input
     PORTC = 0x00;
     TRISC = 0x00;
     PORTD = 0x00;
     TRISD = 0x00;
-
-    //disable adcon cmcon, cvrcon;
-    ADCON0 = 0b11100000;  //turns A/D off
-    ADCON1 = 0b00000111;  //makes A0-A3 digital i/o
-    CMCON = 0b00000111;  //makes A0, A1, A2, digital I/O
-    CVRCON = 0x00;   //i dont think necessary
 }
 
 void display(int charNum, signed int start){  //ignites a letter starting at column specified by "start"
@@ -1036,7 +1021,7 @@ void display(int charNum, signed int start){  //ignites a letter starting at col
             PORTD = 0x00; //all control lines are off as well.
         }
 
-        else if((start < 995)){
+        if((start < 995)){
            PORTC = column[start];  //holds address of PORTD, columns 0-7
            PORTD &= 0b10111111;   //control line for DMUX 1
            PORTA = 0x00;
@@ -1079,7 +1064,7 @@ void display(int charNum, signed int start){  //ignites a letter starting at col
             PORTC = 0x00;  //yeah, this should never happen
         }
         start++;
-        PORTB = characters[charNum][k]; //puts the rows on the column
+        PORTB = characters[charNum][k]; //puts the rows  on the column
         PORTD |= characters[charNum][++k]; //puts row 9 on the column
         for(i=0; i<flickerDelay; i++){;}  //homebrew delay
         PORTB = 0x00;  //turns off all rows
@@ -1130,144 +1115,26 @@ void test(int start){
    //for(int i = 0; i<)
 }
 
-void displayLoading(int columnSelect){
-    PORTD = 0b00111111;   //control line for DMUX 1
-    PORTB = row1+row2+row3+ row7+row8;
-    PORTD |= row9;
-    PORTC = column[columnSelect + 980];
-    return;
-}
-
-void displaySuccess(){
-    PORTD = 0b01011111;   //control line for DMUX 2
-    PORTB = row1+row2+row3+ row7+row8;
-    PORTD |= row9;
-    PORTC = column[980];
-    return;
-}
-
-void displayTesting(int start){
-    PORTD = 0b01011111;   //control line for DMUX 2
-    PORTB = row1+row2+row3+ row7+row8;
-    PORTD |= row9;
-    PORTC = column[1020 + start];
-    return;
-}
 
 void main() {
-    int totalCounter = 0;
+    int counter = 0;
     int lastDivision = 0;
-    int charOffset = 0;
+    int smallOffset = 0;
     int totalOffset = 0;
     int charCount = 0;
     int charBegin = 0;
     int charEnd = 0;
     int sevensCounter = 0;
      
-    int numChars1 = 15;  //this should be like arraysize(streamChars); it should return the number of actual characters used in array
-    int numChars2 = 0;
-    char commandTemp[8];
+    int numChars1 = 34;  //this should be like arraysize(streamChars); it should return the number of actual characters used in array
+    int numChars2 = 34;
+    int numChars3 = 34;
+    int numChars4 = 40;
     init_ports();
 
     index = 1099;  //DEBUG... reset before entering loop
 
     while(1){  //the infinite loop
-        /*
-        displayLoading(0);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(1);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(2);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(3);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(4);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(5);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(6);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(7);
-        for(int i = 0; i<5000; i++){;}
-        displayLoading(8);
-        for(int i = 0; i<5000; i++){;}    */
-
-
-        
-        if(PORTA & (dataPin + parityPin)){  //the ardi is requesting to transmit data
-            for(int t=0; t<2; t++){;} //tiny delay to prevent noise
-            if(PORTA & (dataPin + parityPin)){  //the ardi is still requesting, lets go with it
-                PORTA = 0x00;
-                TRISA = 0b11111101;  //A0, A2 are inputs for communication. A1 is output for reply
-                PORTA = 0b00000010;  //send back the yes signal
-                for(int t=0; t<5; t++){;}  //quick time to send back yes signal
-                
-                //while(PORTA & (parityPin+dataPin)) {;}  //stay here until this opening frame goes away
-                
-                PORTA = 0x00;  //turn off yes signal   
-                TRISA = 0b00000111;  //changes all comm pins back to input
-
-                    while(!(PORTA & (dataPin+pulsePin+parityPin))){;} //wait for this to begin
-                    while(PORTA & (dataPin+pulsePin+parityPin)){;} //wait for this to end before entering the for loop.
-                    while(PORTA & (dataPin+pulsePin+parityPin)){;} //wait for this to end before entering the for loop.
-                for(int streamNum = 0; streamNum < 140; streamNum++){  //for all ascii chars
-                    for(int k=0; k<9; k++){
-                        displayLoading(k);
-                        
-                        while(!(PORTA & pulsePin)); //wait for the pulse pin
-                        while(!(PORTA & pulsePin)); //wait for the pulse pin
-                        if( k < 8){
-                            commandTemp[k] = (PORTA & dataPin); // WRITE DATA
-                        }
-                        else if(k == 8){
-                            commandTemp[k] = (PORTA & (dataPin + parityPin));  // closing bracket
-
-                            if(commandTemp[8] == (dataPin + parityPin)){
-                                displaySuccess(); //debug, this means it was a succesful frame
-                            }
-                        }
-                            
-                        while(PORTA & pulsePin); // wait till pulse from the last one is over 
-                    }
-
-                    for (int z = 0; z<8; z++){
-                        if (commandTemp[z]){  //if its zero we dont care... so theres that.
-                            if(streamNum < 70){
-                                streamChars1[streamNum] = 0; // put zeroes in every spot before adding data
-                                streamChars1[streamNum] += binaryArray[7-z]; //puts decimal value into asciiCode
-                            }
-                            else{
-                                streamChars2[streamNum] = 0; // put zeroes in every spot before adding data
-                                streamChars2[streamNum] += binaryArray[7-z]; //puts decimal value into asciiCode
-                            }    
-                        }
-                    }
-                }
-                /*for(int j = 0; j<140; j++){ //deals with offset of ascii array
-                    if(streamChars1[j] > 32){
-                        streamChars1[j] -= 32;  
-                    }
-                    if(streamChars2[j] > 32){
-                        streamChars2[j] -= 32;    
-                    }                  
-                } */
-
-                if(streamChars1[0] < 118) {
-                    display('P',(980 + 50));
-                }
-                else if(streamChars1[0] < 127) {
-                    display('F',(980 + 50));
-                } 
-
-                                                        //delay loop
-                for (int f = 0; f<10000; f++) {
-                    for(int d=0; d<500; d++){;}
-                } 
-
-            }   
-        }
-
-        
 
         //display(ascii character, start location )
 
@@ -1277,42 +1144,36 @@ void main() {
 
         //854 = 1100-120.  
         
-        if(totalCounter > (980-(numChars1+numChars2)*7)) {  //number of characters times # of columns for each(6 columns + space) 
-
+        if(index > 0){  //number of characters times # of columns for each(6 columns + space) 
+            charBegin = index+totalOffset; //after 120 columns, this is zero
+            charEnd = charCount + 17;
             for(int i = 0; i < 17; i++){  //this is always running 17 times to populate the screen
-                if(charCount<70){
-                    display(streamChars1[charCount],(index + charOffset));
-                }
-                else if(charCount < 140){
-                    display(streamChars2[charCount - 70],(index + charOffset));
-                }
+                display(streamChars1[charCount],(index + smallOffset));
+                for(int i = 0; i< 200; i++){;}  //delay
                 charCount++;  //increments the characters placed... this will increase by 17 each time
-                charOffset += 7;
+                smallOffset += 7;
             }
-             
-            totalCounter--;
-            sevensCounter++;
+             smallOffset = 0;
+             counter++;
+             index --;
+             sevensCounter++;
 
-            if(index > 973) {  //this is only for the first descent of characters across the screen
-                charCount -= 17;
-                charOffset = 0;
-                index--;
-            }
-            else {  // all other cases
+
+             if(sevensCounter == 49) {   //17 characters, 7 columns a piece  
                 charCount -= 17; //subtract 17 added from for loop
-                charCount ++;
+                charCount --;
                 sevensCounter = 0;
-                charOffset = 0;
-                index = 979;
-            }
-
-            for(int i = 0; i< 400; i++){;}  //delay, mainly for debug
+             }
+             else{
+                charCount -= 17;  //subtract 17 added from for loop
+             }
+             for(int i = 0; i< 1000; i++){;}  //delay
         }
-
         else{
-            index = 1099; //top of columns
-            totalCounter = 1099; //top # of columns
+            lastDivision = 0;
+            counter = 0;
             charCount = 0;
-        }  
+            index = 1099;
+        }
     }
 }

@@ -455,8 +455,8 @@
 `uc 1 EEPGD 1 0 :1:7 
 ]
 [u S1215 . 1 `S1208 1 . 1 0 ]
-"73 LED_Ticker.c
-[v F1276 `DC[12]i  0a t 24 ]
+"105 LED_Ticker.c
+[v F1282 `DC[12]i  0a t 24 ]
 "5 C:\Program Files\HI-TECH Software\PICC\9.83\sources\abdiv.c
 [v ___abdiv `(c  1 e 1 0 ]
 "5 C:\Program Files\HI-TECH Software\PICC\9.83\sources\abmod.c
@@ -557,13 +557,19 @@
 [v ___fttoee `(f  1 e 3 0 ]
 "132
 [v ___fltoee `(d  1 e 3 0 ]
-"955 LED_Ticker.c
+"1006 LED_Ticker.c
 [v _init_ports `(v  1 e 0 0 ]
-"966
+"1023
 [v _display `(v  1 e 0 0 ]
-"1029
+"1092
 [v _test `(v  1 e 0 0 ]
-"1071
+"1133
+[v _displayLoading `(v  1 e 0 0 ]
+"1141
+[v _displaySuccess `(v  1 e 0 0 ]
+"1149
+[v _displayTesting `(v  1 e 0 0 ]
+"1157
 [v _main `(v  1 e 0 0 ]
 "82 /hitech/products/compilers/pic/pro/9.83/dist/linux/include/pic16f877a.h
 [v _INDF `VEuc  1 e 1 @0 ]
@@ -1247,44 +1253,82 @@
 [v _EEADRHbits `VES192  1 e 1 @271 ]
 "1163
 [v _EECON1bits `VES1215  1 e 1 @396 ]
-"28 LED_Ticker.c
+"31 LED_Ticker.c
+[v _dataPin `DCi  1 e 2 0 ]
+"32
+[v _pulsePin `DCi  1 e 2 0 ]
+"33
+[v _parityPin `DCi  1 e 2 0 ]
+"35
+[v _binaryArray `[8]i  1 e 16 0 ]
+"37
 [v _flickerDelay `i  1 e 2 0 ]
-"30
-[v _column `DC[171]i  1 e 342 0 ]
-"73
-[v _characters `DC[94][12]i  1 e 2256 0 ]
-"951
+"39
+[v _streamChars1 `[70]uc  1 e 70 0 ]
+"40
+[v _streamChars2 `[70]uc  1 e 70 0 ]
+"43
+[v _column `DC[1100]uc  1 e 1100 0 ]
+"105
+[v _characters `DC[127][12]i  1 e 3048 0 ]
+"1002
 [v _index `i  1 e 2 0 ]
-"1071
+"1157
 [v _main `(v  1 e 0 0 ]
 {
-"1104
-[v main@j `i  1 a 2 35 ]
-"1097
-[v main@i `i  1 a 2 43 ]
-"1074
-[v main@streamChars `[12]i  1 a 24 11 ]
-"1073
-[v main@offset `i  1 a 2 41 ]
-"1075
-[v main@numChars `i  1 a 2 39 ]
-"1072
-[v main@counter `i  1 a 2 37 ]
-"1074
-[v main@F1291 `[12]i  1 s 24 F1291 ]
-"1121
+"1264
+[v main@d `i  1 a 2 51 ]
+"1233
+[v main@z `i  1 a 2 61 ]
+"1214
+[v main@k `i  1 a 2 65 ]
+"1263
+[v main@f `i  1 a 2 49 ]
+"1213
+[v main@streamNum `i  1 a 2 63 ]
+"1203
+[v main@t_1264 `i  1 a 2 47 ]
+"1309
+[v main@i_1271 `i  1 a 2 55 ]
+"1282
+[v main@i `i  1 a 2 53 ]
+"1198
+[v main@t `i  1 a 2 45 ]
+"1169
+[v main@commandTemp `[8]uc  1 a 8 29 ]
+"1162
+[v main@charCount `i  1 a 2 59 ]
+"1160
+[v main@charOffset `i  1 a 2 57 ]
+"1158
+[v main@totalCounter `i  1 a 2 43 ]
+"1168
+[v main@numChars2 `i  1 a 2 41 ]
+"1167
+[v main@numChars1 `i  1 a 2 39 ]
+"1165
+[v main@sevensCounter `i  1 a 2 37 ]
+"1164
+[v main@charEnd `i  1 a 2 27 ]
+"1163
+[v main@charBegin `i  1 a 2 25 ]
+"1161
+[v main@totalOffset `i  1 a 2 23 ]
+"1159
+[v main@lastDivision `i  1 a 2 21 ]
+"1318
 } 0
-"966
+"1023
 [v _display `(v  1 e 0 0 ]
 {
-"975
+"1032
 [v display@k `i  1 a 2 12 ]
-"968
+"1025
 [v display@i `i  1 a 2 10 ]
-"966
+"1023
 [v display@charNum `i  1 p 2 6 ]
 [v display@start `i  1 p 2 8 ]
-"1024
+"1089
 } 0
 "3 C:\Program Files\HI-TECH Software\PICC\9.83\sources\wmul.c
 [v ___wmul `(ui  1 e 2 0 ]
@@ -1296,8 +1340,19 @@
 [v ___wmul@multiplicand `ui  1 p 2 2 ]
 "13
 } 0
-"955 LED_Ticker.c
+"1141 LED_Ticker.c
+[v _displaySuccess `(v  1 e 0 0 ]
+{
+"1147
+} 0
+"1133
+[v _displayLoading `(v  1 e 0 0 ]
+{
+[v displayLoading@columnSelect `i  1 p 2 0 ]
+"1139
+} 0
+"1006
 [v _init_ports `(v  1 e 0 0 ]
 {
-"964
+"1021
 } 0
