@@ -22,30 +22,30 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 EthernetClient client;
 
 
-int firstTime=1;  //flag to indicate that it is the first time running through
+int firstTime=5;  //flag to indicate that it is the first time running through
 
-char inString[100]; // string for incoming DB stream
+char inString[200]; // string for incoming DB stream
 
 // these arrays store the values of the commands pulled from DB stream
 char lights[9];
 char shades[9];
 char door[9];
-char display[9];
+char display[141];
+
 
 // used for checks against what is currently held on the client side
 char currentLights[9]; //holds 8 items plus termination character
 char currentShades[9];
 char currentDoor[9];
-char currentDisplay[9];
 
 // for converting decimal to binary... its important!
 int binaryArray[8]={128,64,32,16,8,4,2,1};
 
 
 //////////////////DELAYS/////////////
-int reconnectDelay = 80; // wait before reconnect and repolling server, had it as low as 2
-int listenDelay = 80; //(80) how long to listen to each client when looking for any changes
-int pulseDelay = 20;  //this is set at 8 usually, pulse time during communication
+const int reconnectDelay = 4000; // wait before reconnect and repolling server, had it as low as 2
+const int listenDelay = 80; //(80) how long to listen to each client when looking for any changes
+const int pulseDelay = 12;  //this is set at 20 usually, pulse time during communication
 
 // These are set when there are new client commands to be processed, otherwise 0
 int clientLights;
@@ -92,7 +92,7 @@ void loop(){
 	specifyArrays(); // this takes raw data from php page and puts them in their arrays
 	
 	//LIGHTS
-	for(int i =0; i<8; i++){
+	for(byte i =0; i<8; i++){
 		if(!(lights[i]==currentLights[i])){
 			Serial.println("lights");
 			Serial.println(lights); 
@@ -110,7 +110,7 @@ void loop(){
 			}
 			lightsChanged = 0; 
 	
-			for(int i = 0; i<8; i++)
+			for(byte i = 0; i<8; i++)
 				currentLights[i] = lights[i];  // make it the new current
 			break; // exit the for loop after just one bit is different
 		}
@@ -118,7 +118,7 @@ void loop(){
 	delay(10);
 	
 	//SHADES
-	for(int i =0; i<8; i++){
+	for(byte i =0; i<8; i++){
 		if(!(shades[i]==currentShades[i])){
 			Serial.println("shades");
 			Serial.println(shades);
@@ -142,7 +142,7 @@ void loop(){
 	delay(10);
 
 	//Door
-	for(int i=0; i<8; i++){
+	for(byte i=0; i<8; i++){
 		if(!(door[i]==currentDoor[i])){  //if they are different
 			Serial.println("door");
 			Serial.println(door);
@@ -165,24 +165,13 @@ void loop(){
 	}
 	delay(10);
 
-	//DISPLAY
-	for(int i =0; i<8; i++){
-		if(!(display[i]==currentDisplay[i])){
-			Serial.println("display");
-			Serial.println(display);
-		
-			displayCmd = atob(display);
-			
-			//Serial.println("displayCmd:");
-			//Serial.println(displayCmd, BIN);
-			
-			sendDisplayCmd(displayCmd);
-			
-			for(int i = 0; i<8; i++)
-				currentDisplay[i] = display[i];
-			break;
-		}
+	//   ****************** DISPLAY***************8
+
+	if(displayChanged){
+		sendDisplayCmd();
 	}
+
+	delay(10);
 	
 	firstTime=0;  //No longer the first time through
 	
@@ -352,17 +341,20 @@ void specifyArrays(){
 	Serial.println(door);
 	Serial.println(" \n");
 
-	display[0] = inString[89];
-	display[1] = inString[90];
-	display[2] = inString[91];
-	display[3] = inString[92];
-	display[4] = inString[93];
-	display[5] = inString[94];
-	display[6] = inString[95];
-	display[7] = inString[96];
-	
+	for(int z = 0; z<140; z++){
+		if(display[z] != inString[57+z]){
+			displayChanged = 1;  // a flag indicating a change, reset when command sent to display.
+			break;  //leave this for loop
+		}
+	}
+
+	for(int i = 0; i<140; i++){
+		display[i] = inString[57+i];
+	}
 	Serial.println("display: ");
-	Serial.print(display);
+	Serial.println(display);
+	Serial.println("\n");
+	Serial.println("\n");
 	Serial.println("\n");
 }
 
@@ -462,13 +454,136 @@ void sendDoorCmd(){
 
 
 
-void sendDisplayCmd(int display){
-	;  //placeholder
-	/* For when we finally make a huge LED array that we can display
-	   in our window... similar to a stock ticker, we will be able
-	   to update what it says from the web... Yeah this will probs 
-	   never happen... a man has to dream
-	*/
+void sendDisplayCmd(){
+	int zeros;
+	char tempBuffer[9] = {64, 64, 64, 64, 64, 64, 64, 64};
+	char sendBuffer[9];
+	char r = 0;
+	char displayPulseDelay = 2;
+	char quickDelay = 1;
+	
+	
+	/*Begin transmission, we will send out each character as we go through it*/
+
+	//first time through
+	DDRD |= B11010000;  // open frame pins output and pulse pin is still input
+	DDRD &= B11011111; //explicitly make pulse pin an input 
+	PORTC = B00001000; // ticker control line
+	delay(1);  //give switches time to change
+	PORTD = B01010000; // sends out request signal to transmit
+	while(!(PIND & B00100000)); //waits until we hear back that we can send now.
+	while(!(PIND & B00100000)); //just making sure the pin is still high. avoid noise
+	//delay(2000);
+	//while(PIND & B00100000); //wait for line to end to begin
+	DDRD |= B11110000;  //puts comm pins as outputs
+	PORTD &=B00001111;  //clears comm pins
+
+	PORTD = B01110000; // sends begining of command string signal
+	delay(displayPulseDelay);
+	//for(int c =0; c<50000; c++){
+	//	for(int a = 0; a<1000; a++){;}
+	//}
+	PORTD = 0x00;  //stop opening signal
+
+
+
+
+
+									// SEND OVER TO TICKER, 140 CHARS OF DATA
+	for(int i =0; i<140; i++){ 
+		PORTD &= B00001111;
+		Serial.println("*Starting conversion process*");
+		
+		//converting character to binary representation
+		Serial.println("integer form of character");
+	 	Serial.println(display[i]+0);
+	 	Serial.println(display[i]+0, BIN);
+
+		//puts binary into char array "tempBuffer
+	 	itoa(display[i],tempBuffer,2);   //(arrayFrom, arrayTo, base)
+	 	Serial.println("here is tempBuffer:");
+	 	Serial.println (tempBuffer);
+	 	for(int t = 0; t<8; t++){
+	 		Serial.println(tempBuffer[t]);
+	 	}
+		//converts char to ascii value and then masks all but binary bit
+		
+		// counts the number of MSB zeros, we will never be below 32,
+		// because we dont go below ascii char value 32... yet
+	 	if(display[i] < 128){
+	 		zeros++;
+	 		if(display[i] < 64){
+	 			zeros++;
+	 			if(display[i] < 32){
+	 				zeros++;
+	 				if(display[i] < 16){
+	 					zeros++;
+	 				}
+	 			}
+	 		}
+	 	}
+	 	else {
+	 		zeros = 0;
+	 	}
+
+		Serial.println("zeros:");
+		Serial.println(zeros);
+
+		if(zeros>0){
+			for (int q=0; q<8; q++) {  //puts trailing zeroes into array
+				if(zeros > q){
+					sendBuffer[q] = '0';  //puts msb zeros into the beginning of the array
+				}
+				else{
+					sendBuffer[q] = tempBuffer[q-zeros]; //puts actual data into the array
+				}	
+			}
+		}
+
+		PORTD &= B00001111;
+
+		Serial.print("now we will transmit the character: ");
+		Serial.print(display[i]);
+		Serial.println("");
+		Serial.print("binary representation ");  
+		Serial.print(sendBuffer);
+
+
+	    for(r = 0; r < 9; r++){ 
+	   		if(r < 8) {
+		    	if(sendBuffer[r] == '1'){ 
+		    		PORTD |= B00010000;  //data pin high for when its a one
+		    		PORTD |= B00100000; // pulse signal	
+		    	}
+		    	else { 
+		    		PORTD |= B00000000;  // data pin low for when its zero
+		    		PORTD |= B00100000; // pulse signal
+		    	}
+		    }
+	    	else if (r == 8){  //send the closing bracket signal
+	    		PORTD |= B01010000;
+	    		PORTD |= B00100000; // pulse signal
+	    	}
+	    	delay(displayPulseDelay);
+	    	//for(int c = 0; c < 50000; c++){
+			//	for(int a = 0; a<1000; a++){;}
+			//}
+
+	    	PORTD &= B00001111;  // clears comm pins
+	    	delay(displayPulseDelay);  //delay here, because I get nervous
+	    	//for(int c =0; c < 50000; c++){
+			//	for(int a = 0; a<1000; a++){;}
+			//}
+	    }
+		PORTD &= B00000111; // turns pins off, stops transmitting
+		zeros = 0; //reset
+		
+	}  /* End of transmission, End of big 'for-loop', this will have transmitted each character*/
+
+	PORTC = 0x00;  // turns off ticker control line
+	DDRD &= B00001111; //return comm pins as inputs	
+	Serial.println("we just transmitted each character");
+	displayChanged = 0; //reset flag.
 }
 
 
@@ -677,23 +792,4 @@ void updateDB_Door(){
 	client.flush();
 }
 
-
-void updateDB_Display(){	
-	Serial.println("connecting for DB update");
-	if (client.connect(server, 80)) {
-		client.print("GET http://153.42.193.63/ardi_db_update.php?display=");
-		client.print(clientDisplay, BIN);
-		client.print(" HTTP/1.0");
-		client.println("Host: http://153.42.193.63");
-		client.println();
-	} 
-	else {
-		Serial.println("connection failed");
-	}
-
-	client.stop();
-	client.flush();
-}
-
 	
-
