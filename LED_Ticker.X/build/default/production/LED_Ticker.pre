@@ -2292,18 +2292,22 @@ int charBegin = 0;
 int charEnd = 0;
 int zeroCounter = 0;
 
+int timer = 0;
+int timeOut = 30000;
+
 int numChars1 = 30;
 int numChars2 = 0;
 int spacesCounter1 = 0;
 int spacesCounter2 = 0;
 char commandTemp[8];
+
 init_ports();
 
 index = 1099;
 
 while(1){
 
-# 1199
+# 1203
 if(PORTA & (dataPin + parityPin)){
 for(int t=0; t<2; t++){;}
 if(PORTA & (dataPin + parityPin)){
@@ -2317,15 +2321,22 @@ for(int t=0; t<3; t++){;}
 PORTA = 0x00;
 TRISA = 0b00000111;
 
-while(!(PORTA & (dataPin+pulsePin+parityPin))){;}
-while(PORTA & (dataPin+pulsePin+parityPin)){;}
-while(PORTA & (dataPin+pulsePin+parityPin)){;}
+while((!(PORTA & (dataPin+pulsePin+parityPin))) && (timer < timeOut)) {
+timer++;
+}
+timer = 0;
+while((PORTA & (dataPin+pulsePin+parityPin)) && (timer < timeOut )){
+timer++;
+}
+timer = 0;
 for(int streamNum = 0; streamNum < 140; streamNum++){
 for(int k=0; k<9; k++){
 displayLoading(k);
 
-while(!(PORTA & pulsePin));
-while(!(PORTA & pulsePin));
+while(!(PORTA & pulsePin) && (timer < timeOut)){
+timer++;
+}
+timer = 0;
 if( k < 8){
 commandTemp[k] = (PORTA & dataPin);
 }
@@ -2336,7 +2347,12 @@ if(commandTemp[8] == (dataPin + parityPin)){
 displaySuccess();
 }
 }
-while(PORTA & pulsePin);
+while((PORTA & pulsePin) && (timer < timeOut)){
+timer++;
+}
+timer = 0;
+
+
 }
 
 
@@ -2358,41 +2374,38 @@ else{
 streamChars2[streamNum-70] += binaryArray[z];
 }
 }
-else{
-zeroCounter ++;
-}
 }
 
 
-if(zeroCounter == 8) {
 if(streamNum < 70){
-streamChars1[streamNum] =' ';
+if((streamChars1[streamNum] < 32) || (streamChars1[streamNum]>128)) {
+streamChars1[streamNum] = 32;
+}
 }
 else{
-streamChars2[streamNum-70] =' ';
+if((streamChars2[streamNum-70] < 32) || (streamChars2[streamNum-70]>128)){
+streamChars2[streamNum-70] = 32;
 }
 }
-zeroCounter = 0;
 }
 
 
-for(int j = 0; j<140; j++){
+for(int j = 0; j<140; j++) {
 
-if(j < 70){
-if(streamChars1[j] >= 32) {
+if(j < 70) {
+
 streamChars1[j] -= 32;
 
-if(streamChars1[j] == 0){
+if(streamChars1[j] == 0) {
 spacesCounter1++;
 }
-else{
+else {
 spacesCounter1 = 0;
-}
 }
 
 }
 else{
-if(streamChars2[j-70] >= 32){
+
 streamChars2[j-70] -= 32;
 
 if(streamChars2[j-70] == 0){
@@ -2403,14 +2416,19 @@ spacesCounter2 = 0;
 }
 }
 }
-}
 numChars1 = 70-spacesCounter1;
 numChars2 = 70-spacesCounter2;
 }
+while(PORTA & (dataPin + parityPin)){;}
+
+
+index = 1099;
+totalCounter = 1099;
+charCount = 0;
 }
 
-# 1325
-if(totalCounter > (980-((numChars1+numChars2)*7))) {
+# 1348
+if(totalCounter > (980-(((numChars1 + numChars2)*7)))) {
 
 for(int i = 0; i < 17; i++){
 if(charCount<70){
@@ -2418,6 +2436,9 @@ display(streamChars1[charCount],(index + charOffset));
 }
 else if(charCount < 140){
 display(streamChars2[charCount - 70],(index + charOffset));
+}
+else {
+for(int y = 0; y<200; y++){;}
 }
 charCount++;
 charOffset += 7;

@@ -1,7 +1,7 @@
-_display: CODE, 119 0 506
-_main: CODE, 625 0 1423
-_init_ports: CODE, 3674 0 37
-_displayLoading: CODE, 3643 0 31
-_displaySuccess: CODE, 3605 0 19
-___wmul: CODE, 7 0 42
-Total: 2058
+_display: CODE, 3334 0 506
+_main: CODE, 497 0 1551
+_init_ports: CODE, 219 0 37
+_displayLoading: CODE, 188 0 31
+_displaySuccess: CODE, 150 0 19
+___wmul: CODE, 256 0 42
+Total: 2186

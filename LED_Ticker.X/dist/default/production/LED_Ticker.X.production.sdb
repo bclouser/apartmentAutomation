@@ -1276,40 +1276,46 @@
 "1157
 [v _main `(v  1 e 0 0 ]
 {
-"1244
-[v main@z `i  1 a 2 61 ]
-"1216
-[v main@k `i  1 a 2 63 ]
-"1271
-[v main@j `i  1 a 2 65 ]
-"1215
-[v main@streamNum `i  1 a 2 67 ]
-"1205
-[v main@t_1266 `i  1 a 2 51 ]
-"1352
-[v main@i_1272 `i  1 a 2 55 ]
-"1327
+"1358
+[v main@y `i  1 a 2 55 ]
+"1260
+[v main@z `i  1 a 2 63 ]
+"1225
+[v main@k `i  1 a 2 69 ]
+"1285
+[v main@j `i  1 a 2 71 ]
+"1224
+[v main@streamNum `i  1 a 2 73 ]
+"1209
+[v main@t_1268 `i  1 a 2 51 ]
+"1378
+[v main@i_1275 `i  1 a 2 57 ]
+"1350
 [v main@i `i  1 a 2 53 ]
-"1200
+"1204
 [v main@t `i  1 a 2 49 ]
-"1171
-[v main@commandTemp `[8]uc  1 a 8 29 ]
-"1162
-[v main@charCount `i  1 a 2 59 ]
-"1160
-[v main@charOffset `i  1 a 2 57 ]
-"1170
-[v main@spacesCounter2 `i  1 a 2 47 ]
-"1169
-[v main@spacesCounter1 `i  1 a 2 45 ]
-"1165
-[v main@zeroCounter `i  1 a 2 43 ]
-"1158
-[v main@totalCounter `i  1 a 2 41 ]
-"1168
-[v main@numChars2 `i  1 a 2 39 ]
+"1174
+[v main@commandTemp `[8]uc  1 a 8 31 ]
 "1167
-[v main@numChars1 `i  1 a 2 37 ]
+[v main@timer `i  1 a 2 67 ]
+"1162
+[v main@charCount `i  1 a 2 65 ]
+"1168
+[v main@timeOut `i  1 a 2 61 ]
+"1160
+[v main@charOffset `i  1 a 2 59 ]
+"1158
+[v main@totalCounter `i  1 a 2 47 ]
+"1173
+[v main@spacesCounter2 `i  1 a 2 45 ]
+"1172
+[v main@spacesCounter1 `i  1 a 2 43 ]
+"1171
+[v main@numChars2 `i  1 a 2 41 ]
+"1170
+[v main@numChars1 `i  1 a 2 39 ]
+"1165
+[v main@zeroCounter `i  1 a 2 29 ]
 "1164
 [v main@charEnd `i  1 a 2 27 ]
 "1163
@@ -1318,7 +1324,7 @@
 [v main@totalOffset `i  1 a 2 23 ]
 "1159
 [v main@lastDivision `i  1 a 2 21 ]
-"1361
+"1387
 } 0
 "1023
 [v _display `(v  1 e 0 0 ]

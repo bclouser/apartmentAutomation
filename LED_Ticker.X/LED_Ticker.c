@@ -1163,12 +1163,16 @@ void main() {
     int charBegin = 0;
     int charEnd = 0;
     int zeroCounter = 0;
+
+    int timer = 0;
+    int timeOut = 30000;
      
     int numChars1 = 30;  //this should be like arraysize(streamChars); it should return the number of actual characters used in array
     int numChars2 = 0;
     int spacesCounter1 = 0;
     int spacesCounter2 = 0;
     char commandTemp[8];
+
     init_ports();
 
     index = 1099;  //DEBUG... reset before entering loop
@@ -1209,7 +1213,7 @@ void main() {
                 PORTA = 0x00;  //turn off yes signal   
                 TRISA = 0b00000111;  //changes all comm pins back to input
 
-                    while(!(PORTA & (dataPin+pulsePin+parityPin))) && (timer < timeOut) { //wait for this to begin
+                    while((!(PORTA & (dataPin+pulsePin+parityPin))) && (timer < timeOut)) { //wait for this to begin
                         timer++;
                     }
                     timer = 0;    
@@ -1239,6 +1243,8 @@ void main() {
                             timer++;
                         }    
                         timer = 0;
+                        //PORTC = 0x00;
+                        //PORTB = 0x00;
                     }
 
                     //PUT ZEROES IN ARRAY SPOTS SO OUR ADDITION BELOW STARTS FROM 0
@@ -1260,55 +1266,57 @@ void main() {
                                 streamChars2[streamNum-70] += binaryArray[z]; //puts decimal value into asciiCode
                             }    
                         }
-                        else{
-                            zeroCounter ++;
-                        }
                     }
 
-                    //THIS WILL MAKE SPACES AT END OF STRING INSTEAD OF OLD DATA
-                    if(zeroCounter == 8) {
-                        if(streamNum < 70){
-                            streamChars1[streamNum] =' '; //puts decimal value into asciiCode
+                    //THIS WILL MAKE SPACES AT END OF STRING IN CASE OF GARBAGE
+                    if(streamNum < 70){
+                        if((streamChars1[streamNum] < 32) || (streamChars1[streamNum]>128)) {
+                            streamChars1[streamNum] = 32; //puts spaces into array
                         }
-                        else{
-                            streamChars2[streamNum-70] =' '; //puts decimal value into asciiCode
-                        }    
-                    }
-                    zeroCounter = 0;
-                }
-
-                //COMPENSATES FOR THE OFFSET OF OUR ASCII ARRAY... our characters[0] = "realWorldAscii[32]"
-                for(int j = 0; j<140; j++){ 
-
-                    if(j < 70){
-                        if(streamChars1[j] >= 32) {  //prevents out of bounds if faulty data
-                            streamChars1[j] -= 32;  //subtract ascii offset
-
-                            if(streamChars1[j] == 0){
-                                spacesCounter1++;  //only incremented if successive, these are the trailing zeroes
-                            }
-                            else{
-                                spacesCounter1 = 0; 
-                            }
-                        } 
-
                     }
                     else{
-                        if(streamChars2[j-70] >= 32){  //prevents out of bounds if faulty data
-                            streamChars2[j-70] -= 32;  //subtract the ascii offset
+                        if((streamChars2[streamNum-70] < 32) || (streamChars2[streamNum-70]>128)){
+                            streamChars2[streamNum-70] = 32; //puts spaces into array
+                        }
+                    }    
+                } 
 
-                            if(streamChars2[j-70] == 0){
-                                spacesCounter2++;  //only incremented if successive, these are the trailing zeroes
-                            }  
-                            else{
-                                spacesCounter2 = 0;
-                            }
+                //COMPENSATES FOR THE OFFSET OF OUR ASCII ARRAY... our characters[0] = "realWorldAscii[32]"
+                for(int j = 0; j<140; j++) { 
+
+                    if(j < 70) {
+                        
+                        streamChars1[j] -= 32;  //subtract ascii offset
+
+                        if(streamChars1[j] == 0) {
+                            spacesCounter1++;  //only incremented if successive, these are the trailing zeroes
+                        }
+                        else {
+                            spacesCounter1 = 0; 
+                        } 
+                        
+                    }
+                    else{
+                        
+                        streamChars2[j-70] -= 32;  //subtract the ascii offset
+
+                        if(streamChars2[j-70] == 0){
+                            spacesCounter2++;  //only incremented if successive, these are the trailing zeroes
                         }  
-                    }               
-                }
+                        else{
+                            spacesCounter2 = 0;
+                        } 
+                    }                
+                } 
                 numChars1 = 70-spacesCounter1;
-                numChars2 = 70-spacesCounter2;
+                numChars2 = 70-spacesCounter2; 
             }   
+            while(PORTA & (dataPin + parityPin)){;}  //I dont know what the hell is going on!
+
+            //reset these guys because we are going to restart the displaying
+            index = 1099; //top of columns
+            totalCounter = 1099; //top # of columns
+            charCount = 0;
         }
 
         
@@ -1329,10 +1337,15 @@ void main() {
         //controls how far to go negative before restarting scroll.
 
         //854 = 1100-120.  
-
+       /* numChars1 = ((5*7) +120);
+        numChars2 = 0;
+        streamChars1[0] = ('C'-32);
+        streamChars1[1] = ('o'-32);
+        streamChars1[2] = ('c'-32);
+        streamChars1[3] = ('k'-32); */
         
-        
-        if(totalCounter > (980-((numChars1+numChars2)*7))) {  //number of characters times # of columns for each(6 columns + space) 
+        //numberChars times # of columns for each(6 columns + space) +30 to prevent visual speeding up
+        if(totalCounter > (980-(((numChars1 + numChars2)*7)))) {  
 
             for(int i = 0; i < 17; i++){  //this is always running 17 times to populate the screen
                 if(charCount<70){
@@ -1340,6 +1353,9 @@ void main() {
                 }
                 else if(charCount < 140){
                     display(streamChars2[charCount - 70],(index + charOffset));
+                }
+                else {  //this only happens when string is withing 17 chars of 140 chars
+                    for(int y = 0; y<200; y++){;}//delay to prevent from speeding up
                 }
                 charCount++;  //increments the characters placed... this will increase by 17 each time
                 charOffset += 7;
