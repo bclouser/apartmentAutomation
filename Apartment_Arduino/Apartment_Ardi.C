@@ -266,7 +266,7 @@ String readPage(){
     //read the page, and capture & return everything between '?' and '~'
 
     stringPos = 0;
-    //memset( &inString, 0, 50 ); //clear inString memory
+    memset(inString,' ', 200); //clear inString memory
 
 	while(true){
 
