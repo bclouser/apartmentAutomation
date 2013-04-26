@@ -34,10 +34,10 @@ const int parityPin = 0b00000100;
 
 int binaryArray[8]={128,64,32,16,8,4,2,1};
 
-int flickerDelay = 20;
+int flickerDelay = 4;
 //using these arrays to hold byte size integers
-char streamChars1[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32};
-char streamChars2[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32};
+char streamChars1[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32, '?'-32};
+char streamChars2[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32, '?' -32};
 
 
 const char column[1100] = { //this will hold the dmux command for every column...the zeroes are for below 0
@@ -102,7 +102,7 @@ const char column[1100] = { //this will hold the dmux command for every column..
 
  */
 
-const int characters[127][12] =
+const int characters[127][13] =
      
 {    
     { 
@@ -112,7 +112,8 @@ const int characters[127][12] =
         0, 0,
         0, 0,
         0, 0,
-        0, 0
+        0, 0,
+        6
     },    
   
     //SYMBOLS
@@ -121,10 +122,11 @@ const int characters[127][12] =
         //! 33  (25+26+12)
         0, 0,
         0, 0,
+        0, 0,
+        0, 0,
+        0, 0,
         row2+row3+row4+row5+row6+row8, 0,
-        0, 0,
-        0, 0,
-        0, 0
+        3
     },
     {
         //" 34 (25+26+35)
@@ -133,7 +135,8 @@ const int characters[127][12] =
         0, 0,
         0, 0,
         row2+row3, 0,
-        0, 0
+        0, 0,
+        7
     },
     {
         //# 35  (25+26+14)
@@ -142,7 +145,8 @@ const int characters[127][12] =
         row4+row7, 0,
         row2+row3+row4+row5+row6+row7+row8, row9,
         row4+row7, 0,
-        0, 0
+        0, 0,
+        7
     },
     {
         //$ 36  (25+26+15)
@@ -151,7 +155,8 @@ const int characters[127][12] =
         row1+row2+row5+row8, row9,
         row2+row5+row8, 0,
         row3+row6+row7, 0,
-        0, 0
+        0, 0,
+        7
     },
     {
         //% 37
@@ -160,7 +165,8 @@ const int characters[127][12] =
         row2+row6, 0,
         row4+row5+row8, 0,
         row3+row7, row9,
-        row1+row2+row8, 0
+        row1+row2+row8, 0,
+        7 //offset
     },
     {
         //& 38
@@ -169,16 +175,18 @@ const int characters[127][12] =
         row1+row5, row9,
         row1+row4+row6+row8, 0,
         row2+row3+row7, 0,
-        row6+row8, row9
+        row6+row8, row9,
+        7 //offset
     },
     {
         //' 39 
         0, 0,
+        0, 0,
+        0, 0,
+        0, 0,
+        0, 0,
         row2+row3, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0
+        3 //offset
     },
     {
         //( 40
@@ -187,7 +195,8 @@ const int characters[127][12] =
         row2+row8, 0,
         row1, 0,
         0, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //) 41
@@ -196,7 +205,8 @@ const int characters[127][12] =
         row2+row8, 0,
         row3+row4+row5+row6+row7, 0,
         0, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //* 42
@@ -205,7 +215,8 @@ const int characters[127][12] =
         row5, 0,
         row4+row6, 0,
         row3+row5+row7, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //+ 43
@@ -214,16 +225,18 @@ const int characters[127][12] =
         row3+row4+row5+row6+row7, 0,
         row5, 0,
         row5, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
-        //' 44 
-        0, 0,
-        row2+row3, 0,
+        //, 44 
         0, 0,
         0, 0,
         0, 0,
-        0, 0
+        0, 0,
+        row7+row8, 0,
+        0, row9,
+        3 //offset
     },
     {
         //- 45
@@ -232,7 +245,8 @@ const int characters[127][12] =
         row5, 0,
         row5, 0,
         row5, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //. 46 
@@ -240,8 +254,9 @@ const int characters[127][12] =
         0, 0,
         0, 0,
         0, 0,
+        0, 0,
         row8, 0,
-        0, 0
+        3 //offset
     },
     {
         /// 47
@@ -250,7 +265,8 @@ const int characters[127][12] =
         row6+row7, 0,
         row4+row5, 0,
         row2+row3, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     
 
@@ -266,7 +282,8 @@ const int characters[127][12] =
         row1+row5+row6, row9,
         row1+row3+row4, row9,
         row1+row2, row9,
-        row2+row3+row4+row5+row6+row7+row8, 0
+        row2+row3+row4+row5+row6+row7+row8, 0,
+        7 //offset
     },
     {
         //1 49
@@ -275,7 +292,8 @@ const int characters[127][12] =
         row1, row9,
         allRows, row9,
         0, row9,
-        0, row9
+        0, row9,
+        7 //offset
     },
     {
         //2 50
@@ -284,7 +302,8 @@ const int characters[127][12] =
         row1+row6, row9,
         row1+row5, row9,
         row1+row4, row9,
-        row2+row3, row9
+        row2+row3, row9,
+        7 //offset
     },
     {
         //3 51
@@ -293,7 +312,8 @@ const int characters[127][12] =
         row1+row4, row9,
         row1+row4, row9,
         row1+row4, row9,
-        row2+row3+row4+row5+row6+row7+row8, 0
+        row2+row3+row4+row5+row6+row7+row8, 0,
+        7 //offset
     },
     {
         //4 52
@@ -302,7 +322,8 @@ const int characters[127][12] =
         row2+row5, 0, 
         row1+row5, 0, 
         allRows, row9,
-        row5, 0
+        row5, 0,
+        7 //offset
     },
     {
         //5 53
@@ -311,7 +332,8 @@ const int characters[127][12] =
         row1+row3, row9,
         row1+row3, row9,
         row1+row4+row8, 0,
-        row1+row6+row7, 0
+        row1+row6+row7, 0,
+        7 //offset
     },
     {
         //6 54
@@ -320,7 +342,8 @@ const int characters[127][12] =
         row1+row4, row9,
         row1+row4, row9,
         row1+row5+row8, 0,
-        row1+row6+row7, 0
+        row1+row6+row7, 0,
+        7 //offset
     },
     {
         //7 55
@@ -329,7 +352,8 @@ const int characters[127][12] =
         row1, 0,
         row1+row7+row8, row9,
         row1+row4+row5, 0,
-        row2+row3+row4, 0
+        row2+row3+row4, 0,
+        7 //offset
     },
     {
         //8 56
@@ -338,7 +362,8 @@ const int characters[127][12] =
         row1+row4, row9,
         row1+row4, row9,
         row2+row4+row6+row8, 0,
-        row3+row7, 0
+        row3+row7, 0,
+        7 //offset
     },
     {
         //9 57
@@ -347,7 +372,8 @@ const int characters[127][12] =
         row1+row5, row9,
         row1+row5, row9,
         row2+row4+row8, 0,
-        row3+row4+row5+row6+row7, 0
+        row3+row4+row5+row6+row7, 0,
+        7 //offset
     },
 
 
@@ -359,18 +385,20 @@ const int characters[127][12] =
         0, 0,
         0, 0,
         0, 0, 
-        row4+row7, 0,
         0, 0,
-        0, 0
+        0, 0,
+        row4+row7, 0,
+        3 //offset
     },
     {
         //; 59
         0, 0,
         0, 0,
+        0, 0, 
+        0, 0,
         row8, 0,
         row4+row7, 0,
-        0, 0, 
-        0, 0
+        4 //offset
     },
     {
         //< 60
@@ -379,7 +407,8 @@ const int characters[127][12] =
         row4+row6, 0,
         row3+row7, 0,
         row2+row8, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //= 61
@@ -388,7 +417,8 @@ const int characters[127][12] =
         row4+row6, 0,
         row4+row6, 0,
         row4+row6, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //> 62
@@ -397,7 +427,8 @@ const int characters[127][12] =
         row3+row7, 0,
         row4+row6, 0,
         row5, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {
         //? 63
@@ -406,7 +437,8 @@ const int characters[127][12] =
         row2, 0,
         row1+row5+row6, row9,
         row2+row4, 0,
-        row3, 0
+        row3, 0,
+        7 //offset
     },
     {
         //@ 64
@@ -415,7 +447,8 @@ const int characters[127][12] =
         row1+row4+row5+row8, 0,
         row1+row3+row6+row8, 0,
         row1+row4+row5+row8, 0,
-        row2+row3+row4+row5+row6, 0
+        row2+row3+row4+row5+row6, 0,
+        7 //offset
     },
     
     
@@ -430,7 +463,8 @@ const int characters[127][12] =
         row1+row5, 0,
         row1+row5, 0,
         row2+row5, 0,
-        row3+row4+row5+row6+row7+row8, row9
+        row3+row4+row5+row6+row7+row8, row9,
+        7 //offset
     },
     { 
         //B 66
@@ -439,7 +473,8 @@ const int characters[127][12] =
         row1+row5, row9,
         row1+row5, row9,
         row1+row5, row9,
-        row2+row3+row4+row6+row7+row8, 0
+        row2+row3+row4+row6+row7+row8, 0,
+        7 //offset
     },  
     {   
         //C 67
@@ -448,7 +483,8 @@ const int characters[127][12] =
         row1, row9,
         row1, row9,
         row1, row9,
-        row2+row8, 0    
+        row2+row8, 0,
+        7 //offset    
     },   
     {   
         //D 68
@@ -457,7 +493,8 @@ const int characters[127][12] =
         row1, row9,
         row1, row9,
         row2+row8, 0,
-        row3+row4+row5+row6+row7, 0
+        row3+row4+row5+row6+row7, 0,
+        7 //offset
     },
     {
         //E 69
@@ -466,7 +503,8 @@ const int characters[127][12] =
         row1+row5, row9,
         row1+row5, row9,
         row1, row9,
-        row1, row9
+        row1, row9,
+        7 //offset
     },  
     { 
         //F 70
@@ -475,7 +513,8 @@ const int characters[127][12] =
         row1+row5, 0,
         row1+row5, 0,
         row1, 0,
-        row1, 0 
+        row1, 0,
+        7 //offset 
     },
     {
         //G 71
@@ -484,7 +523,8 @@ const int characters[127][12] =
         row1, row9,
         row1+row5, row9,
         row1+row5, row9,
-        row2+row5+row6+row7+row8, 0
+        row2+row5+row6+row7+row8, 0,
+        7 //offset
     },
     {
         //H 72
@@ -493,7 +533,8 @@ const int characters[127][12] =
         row5, 0,
         row5, 0,
         row5, 0,
-        allRows, row9
+        allRows, row9,
+        7 //offset
     },
     { 
         //I 73
@@ -502,7 +543,8 @@ const int characters[127][12] =
         allRows, row9,
         row1, row9,
         row1, row9,
-        0, 0
+        0, 0,
+        7 //offset
     },
     { 
         //J 74
@@ -511,7 +553,8 @@ const int characters[127][12] =
         row1, row9,
         allRows, 0,
         row1, 0,
-        row1, 0
+        row1, 0,
+        7 //offset
     },
     {
         //K 75
@@ -520,7 +563,8 @@ const int characters[127][12] =
         row5, 0, 
         row4+row6, 0,
         row3+row7, 0,
-        row1+row2+row8, row9
+        row1+row2+row8, row9,
+        7 //offset
     },
     {
         //L 76
@@ -529,7 +573,8 @@ const int characters[127][12] =
         0, row9,
         0, row9,
         0, row9,
-        0, row9
+        0, row9,
+        7 //offset
     },
     {  
         //M 77
@@ -538,7 +583,8 @@ const int characters[127][12] =
         row4, 0,
         row4, 0,
         row2+row3, 0,
-        allRows, row9   
+        allRows, row9,
+        7 //offset   
     },
     {  
         //N 78
@@ -547,7 +593,8 @@ const int characters[127][12] =
         row4+row5, 0,
         row6+row7, 0,
         row8, row9,
-        allRows, row9
+        allRows, row9,
+        7 //offset
     },
     {
         //0 79
@@ -556,7 +603,8 @@ const int characters[127][12] =
         row1, row9,
         row1, row9,
         row2+row8, 0,
-        row3+row4+row5+row6+row7, 0
+        row3+row4+row5+row6+row7, 0,
+        7 //offset
     },
     {  
         //P 80
@@ -565,7 +613,8 @@ const int characters[127][12] =
         row1+row5, 0,
         row1+row5, 0,
         row1+row5, 0,
-        row2+row3+row4, 0
+        row2+row3+row4, 0,
+        7 //offset
     },
     {
         //Q 81
@@ -574,7 +623,8 @@ const int characters[127][12] =
         row1, row9,
         row1+row7, row9,
         row2+row8, 0,
-        row3+row4+row5+row6+row7, row9
+        row3+row4+row5+row6+row7, row9,
+        7 //offset
     },
     {  
         //R 82
@@ -583,7 +633,8 @@ const int characters[127][12] =
         row1 + row5, 0, 
         row1 + row5 + row6, 0,
         row1 + row5 + row7, 0, 
-        row4 + row3 + row2 + row8, row9  
+        row4 + row3 + row2 + row8, row9,
+        7 //offset  
     },  
     {
         //S 83
@@ -592,7 +643,8 @@ const int characters[127][12] =
         row1+row5, row9,
         row1+row5, row9,
         row1+row5, row9,
-        row2+row6+row7+row8, 0
+        row2+row6+row7+row8, 0,
+        7 //offset
     },
     {
         //T 84
@@ -601,7 +653,8 @@ const int characters[127][12] =
         allRows, row9,
         row1, 0,
         row1, 0,
-        0, 0
+        0, 0,
+        7 //offset
     },
     {  
         //U 85
@@ -610,7 +663,8 @@ const int characters[127][12] =
         0, row9,
         0, row9,
         0, row9,
-        allRows, 0
+        allRows, 0,
+        7 //offset
     },
     {
         //V 86
@@ -619,7 +673,8 @@ const int characters[127][12] =
         0, row9,
         0, row9,
         row7+row8, 0,
-        row1+row2+row3+row4+row5+row6, 0
+        row1+row2+row3+row4+row5+row6, 0,
+        7 //offset
     },
     {
         //W 87
@@ -628,7 +683,8 @@ const int characters[127][12] =
         row8, 0,
         row8, 0,
         0, row9,
-        allRows, 0
+        allRows, 0,
+        7 //offset
     },
     {
         //X 88
@@ -637,15 +693,18 @@ const int characters[127][12] =
         row5, 0,
         row5, 0,
         row3+row4+row6+row7, 0,
-        row1+row2+row8, row9
+        row1+row2+row8, row9,
+        7 //offset
     },
     {
         //Y 89
+        0,0,
         row1+row2, 0,
         row3+row4, 0, 
         row5+row6+row7+row8, row9,
         row3+row4, 0, 
-        row1+row2, 0
+        row1+row2, 0,
+        7 //offset
     },
     {
         //Z 90 
@@ -654,45 +713,50 @@ const int characters[127][12] =
         row1+row5+row6, row9,
         row1+row4+row5, row9,
         row1+row3, row9,
-        row1+row2, row9
+        row1+row2, row9,
+        7 //offset
     },
 
 
     {
         //[ 91
         0, 0,
+        0, 0, 
+        0, 0,
         row2+row3+row4+row5+row6+row7+row8, 0,
         row2, row8,
         row2, row8,
-        0, 0, 
-        0, 0
+        6 //offset
     },
     {
         //\ 92
+        0, 0,
         0, 0,
         row2+row3, 0,
         row4+row5, 0,
         row6+row7, 0,
         row8, row9,
-        0, 0
+        6 //offset
     },
     {
         //] 93
         0, 0, 
         0, 0,
+        0, 0,
         row2+row8, 0,
         row2+row8, 0, 
         row2+row3+row4+row5+row6+row7+row8, 0,
-        0, 0, 
+        5 //offset 
     },
     {
         //^ 94
+        0, 0,
         row4, 0,
         row3, 0,
         row2, 0,
         row3, 0,
         row4, 0,
-        0, 0
+        6 //offset
     },
     {
         //_ 95
@@ -701,16 +765,18 @@ const int characters[127][12] =
         0, row9,
         0, row9,
         0, row9,
-        0, row9
+        0, row9,
+        7 //offset
     },
     {
         //` 96
         0, 0,
         0, 0,
+        0, 0, 
+        0, 0,
         row2, 0,
         row3, 0,
-        0, 0, 
-        0, 0
+        4 //offset
     },
 
     
@@ -725,7 +791,9 @@ const int characters[127][12] =
     row4, row9,
     row4, row9,
     row4+row8, 0,
-    row5+row6+row7+row8, row9
+    row5+row6+row7+row8, row9,
+    0, 0,
+    7 //offset
     },
     {
     //b 98
@@ -734,7 +802,8 @@ const int characters[127][12] =
     row4, 0, 
     row4, 0, 
     row4, 0,
-    row5+row6+row7+row8, 0
+    row5+row6+row7+row8, 0,
+    7 //offset
     },
     {
     //c 99
@@ -743,7 +812,8 @@ const int characters[127][12] =
     row4, row9,
     row4, row9, 
     row4, row9,
-    row5+row8, 0
+    row5+row8, 0,
+    7 //offset
     },
     {
     //d 100
@@ -752,7 +822,8 @@ const int characters[127][12] =
     row4, row9,
     row4, row9,
     row5+row8, 0,
-    allRows, row9
+    allRows, row9,
+    7 //offset
     },
     {
     //e 101
@@ -761,7 +832,8 @@ const int characters[127][12] =
     row4+row7, row9,
     row4+row7, row9,
     row5+row7, row9,
-    row6, 0
+    row6, 0,
+    7 //offset
     },
     {
     //f 102
@@ -770,7 +842,8 @@ const int characters[127][12] =
     row2+row6, 0,
     row2, 0,
     row3, 0,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //g 103
@@ -779,7 +852,8 @@ const int characters[127][12] =
     row4+row8, 0,
     row4+row8, 0,
     row5+row7, 0,
-    row6+row7+row8, row9
+    row6+row7+row8, row9,
+    7 //offset
     },
     {
     //h 104
@@ -788,25 +862,28 @@ const int characters[127][12] =
     row4, 0, 
     row4, 0,
     row4, 0, 
-    row5+row6+row7+row8, row9
+    row5+row6+row7+row8, row9,
+    7 //offset
     },
     {
     //i 105
     0, 0,
     0, 0,
+    0, 0,
+    0, 0,
+    0, 0,
     row3+row6+row7+row8, row9,
-    0, 0,
-    0, 0,
-    0, 0
+    2 //offset works as 
     },
     {
     //j 106
+    0, 0,  
+    0, 0,  
     row8, 0,
     0, row9,
     0, row9,
     row2+row5+row6+row7+row8, 0,
-    0, 0,
-    0, 0
+    6 //offset
     },
     {
     //k 107
@@ -815,16 +892,18 @@ const int characters[127][12] =
     row6, 0, 
     row5+row7, 0,
     row4+row8, row9,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //l 108
     0, 0,
     0, 0,
+    0, 0,
+    0, 0,
+    0, 0,
     row3+row4+row5+row6+row7+row8, row9,
-    0, 0,
-    0, 0,
-    0, 0
+    2 //offset
     },
     {
     //m  109
@@ -833,7 +912,8 @@ const int characters[127][12] =
     row7, 0,
     row7, 0,
     row5+row6, 0,
-    row4+row5+row6+row7+row8, row9
+    row4+row5+row6+row7+row8, row9,
+    7 //offset
     },
     {
     //n 110
@@ -842,7 +922,8 @@ const int characters[127][12] =
     row4, 0,
     row4, 0,
     row5, 0,
-    row6+row7+row8, row9
+    row6+row7+row8, row9,
+    7 //offset
     },
     {
     //o 111
@@ -851,7 +932,8 @@ const int characters[127][12] =
     row4, row9,
     row4, row9,
     row5+row8, 0,
-    row6+row7, 0
+    row6+row7, 0,
+    7 //offset
     },
     {
     //p 112
@@ -860,7 +942,8 @@ const int characters[127][12] =
     row4+row8, 0,
     row4+row8, 0,
     row5+row7, 0,
-    row6, 0
+    row6, 0,
+    7 //offset
     },
     {
     //q 113
@@ -869,7 +952,8 @@ const int characters[127][12] =
     row4+row8, 0,
     row4+row8, 0,
     row5+row7, 0,
-    row6+row7+row8, row9
+    row6+row7+row8, row9,
+    7 //offset
     },
     {
     //r 114
@@ -878,7 +962,8 @@ const int characters[127][12] =
     row4, 0,
     row4, 0,
     row5, 0,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //s 115
@@ -887,16 +972,18 @@ const int characters[127][12] =
     row4+row6, row9,
     row4+row6, row9,
     row4+row7+row8, 0,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //t 116
     0, 0,
+    0, 0,
+    0, 0,
     row5, 0,
     row3+row4+row5+row6+row7+row8, row9,
     row5, 0,
-    0, 0,
-    0, 0
+    4 //offset
     },
     {
     //u 117
@@ -905,7 +992,8 @@ const int characters[127][12] =
     0, row9,
     0, row9,
     row4+row5+row6+row7+row8, 0,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //v 118
@@ -914,7 +1002,8 @@ const int characters[127][12] =
     0, row9,
     row8, 0, 
     row4+row5+row6+row7, 0,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //w 119
@@ -923,7 +1012,8 @@ const int characters[127][12] =
     row8, 0,
     row8, 0,
     0, row9,
-    row4+row5+row6+row7+row8, 0
+    row4+row5+row6+row7+row8, 0,
+    7 //offset
     },
     {
     //x 120
@@ -932,7 +1022,8 @@ const int characters[127][12] =
     row6+row7, 0, 
     row5+row8, 0,
     row4, row9,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //y 121
@@ -941,7 +1032,8 @@ const int characters[127][12] =
     row7+row8, 0,
     row6, 0,
     row4+row5, 0,
-    0, 0
+    0, 0,
+    7 //offset
     },
     {
     //z 122
@@ -950,7 +1042,8 @@ const int characters[127][12] =
     row4+row7, row9,
     row4+row6, row9,
     row5, row9,
-    0, 0
+    0, 0,
+    7 //offset
     },
 
 
@@ -963,28 +1056,31 @@ const int characters[127][12] =
         //{ 123
         0, 0,
         0, 0,
+        0, 0,
         row5, 0,
         row2+row3+row4+row6+row7+row8, 0,
         row2+row8,
-        0, 0
+        6 //offset
     },
     {
         //| 124
         0, 0, 
         0, 0,
         0, 0,
-        row1+row2+row3+row4+row6+row7+row8, row9,
         0, 0,
-        0, 0
+        0, 0,
+        allRows, row9,
+        3 //offset
     },
     {
         //} 125
         0, 0,
+        0, 0,
+        0, 0,
         row2+row8, 0,
         row2+row3+row4+row6+row7+row8, 0,
         row5, 0,
-        0, 0,
-        0, 0
+        5 //offset
     },
     {
         //~ 126
@@ -993,7 +1089,8 @@ const int characters[127][12] =
         row4, 0,
         row5, 0,
         row6, 0,
-        row5, 0
+        row5, 0,
+        7 //offset
     },
 };
 
@@ -1024,7 +1121,7 @@ void display(int charNum, signed int start){  //ignites a letter starting at col
 
         int i = 0x00;
         PORTB = 0x00;
-        PORTC = 0x00;
+        PORTC = 0b00001000; //zero columns while holding last demux control line up
         PORTD = 0b01111111;
         PORTA = 0x00;
 
@@ -1032,58 +1129,59 @@ void display(int charNum, signed int start){  //ignites a letter starting at col
     for(int k=0; k<12; k++){  //12 because I increment below so it needs to increment double
 
         if(start < 980){
-            PORTC = 0x00; //zero command, will not ignite any columns
+            PORTC = 0b00001000; //zero command, will not ignite any columns
             PORTD = 0x00; //all control lines are off as well.
         }
 
         else if((start < 995)){
-           PORTC = column[start];  //holds address of PORTD, columns 0-7
+           PORTC |= column[start];  //holds address of PORTD, columns 0-7
            PORTD &= 0b10111111;   //control line for DMUX 1
            PORTA = 0x00;
         }
         else if (start < 1010){
-            PORTC = column[start];  //columns 7-13
+            PORTC |= column[start];  //columns 7-13
             PORTD &= 0b11011111;
             PORTA = 0x00;
         }
         else if (start < 1025){
-            PORTC = column[start];  //columns 30-45
+            PORTC |= column[start];  //columns 30-45
             PORTD &= 0b11101111;
             PORTA = 0x00;
         }
         else if (start < 1040){
-            PORTC = column[start];  //columns 45-60
+            PORTC |= column[start];  //columns 45-60
             PORTD &= 0b11110111;
             PORTA = 0x00;
         }
         else if (start < 1055){
-            PORTC = column[start];  //columns 66-80
+            PORTC |= column[start];  //columns 66-80
             PORTD &= 0b11111011;
             PORTA = 0x00;
         }
         else if (start < 1070){
-            PORTC = column[start];  //columns 81-95
+            PORTC |= column[start];  //columns 81-95
             PORTD &= 0b11111101;
             PORTA = 0x00;
         }
         else if (start < 1085){
-            PORTC = column[start];  //columns 96-110
+            PORTC |= column[start];  //columns 96-110
             PORTD &= 0b11111110;
             PORTA = 0x00;
         }
         else if (start < 1100){
-            PORTC = column[start];
-            //add whatever port and pin used for last control line
+            PORTC |= column[start];
+            PORTC &= 0b11110111; //last dmux control line.
+            PORTA = 0x00;
         }
         else{
-            PORTC = 0x00;  //yeah, this should never happen
+            PORTC = 0b00001000;  //yeah, this should never happen
         }
         start++;
         PORTB = characters[charNum][k]; //puts the rows on the column
         PORTD |= characters[charNum][++k]; //puts row 9 on the column
         for(i=0; i<flickerDelay; i++){;}  //homebrew delay
         PORTB = 0x00;  //turns off all rows
-        PORTC = 0x00;  //zero command
+        PORTC = 0b00001000;  //zero command on the columns
         PORTD = 0b01111111;  //turns off row 9 and all dmux
     }    
 }
@@ -1131,26 +1229,29 @@ void test(int start){
 }
 
 void displayLoading(int columnSelect){
+    PORTC = 0b00001000;  //clears portC
     PORTD = 0b00111111;   //control line for DMUX 1
     PORTB = row1+row2+row3+ row7+row8;
     PORTD |= row9;
-    PORTC = column[columnSelect + 980];
+    PORTC |= column[columnSelect + 980];
     return;
 }
 
 void displaySuccess(){
+    PORTC = 0b00001000;  //clears portc
     PORTD = 0b01011111;   //control line for DMUX 2
     PORTB = row1+row2+row3+ row7+row8;
     PORTD |= row9;
-    PORTC = column[980];
+    PORTC |= column[980];
     return;
 }
 
 void displayTesting(int start){
+    PORTC = 0b00001000; //clears portC
     PORTD = 0b01111110;   //control line for DMUX 2
     PORTB = row1+row2+row3+ row7+row8;
     PORTD |= row9;
-    PORTC = column[1070 + start];
+    PORTC |= column[1070 + start];
     return;
 }
 
@@ -1160,18 +1261,21 @@ void main() {
     int charOffset = 0;
     int totalOffset = 0;
     int charCount = 0;
-    int charBegin = 0;
-    int charEnd = 0;
-    int zeroCounter = 0;
+    int sumCharOffset = 0;
+    //int charBegin = 0;
+    //int charEnd = 0;
+    //int zeroCounter = 0;
 
     int timer = 0;
-    int timeOut = 30000;
+    int timeOut = 9000;
      
     int numChars1 = 30;  //this should be like arraysize(streamChars); it should return the number of actual characters used in array
     int numChars2 = 0;
     int spacesCounter1 = 0;
     int spacesCounter2 = 0;
     char commandTemp[8];
+
+    int refreshCounter = 20;
 
     init_ports();
 
@@ -1199,30 +1303,30 @@ void main() {
         for(int i = 0; i<5000; i++){;}    */
 
 
-        
+        timer = 0;    
         if(PORTA & (dataPin + parityPin)){  //the ardi is requesting to transmit data
             for(int t=0; t<2; t++){;} //tiny delay to prevent noise
             if(PORTA & (dataPin + parityPin)){  //the ardi is still requesting, lets go with it
-                PORTA = 0x00;
-                TRISA = 0b11111101;  //A0, A2 are inputs for communication. A1 is output for reply
-                PORTA = 0b00000010;  //send back the yes signal
-                for(int t=0; t<3; t++){;}  //quick time to send back yes signal
+                //PORTA = 0x00;
+                //TRISA = 0b11111101;  //A0, A2 are inputs for communication. A1 is output for reply
+                //PORTA = 0b00000010;  //send back the yes signal
+                //for(int t=0; t<3; t++){;}  //quick time to send back yes signal
                 
-                //while(PORTA & (parityPin+dataPin)) {;}  //stay here until this opening frame goes away
+                while((PORTA & (parityPin+dataPin)) == (parityPin + dataPin)) {;}  //stay here until this opening request goes away
                 
-                PORTA = 0x00;  //turn off yes signal   
-                TRISA = 0b00000111;  //changes all comm pins back to input
+                //PORTA = 0x00;  //clears portA 
+                //TRISA = 0b00000111;  //changes all comm pins back to input
 
-                    while((!(PORTA & (dataPin+pulsePin+parityPin))) && (timer < timeOut)) { //wait for this to begin
-                        timer++;
-                    }
-                    timer = 0;    
-                    while((PORTA & (dataPin+pulsePin+parityPin)) && (timer < timeOut )){ //wait for this to end before entering the for loop.
-                        timer++;
-                    }
-                    timer = 0;
+                   // while((!(PORTA & (dataPin+pulsePin+parityPin))) && (timer < timeOut)) { //wait for this to begin
+                     //   timer++;
+                    //}
+                    //timer = 0;    
+                    //while((PORTA & (dataPin+pulsePin+parityPin)) && (timer < timeOut )){ //wait for this to end before entering the for loop.
+                      // timer++;
+                    //}
+                timer = 0;
                 for(int streamNum = 0; streamNum < 140; streamNum++){  //for all ascii chars
-                    for(int k=0; k<9; k++){
+                    for(int k=0; k<9; k++) {
                         displayLoading(k);
                         
                         while(!(PORTA & pulsePin) && (timer < timeOut)){ //wait for the pulse pin
@@ -1249,16 +1353,16 @@ void main() {
 
                     //PUT ZEROES IN ARRAY SPOTS SO OUR ADDITION BELOW STARTS FROM 0
                     // and not whatever it was before.
-                    if(streamNum < 70){
+                    if(streamNum < 70) {
                         streamChars1[streamNum] = 0; 
                     }
-                    else {
+                    else if (streamNum < 140) {
                         streamChars2[streamNum -70] = 0;
                     }
                     
                     //CONVERTS FROM BINARY INTO INTEGER AND PUTS THE VALUE INTO CORRECT ARRAY VALUE
                     for (int z = 0; z<8; z++) {
-                        if (commandTemp[z]){  //if its zero we dont care... so theres that.
+                        if (commandTemp[z]) {  //if its zero we dont care... so theres that.
                             if(streamNum < 70){
                                 streamChars1[streamNum] += binaryArray[z]; //puts decimal value into asciiCode
                             }
@@ -1270,12 +1374,12 @@ void main() {
 
                     //THIS WILL MAKE SPACES AT END OF STRING IN CASE OF GARBAGE
                     if(streamNum < 70){
-                        if((streamChars1[streamNum] < 32) || (streamChars1[streamNum]>128)) {
+                        if((streamChars1[streamNum] <= 32) || (streamChars1[streamNum]>128)) {
                             streamChars1[streamNum] = 32; //puts spaces into array
                         }
                     }
-                    else{
-                        if((streamChars2[streamNum-70] < 32) || (streamChars2[streamNum-70]>128)){
+                    else if (streamNum < 140) {
+                        if((streamChars2[streamNum-70] <= 32) || (streamChars2[streamNum-70]>128)) {
                             streamChars2[streamNum-70] = 32; //puts spaces into array
                         }
                     }    
@@ -1285,8 +1389,10 @@ void main() {
                 for(int j = 0; j<140; j++) { 
 
                     if(j < 70) {
-                        
-                        streamChars1[j] -= 32;  //subtract ascii offset
+
+                        if(streamChars1[j] >= 32) {
+                            streamChars1[j] -= 32;  //subtract ascii offset
+                        }
 
                         if(streamChars1[j] == 0) {
                             spacesCounter1++;  //only incremented if successive, these are the trailing zeroes
@@ -1296,11 +1402,13 @@ void main() {
                         } 
                         
                     }
-                    else{
+                    else if (j < 140) {
                         
-                        streamChars2[j-70] -= 32;  //subtract the ascii offset
+                        if(streamChars2[j-70] >= 32) {
+                            streamChars2[j-70] -= 32;  //subtract the ascii offset
+                        }
 
-                        if(streamChars2[j-70] == 0){
+                        if(streamChars2[j-70] == 0) {
                             spacesCounter2++;  //only incremented if successive, these are the trailing zeroes
                         }  
                         else{
@@ -1310,14 +1418,16 @@ void main() {
                 } 
                 numChars1 = 70-spacesCounter1;
                 numChars2 = 70-spacesCounter2; 
-            }   
-            while(PORTA & (dataPin + parityPin)){;}  //I dont know what the hell is going on!
 
-            //reset these guys because we are going to restart the displaying
-            index = 1099; //top of columns
-            totalCounter = 1099; //top # of columns
-            charCount = 0;
-        }
+                while(PORTA & (dataPin + parityPin)){;}  //I dont know what the hell is going on!
+
+                //reset these guys because we are going to restart the displaying
+                index = 1099; //top of columns
+                totalCounter = 1099; //top # of columns
+                charCount = 0;
+                sumCharOffset = 0;
+            }   // end of inner if
+        }  // end of outer if
 
         
 
@@ -1343,45 +1453,64 @@ void main() {
         streamChars1[1] = ('o'-32);
         streamChars1[2] = ('c'-32);
         streamChars1[3] = ('k'-32); */
-        
+
+       
+       
+
         //numberChars times # of columns for each(6 columns + space) +30 to prevent visual speeding up
-        if(totalCounter > (980-(((numChars1 + numChars2)*7)))) {  
+            if(totalCounter > (980-(((numChars1 + numChars2)*7)))) {  
+                
 
-            for(int i = 0; i < 17; i++){  //this is always running 17 times to populate the screen
-                if(charCount<70){
-                    display(streamChars1[charCount],(index + charOffset));
+
+                for(int i = 0; i < 20; i++){  //this is always running 17 times to populate the screen
+                    if(charCount<70){
+                        display( streamChars1[charCount], (index + (sumCharOffset + characters[ streamChars1[charCount] ][12] )) );
+                        //display(streamChars1[charCount],(index + charOffset));
+                        sumCharOffset += characters[ streamChars1[charCount] ] [12] ;
+                    }
+                    else if(charCount < 140){
+                        display( streamChars2[charCount - 70], (index + (sumCharOffset + characters[ streamChars2[charCount - 70] ][12] )) );
+                        //display(streamChars2[charCount - 70],(index + charOffset));
+                        sumCharOffset += characters[ streamChars2[charCount - 70] ] [12] ;
+                    }
+                    else {  //this only happens when string is withing 18 chars of 140 chars
+                        for(int y = 0; y<200; y++){;}//delay to prevent from speeding up
+                    }
+
+                    charCount++;  //increments the characters placed... this will increase by 18 each time
+                    //charOffset +=7;
                 }
-                else if(charCount < 140){
-                    display(streamChars2[charCount - 70],(index + charOffset));
-                }
-                else {  //this only happens when string is withing 17 chars of 140 chars
-                    for(int y = 0; y<200; y++){;}//delay to prevent from speeding up
-                }
-                charCount++;  //increments the characters placed... this will increase by 17 each time
-                charOffset += 7;
-            }
-             
-            totalCounter--;
 
-            if(index > 973) {  //this is only for the first descent of characters across the screen
-                charCount -= 17;
-                charOffset = 0;
-                index--;
-            }
-            else {  // all other cases
-                charCount -= 17; //subtract 17 added from for loop
-                charCount ++;
-                charOffset = 0;
-                index = 979;
-            }
 
-            for(int i = 0; i< 400; i++){;}  //delay, mainly for debug
-        }
+                totalCounter--;
+                 
 
-        else{
-            index = 1099; //top of columns
-            totalCounter = 1099; //top # of columns
-            charCount = 0;
-        }  
+                    if(index > 973){  //this is only for the first descent of characters across the screen
+                        charCount -= 20;
+                        sumCharOffset = 0;
+                        charOffset = 0;
+                        index--;
+                    }
+                    else {  // all other cases
+                        charCount -= 20; //subtract 17 added from for loop
+                        charCount ++;
+                        sumCharOffset = 0;
+                        charOffset = 0;
+                        if(charCount < 71){
+                            index = (972 + characters[ streamChars1[charCount - 1] ][12] );  //drops one character and restarts index at zero
+                        }
+                        else if(charCount < 141) {
+                            index = (972 + characters[ streamChars2[charCount - 71] ][12] ); //drops one character and restarts index at zero
+                        }
+                    }
+
+                for(int i = 0; i< 500; i++){;}  //delay, mainly for debug
+            }
+            else{
+                index = 1099; //top of columns
+                totalCounter = 1099; //top # of columns
+                charCount = 0;
+            }
+        
     }
 }

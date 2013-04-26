@@ -456,7 +456,7 @@
 ]
 [u S1215 . 1 `S1208 1 . 1 0 ]
 "105 LED_Ticker.c
-[v F1282 `DC[12]i  0a t 24 ]
+[v F1282 `DC[13]i  0a t 26 ]
 "5 C:\Program Files\HI-TECH Software\PICC\9.83\sources\abdiv.c
 [v ___abdiv `(c  1 e 1 0 ]
 "5 C:\Program Files\HI-TECH Software\PICC\9.83\sources\abmod.c
@@ -557,19 +557,19 @@
 [v ___fttoee `(f  1 e 3 0 ]
 "132
 [v ___fltoee `(d  1 e 3 0 ]
-"1006 LED_Ticker.c
+"1103 LED_Ticker.c
 [v _init_ports `(v  1 e 0 0 ]
-"1023
+"1120
 [v _display `(v  1 e 0 0 ]
-"1092
+"1190
 [v _test `(v  1 e 0 0 ]
-"1133
+"1231
 [v _displayLoading `(v  1 e 0 0 ]
-"1141
+"1240
 [v _displaySuccess `(v  1 e 0 0 ]
-"1149
+"1249
 [v _displayTesting `(v  1 e 0 0 ]
-"1157
+"1258
 [v _main `(v  1 e 0 0 ]
 "82 /hitech/products/compilers/pic/pro/9.83/dist/linux/include/pic16f877a.h
 [v _INDF `VEuc  1 e 1 @0 ]
@@ -1270,73 +1270,69 @@
 "43
 [v _column `DC[1100]uc  1 e 1100 0 ]
 "105
-[v _characters `DC[127][12]i  1 e 3048 0 ]
-"1002
+[v _characters `DC[127][13]i  1 e 3302 0 ]
+"1099
 [v _index `i  1 e 2 0 ]
-"1157
+"1258
 [v _main `(v  1 e 0 0 ]
 {
-"1358
+"1477
 [v main@y `i  1 a 2 55 ]
-"1260
-[v main@z `i  1 a 2 63 ]
-"1225
-[v main@k `i  1 a 2 69 ]
-"1285
-[v main@j `i  1 a 2 71 ]
-"1224
+"1364
+[v main@z `i  1 a 2 65 ]
+"1329
+[v main@k `i  1 a 2 67 ]
+"1389
+[v main@j `i  1 a 2 69 ]
+"1328
 [v main@streamNum `i  1 a 2 73 ]
-"1209
-[v main@t_1268 `i  1 a 2 51 ]
-"1378
-[v main@i_1275 `i  1 a 2 57 ]
-"1350
+"1507
+[v main@i_1273 `i  1 a 2 57 ]
+"1465
 [v main@i `i  1 a 2 53 ]
-"1204
-[v main@t `i  1 a 2 49 ]
-"1174
-[v main@commandTemp `[8]uc  1 a 8 31 ]
-"1167
-[v main@timer `i  1 a 2 67 ]
-"1162
-[v main@charCount `i  1 a 2 65 ]
-"1168
-[v main@timeOut `i  1 a 2 61 ]
-"1160
-[v main@charOffset `i  1 a 2 59 ]
-"1158
+"1308
+[v main@t `i  1 a 2 51 ]
+"1276
+[v main@commandTemp `[8]uc  1 a 8 29 ]
+"1263
+[v main@charCount `i  1 a 2 71 ]
+"1269
+[v main@timer `i  1 a 2 63 ]
+"1264
+[v main@sumCharOffset `i  1 a 2 61 ]
+"1270
+[v main@timeOut `i  1 a 2 49 ]
+"1259
 [v main@totalCounter `i  1 a 2 47 ]
-"1173
+"1275
 [v main@spacesCounter2 `i  1 a 2 45 ]
-"1172
+"1274
 [v main@spacesCounter1 `i  1 a 2 43 ]
-"1171
+"1273
 [v main@numChars2 `i  1 a 2 41 ]
-"1170
+"1272
 [v main@numChars1 `i  1 a 2 39 ]
-"1165
-[v main@zeroCounter `i  1 a 2 29 ]
-"1164
-[v main@charEnd `i  1 a 2 27 ]
-"1163
-[v main@charBegin `i  1 a 2 25 ]
-"1161
-[v main@totalOffset `i  1 a 2 23 ]
-"1159
-[v main@lastDivision `i  1 a 2 21 ]
-"1387
+"1261
+[v main@charOffset `i  1 a 2 37 ]
+"1278
+[v main@refreshCounter `i  1 a 2 27 ]
+"1262
+[v main@totalOffset `i  1 a 2 25 ]
+"1260
+[v main@lastDivision `i  1 a 2 23 ]
+"1516
 } 0
-"1023
+"1120
 [v _display `(v  1 e 0 0 ]
 {
-"1032
+"1129
 [v display@k `i  1 a 2 12 ]
-"1025
+"1122
 [v display@i `i  1 a 2 10 ]
-"1023
+"1120
 [v display@charNum `i  1 p 2 6 ]
 [v display@start `i  1 p 2 8 ]
-"1089
+"1187
 } 0
 "3 C:\Program Files\HI-TECH Software\PICC\9.83\sources\wmul.c
 [v ___wmul `(ui  1 e 2 0 ]
@@ -1348,19 +1344,19 @@
 [v ___wmul@multiplicand `ui  1 p 2 2 ]
 "13
 } 0
-"1141 LED_Ticker.c
+"1240 LED_Ticker.c
 [v _displaySuccess `(v  1 e 0 0 ]
 {
-"1147
+"1247
 } 0
-"1133
+"1231
 [v _displayLoading `(v  1 e 0 0 ]
 {
 [v displayLoading@columnSelect `i  1 p 2 0 ]
-"1139
+"1238
 } 0
-"1006
+"1103
 [v _init_ports `(v  1 e 0 0 ]
 {
-"1021
+"1118
 } 0
