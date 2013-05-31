@@ -1,5 +1,12 @@
- //ARDUINO 1.0+ ONLY
+
 //ARDUINO 1.0+ ONLY
+//Ben Clouser
+//All code, circuit diagrams, pictures and videos can be found on www.benclouser.com
+
+/*This code is written for use with an Arduino Uno with connected Peripheral Devices
+In the apartment of Kelly C102. It serves as the Hub which monitors the database, and 
+sends out commands when a setting changes.*/
+
 #include <Ethernet.h>
 #include <SPI.h>
 #include <string.h>
@@ -9,7 +16,6 @@
 ////////////////////////////////////////////////////////////////////////
 byte server[] = { 153 , 42, 193, 63 }; //ip Address of the server you will connect to. THIS WILL CHANGE FROM PLACE TO PLACE
 byte ip[] = { 153, 42, 193, 177 };  //assignes the ardi this ip address
-//commenting
 
 //The location to go to on the server
 //make sure to keep HTTP/1.0 at the end, this is telling it what type of file it is
@@ -21,7 +27,6 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 EthernetClient client;
 
-
 int firstTime=5;  //flag to indicate that it is the first time running through
 
 char inString[200]; // string for incoming DB stream
@@ -32,7 +37,6 @@ char shades[9];
 char door[9];
 char display[141];
 
-
 // used for checks against what is currently held on the client side
 char currentLights[9]; //holds 8 items plus termination character
 char currentShades[9];
@@ -41,9 +45,8 @@ char currentDoor[9];
 // for converting decimal to binary... its important!
 int binaryArray[8]={128,64,32,16,8,4,2,1};
 
-
 //////////////////DELAYS/////////////
-const int reconnectDelay = 4000; // wait before reconnect and repolling server, had it as low as 2
+const int reconnectDelay = 50; // wait before reconnect and repolling server, had it as low as 2
 const int listenDelay = 80; //(80) how long to listen to each client when looking for any changes
 const int pulseDelay = 12;  //this is set at 20 usually, pulse time during communication
 
@@ -63,7 +66,6 @@ int shadesChanged = 0;
 int doorChanged = 0;
 int displayChanged = 0;
 
-
 void setup(){
 	DDRC = 0xFF;  //set PORTC as an output, this never changes...
 	Ethernet.begin(mac, ip);
@@ -74,7 +76,6 @@ void setup(){
 /*********************************************************************************
 									~MAIN~
 *********************************************************************************/
-
 void loop(){ 
 	int lightsCmd;
 	int shadesCmd;
@@ -84,7 +85,6 @@ void loop(){
 	while(!connectAndRead()){ // chill here until a connection is established
 		Ethernet.begin(mac, ip);  //try restarting the network connection
 	}  
-
 
 	String pageValue = readPage(); //connect to the server and read the output
 	
@@ -165,8 +165,7 @@ void loop(){
 	}
 	delay(10);
 
-	//   ****************** DISPLAY***************8
-
+	//DISPLAY (LED TICKER)
 	if(displayChanged){
 		sendDisplayCmd();
 	}
@@ -218,30 +217,24 @@ void loop(){
 	memset(&shades, 0, 8 ); //clear memory
 	memset(&lights, 0, 8 ); //clear memory
 	
-	delay(reconnectDelay); //waits before connecting again
+	delay(reconnectDelay); //waits before connecting again prevent data loss
 }
 /*********************************************************************************
 									~END OF MAIN~
 *********************************************************************************/
 
-// Probs the most useful function on the board... i didnt write it, sigh
-// I did modify it in the "getCommand" function though
 //This makes a binary int from a char array
 int atob(const char * makeInt){
 	int result = 0;
 	int i;
 	for (i = 0; makeInt[i] != '\0'; i++){
 		result <<= 1; // Shift the values in result left once.  Same as
-		// result *= 2;
- 
-		// if intMe[i] == '0', we don't do anything.
 		if (makeInt[i] == '1'){
 			result += 1;
 		}
 	}
  return result;
 }
-
 
 int connectAndRead(){
 	//connect to the server
@@ -368,7 +361,6 @@ void sendLightCmd(){
 	delay(pulseDelay);
 	PORTD = 0x00;  
     for(int i = 0; i < 9; i++){    		
-
     	if(lights[i] == '1'){ 
     		PORTD |= B00010000;  // data pin high for when its a one
     		PORTD |= B00100000; // pulse signal	
@@ -392,7 +384,6 @@ void sendLightCmd(){
 
 	
 void sendShadesCmd(){	
- 					
 	DDRD = (DDRD | B11110000);  // sets our 4 comm pins as outputs
 	PORTC = B00000010;    // shades control line
 	delay(10);  //give switches time to change
@@ -400,7 +391,6 @@ void sendShadesCmd(){
 	delay(pulseDelay);
 	PORTD = 0x00;  
     for(int i = 0; i < 9; i++){    		
-
     	if(shades[i] == '1'){ 
     		PORTD |= B00010000;  //data pin high for when its a one
     		PORTD |= B00100000; // pulse signal	
@@ -459,50 +449,31 @@ void sendDisplayCmd(){
 	char tempBuffer[9] = {64, 64, 64, 64, 64, 64, 64, 64};
 	char sendBuffer[9];
 	char r = 0;
-	char displayPulseDelay = 2;
+	char displayPulseDelay = 50;
 	char quickDelay = 1;
 	
-	
 	/*Begin transmission, we will send out each character as we go through it*/
-
 	//first time through
-	DDRD |= B11010000;  // open frame pins output and pulse pin is still input
-	DDRD &= B11011111; //explicitly make pulse pin an input 
+	DDRD |= B11110000;  // comm pins as outputs
 	PORTC = B00001000; // ticker control line
 	delay(1);  //give switches time to change
 	PORTD = B01010000; // sends out request signal to transmit
-	while(!(PIND & B00100000)); //waits until we hear back that we can send now.
-	while(!(PIND & B00100000)); //just making sure the pin is still high. avoid noise
-	//delay(2000);
-	//while(PIND & B00100000); //wait for line to end to begin
-	DDRD |= B11110000;  //puts comm pins as outputs
+	delay(100);  //make sure the ticker has enough time to see this
 	PORTD &=B00001111;  //clears comm pins
-
-	PORTD = B01110000; // sends begining of command string signal
-	delay(displayPulseDelay);
-	//for(int c =0; c<50000; c++){
-	//	for(int a = 0; a<1000; a++){;}
-	//}
 	PORTD = 0x00;  //stop opening signal
-
-
-
 
 
 									// SEND OVER TO TICKER, 140 CHARS OF DATA
 	for(int i =0; i<140; i++){ 
 		PORTD &= B00001111;
-		Serial.println("*Starting conversion process*");
-		
-		//converting character to binary representation
-		Serial.println("integer form of character");
-	 	Serial.println(display[i]+0);
-	 	Serial.println(display[i]+0, BIN);
+		//Serial.println("*Starting conversion process*") //debug
+		//converting character to binary representation   //debug
+		//Serial.println("integer form of character");  //debug
+	 	//Serial.println(display[i]+0);                //debug
+	 	//Serial.println(display[i]+0, BIN);            //debug
 
 		//puts binary into char array "tempBuffer
 	 	itoa(display[i],tempBuffer,2);   //(arrayFrom, arrayTo, base)
-	 	Serial.println("here is tempBuffer:");
-	 	Serial.println (tempBuffer);
 	 	for(int t = 0; t<8; t++){
 	 		Serial.println(tempBuffer[t]);
 	 	}
@@ -526,9 +497,8 @@ void sendDisplayCmd(){
 	 		zeros = 0;
 	 	}
 
-		Serial.println("zeros:");
-		Serial.println(zeros);
-
+		//Serial.println("zeros:");
+		//Serial.println(zeros);
 		if(zeros>0){
 			for (int q=0; q<8; q++) {  //puts trailing zeroes into array
 				if(zeros > q){
@@ -542,13 +512,7 @@ void sendDisplayCmd(){
 
 		PORTD &= B00001111;
 
-		Serial.print("now we will transmit the character: ");
-		Serial.print(display[i]);
-		Serial.println("");
-		Serial.print("binary representation ");  
-		Serial.print(sendBuffer);
-
-
+		//Now, we will actually transmit the character
 	    for(r = 0; r < 9; r++){ 
 	   		if(r < 8) {
 		    	if(sendBuffer[r] == '1'){ 
@@ -564,16 +528,10 @@ void sendDisplayCmd(){
 	    		PORTD |= B01010000;
 	    		PORTD |= B00100000; // pulse signal
 	    	}
-	    	delay(displayPulseDelay);
-	    	//for(int c = 0; c < 50000; c++){
-			//	for(int a = 0; a<1000; a++){;}
-			//}
+	    	delayMicroseconds(displayPulseDelay);  //pulse delay
 
 	    	PORTD &= B00001111;  // clears comm pins
-	    	delay(displayPulseDelay);  //delay here, because I get nervous
-	    	//for(int c =0; c < 50000; c++){
-			//	for(int a = 0; a<1000; a++){;}
-			//}
+	    	delayMicroseconds(displayPulseDelay);  //delay here, because I get nervous
 	    }
 		PORTD &= B00000111; // turns pins off, stops transmitting
 		zeros = 0; //reset
@@ -600,40 +558,38 @@ int getCommand(void){
 	
 	j = 0; //clear the counter
 	for(i = 0; i < 9; i++ ){  //all 8 bits of data and the closing bracket. 9 total
-			Serial.println(i);
-			while((!(PIND & pulsePin))  ){ //  && (j < timeOut)){ // wait till pulse starts
-					j++;
-			}
-			delay(1); //tiny delay to ensure we have good data before writing it
+		Serial.println(i);
+		while((!(PIND & pulsePin))  ){ //  && (j < timeOut)){ // wait till pulse starts
+			j++;
+		}
+		delay(1); //tiny delay to ensure we have good data before writing it
 
-			if( i < 8)
-					commandTemp[i] = (PIND & dataPin); // WRITE DATA
-			else if(i == 8)
-					commandTemp[i] = (PIND & (dataPin + parityPin));  // closing bracket
+		if( i < 8)
+			commandTemp[i] = (PIND & dataPin); // WRITE DATA
+		else if(i == 8)
+			commandTemp[i] = (PIND & (dataPin + parityPin));  // closing bracket
 
-			while((PIND & pulsePin)  ){   //&& (j < timeOut)){ // wait till pulse is over
-					j++;
-			}
-			Serial.println(commandTemp[i]);
-			delay(1); //tiny delay to ensure pulse is really over before starting again
+		while((PIND & pulsePin)){   //&& (j < timeOut)){ // wait till pulse is over
+			j++;
+		}
+		Serial.println(commandTemp[i]);
+		delay(1); //tiny delay to ensure pulse is really over before starting again
 
-			/* if(j >= timeOut)
-					return -7; // leaves the FOR loop because we timed out */
-
+		/* if(j >= timeOut)
+			return -7; // leaves the FOR loop because we timed out */
 	}
 
 	if((commandTemp[8] == (dataPin + parityPin))   ){  // && (j < timeOut)){  //all went well
 		Serial.println("Command Received Successfully");
 		result = 0;
-			for (i = 0; i<8; i++){
-				if (commandTemp[i]){  //if its zero we dont care
-					result += binaryArray[i];
-				}
+		for (i = 0; i<8; i++){
+			if (commandTemp[i]){  //if its zero we dont care
+				result += binaryArray[i];
 			}
-			DDRD |= B01110000;  //turn comm pins back to output
-			return result;	
+		}
+		DDRD |= B01110000;  //turn comm pins back to output
+		return result;	
 	}
-	
 	else{
 		while(PIND & B01110000);  // wait until port B is clean before continuing
 		DDRD |= B01110000;  //turn comm pins back to output
@@ -711,7 +667,7 @@ int listenToDoor(){
 	DDRD &=B11011111; //change pulsePin back to input
 	
 	PORTD &= B10001111;  //clear PORTD
-	/************* End of HandShake **************/
+	//END OF HANDSHAKE
 	
 	//Chip is ready to send data, listen to it
 	doorTemp = getCommand(); //gets the command coming from chip as an integer
@@ -727,9 +683,9 @@ void updateDB_Lights(){
 		client.print("GET http://153.42.193.63/ardi_db_update.php?lights=");
 		if(clientLights)
 			client.print(clientLights,BIN);
-		else{
+		else
 			client.print("'0'");
-			}
+			
 		client.print(" HTTP/1.0");
 		client.println("Host: http://153.42.193.63");
 		client.println();
@@ -752,9 +708,9 @@ void updateDB_Shades(){
 		client.print("GET http://153.42.193.63/ardi_db_update.php?shades=");
 		if(clientShades)
 			client.print(clientShades,BIN);
-		else{
+		else
 			client.print("'0'");
-			}
+			
 		client.print(" HTTP/1.0");
 		client.println("Host: http://153.42.193.63");
 		client.println();
@@ -776,9 +732,9 @@ void updateDB_Door(){
 		client.print("GET http://153.42.193.63/ardi_db_update.php?door=");
 		if(clientDoor)
 			client.print(clientDoor,BIN);
-		else{
+		else
 			client.print("'0'");
-			}
+			
 		client.print(" HTTP/1.0");
 		client.println("Host: http://153.42.193.63");
 		client.println();
