@@ -34,7 +34,7 @@ const int parityPin = 0b00000100;
 
 int binaryArray[8]={128,64,32,16,8,4,2,1};
 
-int flickerDelay = 4;
+int flickerDelay = 1;
 //using these arrays to hold byte size integers
 char streamChars1[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32, '?'-32};
 char streamChars2[70] = {'C'-32,'o'-32,'c'-32,'k'-32,'p'-32, 'i'-32, 't'-32, ' '-32, 'W'-32, 'T'-32, 'F'-32, '?' -32};
@@ -131,32 +131,32 @@ const int characters[127][13] =
     {
         //" 34 (25+26+35)
         0, 0,
-        row2+row3, 0,
-        0, 0,
         0, 0,
         row2+row3, 0,
         0, 0,
-        7
+        0, 0,
+        row2+row3, 0,
+        5
     },
     {
         //# 35  (25+26+14)
-        row4+row7, 0,
-        row2+row3+row4+row5+row6+row7+row8, row9,
-        row4+row7, 0,
-        row2+row3+row4+row5+row6+row7+row8, row9,
-        row4+row7, 0,
         0, 0,
-        7
+        row4+row7, 0,
+        row2+row3+row4+row5+row6+row7+row8, row9,
+        row4+row7, 0,
+        row2+row3+row4+row5+row6+row7+row8, row9,
+        row4+row7, 0,
+        6
     },
     {
         //$ 36  (25+26+15)
+        0, 0,
         row3+row4+row7, 0,
         row2+row5+row8, 0,
         row1+row2+row5+row8, row9,
         row2+row5+row8, 0,
         row3+row6+row7, 0,
-        0, 0,
-        7
+        6
     },
     {
         //% 37
@@ -186,47 +186,47 @@ const int characters[127][13] =
         0, 0,
         0, 0,
         row2+row3, 0,
-        3 //offset
+        2 //offset
     },
     {
         //( 40
         0, 0,
+        0, 0,
+        0, 0,
         row3+row4+row5+row6+row7, 0,
         row2+row8, 0,
         row1, 0,
-        0, 0,
-        0, 0,
-        7 //offset
+        4 //offset
     },
     {
         //) 41
         0, 0,
+        0, 0,
+        0, 0,
         row1, row9,
         row2+row8, 0,
         row3+row4+row5+row6+row7, 0,
-        0, 0,
-        0, 0,
-        7 //offset
+        4 //offset
     },
     {
         //* 42
+        0, 0,
         row3+row5+row7, 0,
         row4+row6, 0,
         row5, 0,
         row4+row6, 0,
         row3+row5+row7, 0,
-        0, 0,
-        7 //offset
+        6 //offset
     },
     {
         //+ 43
+        0, 0,
         row5, 0,
         row5, 0,
         row3+row4+row5+row6+row7, 0,
         row5, 0,
         row5, 0,
-        0, 0,
-        7 //offset
+        6 //offset
     },
     {
         //, 44 
@@ -234,19 +234,19 @@ const int characters[127][13] =
         0, 0,
         0, 0,
         0, 0,
-        row7+row8, 0,
         0, row9,
+        row7+row8, 0,
         3 //offset
     },
     {
         //- 45
         0, 0,
-        row5, 0,
-        row5, 0,
-        row5, 0,
-        row5, 0,
         0, 0,
-        7 //offset
+        row5, 0,
+        row5, 0,
+        row5, 0,
+        row5, 0,
+        5 //offset
     },
     {
         //. 46 
@@ -256,17 +256,17 @@ const int characters[127][13] =
         0, 0,
         0, 0,
         row8, 0,
-        3 //offset
+        2 //offset
     },
     {
         /// 47
+        0, 0,
         0, 0,
         row8, row9,
         row6+row7, 0,
         row4+row5, 0,
         row2+row3, 0,
-        0, 0,
-        7 //offset
+        5 //offset
     },
     
 
@@ -388,7 +388,7 @@ const int characters[127][13] =
         0, 0,
         0, 0,
         row4+row7, 0,
-        3 //offset
+        2 //offset
     },
     {
         //; 59
@@ -398,37 +398,37 @@ const int characters[127][13] =
         0, 0,
         row8, 0,
         row4+row7, 0,
-        4 //offset
+        3 //offset
     },
     {
         //< 60
         0, 0,
+        0, 0,
         row5, 0,
         row4+row6, 0,
         row3+row7, 0,
         row2+row8, 0,
-        0, 0,
-        7 //offset
+        5 //offset
     },
     {
         //= 61
         0, 0,
-        row4+row6, 0,
-        row4+row6, 0,
-        row4+row6, 0,
-        row4+row6, 0,
         0, 0,
-        7 //offset
+        row4+row6, 0,
+        row4+row6, 0,
+        row4+row6, 0,
+        row4+row6, 0,
+        5 //offset
     },
     {
         //> 62
+        0, 0,
         0, 0,
         row2+row8, 0,
         row3+row7, 0,
         row4+row6, 0,
         row5, 0,
-        0, 0,
-        7 //offset
+        5 //offset
     },
     {
         //? 63
@@ -438,7 +438,7 @@ const int characters[127][13] =
         row1+row5+row6, row9,
         row2+row4, 0,
         row3, 0,
-        7 //offset
+        6 //offset
     },
     {
         //@ 64
@@ -538,13 +538,13 @@ const int characters[127][13] =
     },
     { 
         //I 73
+        0, 0,
         row1, row9,
         row1, row9,
         allRows, row9,
         row1, row9,
         row1, row9,
-        0, 0,
-        7 //offset
+        6 //offset
     },
     { 
         //J 74
@@ -726,7 +726,7 @@ const int characters[127][13] =
         row2+row3+row4+row5+row6+row7+row8, 0,
         row2, row8,
         row2, row8,
-        6 //offset
+        4 //offset
     },
     {
         //\ 92
@@ -736,7 +736,7 @@ const int characters[127][13] =
         row4+row5, 0,
         row6+row7, 0,
         row8, row9,
-        6 //offset
+        5 //offset
     },
     {
         //] 93
@@ -746,7 +746,7 @@ const int characters[127][13] =
         row2+row8, 0,
         row2+row8, 0, 
         row2+row3+row4+row5+row6+row7+row8, 0,
-        5 //offset 
+        4 //offset 
     },
     {
         //^ 94
@@ -787,21 +787,21 @@ const int characters[127][13] =
     
     {
     //a 97
+    0, 0,
     row5+row6+row7+row8, 0,
     row4, row9,
     row4, row9,
     row4+row8, 0,
     row5+row6+row7+row8, row9,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //b 98
     allRows, row9,
     row5+row8, 0,
-    row4, 0, 
-    row4, 0, 
-    row4, 0,
+    row4, row9, 
+    row4, row9, 
+    row4, row9,
     row5+row6+row7+row8, 0,
     7 //offset
     },
@@ -837,23 +837,23 @@ const int characters[127][13] =
     },
     {
     //f 102
+    0, 0,
     row6, 0,
     row3+row4+row5+row6+row7+row8, row9,
     row2+row6, 0,
     row2, 0,
     row3, 0,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //g 103
-    row6, row9,
-    row5+row7, 0,
-    row4+row8, 0,
-    row4+row8, 0,
-    row5+row7, 0,
-    row6+row7+row8, row9,
-    7 //offset
+    0, 0,    
+    row4+row5, 0,
+    row3+row6+row8, 0,
+    row3+row6, row9,
+    row3+row6, row9,
+    row4+row5+row6+row7+row8, 0,
+    6 //offset
     },
     {
     //h 104
@@ -883,17 +883,17 @@ const int characters[127][13] =
     0, row9,
     0, row9,
     row2+row5+row6+row7+row8, 0,
-    6 //offset
+    5 //offset
     },
     {
     //k 107
+    0, 0,
     row3+row4+row5+row6+row7+row8, row9,
     row6, 0, 
     row6, 0, 
     row5+row7, 0,
     row4+row8, row9,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //l 108
@@ -937,43 +937,43 @@ const int characters[127][13] =
     },
     {
     //p 112
-    row6+row7+row8, row9,
-    row5+row7, 0,
-    row4+row8, 0,
-    row4+row8, 0,
-    row5+row7, 0,
-    row6, 0,
+    row4+row5+row6+row7+row8, row9,
+    row3+row6, 0,
+    row2+row6, 0,
+    row2+row6, 0,
+    row3+row5, 0,
+    row4, 0,
     7 //offset
     },
     {
     //q 113
-    row6, 0,
-    row5+row7, 0,
-    row4+row8, 0,
-    row4+row8, 0,
-    row5+row7, 0,
-    row6+row7+row8, row9,
-    7 //offset
+    0, 0,
+    row4, 0,
+    row3+row5, 0,
+    row2+row6, 0,
+    row2+row6, 0,
+    row3+row4+row5+row6+row7+row8, row9,
+    6 //offset
     },
     {
     //r 114
+    0, 0,
     row6+row7+row8, row9,
     row5, 0,
     row4, 0,
     row4, 0,
     row5, 0,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //s 115
+    0, 0,
     row5, row9,
     row4+row6, row9,
     row4+row6, row9,
     row4+row6, row9,
     row4+row7+row8, 0,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //t 116
@@ -997,13 +997,13 @@ const int characters[127][13] =
     },
     {
     //v 118
+    0, 0,
     row4+row5+row6+row7, 0,
     row8, 0,
     0, row9,
     row8, 0, 
     row4+row5+row6+row7, 0,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //w 119
@@ -1017,33 +1017,33 @@ const int characters[127][13] =
     },
     {
     //x 120
+    0, 0,
     row4, row9,
     row5+row8, 0,
     row6+row7, 0, 
     row5+row8, 0,
     row4, row9,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //y 121
+    0, 0,
     row4+row5, 0,
     row6, row9,
     row7+row8, 0,
     row6, 0,
     row4+row5, 0,
-    0, 0,
-    7 //offset
+    6 //offset
     },
     {
     //z 122
+    0, 0,
     0, 0,
     row4+row8, row9,
     row4+row7, row9,
     row4+row6, row9,
     row5, row9,
-    0, 0,
-    7 //offset
+    5 //offset
     },
 
 
@@ -1060,7 +1060,7 @@ const int characters[127][13] =
         row5, 0,
         row2+row3+row4+row6+row7+row8, 0,
         row2+row8,
-        6 //offset
+        4 //offset
     },
     {
         //| 124
@@ -1070,7 +1070,7 @@ const int characters[127][13] =
         0, 0,
         0, 0,
         allRows, row9,
-        3 //offset
+        2 //offset
     },
     {
         //} 125
@@ -1080,7 +1080,7 @@ const int characters[127][13] =
         row2+row8, 0,
         row2+row3+row4+row6+row7+row8, 0,
         row5, 0,
-        5 //offset
+        4 //offset
     },
     {
         //~ 126
@@ -1134,7 +1134,7 @@ void display(int charNum, signed int start){  //ignites a letter starting at col
         }
 
         else if((start < 995)){
-           PORTC |= column[start];  //holds address of PORTD, columns 0-7
+           PORTC |= column[start];  // columns 0-14
            PORTD &= 0b10111111;   //control line for DMUX 1
            PORTA = 0x00;
         }
@@ -1229,18 +1229,56 @@ void test(int start){
 }
 
 void displayLoading(int columnSelect){
-    PORTC = 0b00001000;  //clears portC
-    PORTD = 0b00111111;   //control line for DMUX 1
-    PORTB = row1+row2+row3+ row7+row8;
-    PORTD |= row9;
-    PORTC |= column[columnSelect + 980];
+    PORTB = 0;
+    PORTC = 0b00001000;  //clears portC and keeps dmux 8 turned off
+    PORTD = 0b01110111;   //control line for DMUX 1, and keeps row9 turned off
+
+
+    switch(columnSelect){
+        case 0: 
+            //PORTB = allRows; 
+            //PORTD |= row9;
+            break;
+        case 1:  
+            //PORTB = 0b01111111; 
+            //PORTD &= 0b01111111;
+            break;
+        case 2:
+            PORTB = 0b11000001; 
+            PORTD |= 0b10000000; //row9 = 1
+            break;
+        case 3:
+            PORTB = 0b11100011; 
+            PORTD |= 0b10000000; //row9 = 1
+            break;
+
+
+
+        case 4:
+            PORTB = allRows; 
+            PORTD |= 0b10000000; //row9 = 1
+            break;
+        case 5:
+            PORTB = allRows; 
+            PORTD |= 0b10000000; //row9 = 1
+            break;
+        case 6:
+            PORTB = 0b11100011; 
+            PORTD |= 0b10000000; //row9 = 1
+            break;
+        case 7:
+            PORTB = 0b11000001; 
+            PORTD |= 0b10000000; //row9 = 1
+            break;
+    }
+    PORTC |= column[columnSelect + 980 + 7];
     return;
 }
 
 void displaySuccess(){
     PORTC = 0b00001000;  //clears portc
     PORTD = 0b01011111;   //control line for DMUX 2
-    PORTB = row1+row2+row3+ row7+row8;
+    PORTB = row1+row2+row3+row7+row8;
     PORTD |= row9;
     PORTC |= column[980];
     return;
@@ -1340,12 +1378,13 @@ void main() {
                             commandTemp[k] = (PORTA & (dataPin + parityPin));  // closing bracket
 
                             if(commandTemp[8] == (dataPin + parityPin)){
-                                displaySuccess(); //debug, this means it was a succesful frame
+                                //displaySuccess(); //debug, this means it was a succesful frame
                             }
                         }
                         while((PORTA & pulsePin) && (timer < timeOut)){ // wait till pulse from the last one is over 
                             timer++;
-                        }    
+                        }   
+                        //displayLoading(0); //debug
                         timer = 0;
                         //PORTC = 0x00;
                         //PORTB = 0x00;
@@ -1420,6 +1459,8 @@ void main() {
                 numChars2 = 70-spacesCounter2; 
 
                 while(PORTA & (dataPin + parityPin)){;}  //I dont know what the hell is going on!
+                spacesCounter2 = 0;
+                spacesCounter1 = 0;
 
                 //reset these guys because we are going to restart the displaying
                 index = 1099; //top of columns
@@ -1459,10 +1500,8 @@ void main() {
 
         //numberChars times # of columns for each(6 columns + space) +30 to prevent visual speeding up
             if(totalCounter > (980-(((numChars1 + numChars2)*7)))) {  
-                
 
-
-                for(int i = 0; i < 20; i++){  //this is always running 17 times to populate the screen
+                for(int i = 0; i < 22; i++){  //this is always running 17 times to populate the screen
                     if(charCount<70){
                         display( streamChars1[charCount], (index + (sumCharOffset + characters[ streamChars1[charCount] ][12] )) );
                         //display(streamChars1[charCount],(index + charOffset));
@@ -1486,13 +1525,13 @@ void main() {
                  
 
                     if(index > 973){  //this is only for the first descent of characters across the screen
-                        charCount -= 20;
+                        charCount -= 22;
                         sumCharOffset = 0;
                         charOffset = 0;
                         index--;
                     }
                     else {  // all other cases
-                        charCount -= 20; //subtract 17 added from for loop
+                        charCount -= 22; //subtract 17 added from for loop
                         charCount ++;
                         sumCharOffset = 0;
                         charOffset = 0;
@@ -1504,7 +1543,7 @@ void main() {
                         }
                     }
 
-                for(int i = 0; i< 500; i++){;}  //delay, mainly for debug
+                for(int i = 0; i< 400; i++){;}  //delay, mainly for debug
             }
             else{
                 index = 1099; //top of columns

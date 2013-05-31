@@ -565,11 +565,11 @@
 [v _test `(v  1 e 0 0 ]
 "1231
 [v _displayLoading `(v  1 e 0 0 ]
-"1240
+"1278
 [v _displaySuccess `(v  1 e 0 0 ]
-"1249
+"1287
 [v _displayTesting `(v  1 e 0 0 ]
-"1258
+"1296
 [v _main `(v  1 e 0 0 ]
 "82 /hitech/products/compilers/pic/pro/9.83/dist/linux/include/pic16f877a.h
 [v _INDF `VEuc  1 e 1 @0 ]
@@ -1273,54 +1273,54 @@
 [v _characters `DC[127][13]i  1 e 3302 0 ]
 "1099
 [v _index `i  1 e 2 0 ]
-"1258
+"1296
 [v _main `(v  1 e 0 0 ]
 {
-"1477
-[v main@y `i  1 a 2 55 ]
-"1364
-[v main@z `i  1 a 2 65 ]
-"1329
-[v main@k `i  1 a 2 67 ]
-"1389
-[v main@j `i  1 a 2 69 ]
-"1328
-[v main@streamNum `i  1 a 2 73 ]
-"1507
-[v main@i_1273 `i  1 a 2 57 ]
-"1465
-[v main@i `i  1 a 2 53 ]
-"1308
-[v main@t `i  1 a 2 51 ]
-"1276
-[v main@commandTemp `[8]uc  1 a 8 29 ]
-"1263
-[v main@charCount `i  1 a 2 71 ]
-"1269
-[v main@timer `i  1 a 2 63 ]
-"1264
-[v main@sumCharOffset `i  1 a 2 61 ]
-"1270
-[v main@timeOut `i  1 a 2 49 ]
-"1259
-[v main@totalCounter `i  1 a 2 47 ]
-"1275
-[v main@spacesCounter2 `i  1 a 2 45 ]
-"1274
-[v main@spacesCounter1 `i  1 a 2 43 ]
-"1273
-[v main@numChars2 `i  1 a 2 41 ]
-"1272
-[v main@numChars1 `i  1 a 2 39 ]
-"1261
-[v main@charOffset `i  1 a 2 37 ]
-"1278
-[v main@refreshCounter `i  1 a 2 27 ]
-"1262
-[v main@totalOffset `i  1 a 2 25 ]
-"1260
-[v main@lastDivision `i  1 a 2 23 ]
 "1516
+[v main@y `i  1 a 2 55 ]
+"1403
+[v main@z `i  1 a 2 65 ]
+"1367
+[v main@k `i  1 a 2 67 ]
+"1428
+[v main@j `i  1 a 2 69 ]
+"1366
+[v main@streamNum `i  1 a 2 73 ]
+"1546
+[v main@i_1273 `i  1 a 2 57 ]
+"1504
+[v main@i `i  1 a 2 53 ]
+"1346
+[v main@t `i  1 a 2 51 ]
+"1314
+[v main@commandTemp `[8]uc  1 a 8 29 ]
+"1301
+[v main@charCount `i  1 a 2 71 ]
+"1307
+[v main@timer `i  1 a 2 63 ]
+"1302
+[v main@sumCharOffset `i  1 a 2 61 ]
+"1308
+[v main@timeOut `i  1 a 2 49 ]
+"1313
+[v main@spacesCounter2 `i  1 a 2 47 ]
+"1312
+[v main@spacesCounter1 `i  1 a 2 45 ]
+"1297
+[v main@totalCounter `i  1 a 2 43 ]
+"1311
+[v main@numChars2 `i  1 a 2 41 ]
+"1310
+[v main@numChars1 `i  1 a 2 39 ]
+"1299
+[v main@charOffset `i  1 a 2 37 ]
+"1316
+[v main@refreshCounter `i  1 a 2 27 ]
+"1300
+[v main@totalOffset `i  1 a 2 25 ]
+"1298
+[v main@lastDivision `i  1 a 2 23 ]
+"1555
 } 0
 "1120
 [v _display `(v  1 e 0 0 ]
@@ -1344,16 +1344,11 @@
 [v ___wmul@multiplicand `ui  1 p 2 2 ]
 "13
 } 0
-"1240 LED_Ticker.c
-[v _displaySuccess `(v  1 e 0 0 ]
-{
-"1247
-} 0
-"1231
+"1231 LED_Ticker.c
 [v _displayLoading `(v  1 e 0 0 ]
 {
 [v displayLoading@columnSelect `i  1 p 2 0 ]
-"1238
+"1276
 } 0
 "1103
 [v _init_ports `(v  1 e 0 0 ]
