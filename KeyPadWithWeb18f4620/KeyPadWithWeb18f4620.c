@@ -1,3 +1,10 @@
+/*This code is written for use with a PIC18F4620. 
+It is written to control a deadbolt lock mechanism with both a
+keypad on the outside of the door as well as web control. */
+
+/*Last updated, Ben Clouser, March 10 2013*/
+
+
 char psw[4] = {'1', '2', '3', '4'};
 const int delay1 = 200;
 const int delay2 = 200; //probs unecessary
@@ -15,360 +22,367 @@ const int moveMotorLock = 600;
 const int moveMotorUnlock = 600;  //theoretically these should be the same.
 
 
-static const int pulseDelay = 20;  // how long to pulse during communications
+static const int pulseDelay = 5;  // how long to pulse during communications
 char currentStatus = 'u'; // 'u' = unlocked, or 'l' = locked
 
 void init_ports(){
-
-      PORTB = 0;               //initializes port for use  (keypad on PORTB)
-      TRISB = 0b00011111;      // data direction control, 0 for output 1 for input
-	  PORTC = 0x00;
-	  TRISC = 0b11110000; //RC4, RC5, and RC6 for web and RC7 for toggle button
-      PORTA = 0x00;               // 0 is output
-      TRISA &= 0b00000001;
-      //ADCON1 = 0x0E; //no clue, but important
-      PORTD = 0x00;
-      TRISD = 0x00;
+    PORTB = 0;               //initializes port for use  (keypad on PORTB)
+    TRISB = 0b00011111;      // data direction control, 0 for output 1 for input
+    PORTC = 0x00;
+    TRISC = 0b11110000; //RC4, RC5, and RC6 for web and RC7 for toggle button
+    PORTA = 0x00;               // 0 is output
+    TRISA &= 0b00000001;
+    PORTD = 0x00;
+    TRISD = 0x00;
 
 }
 
 //ADC conversion and outputting digital value on leds
- void ADCInit(){ //configuring A/D module
-        ADCON1 = 0b00000111; //channels AN8-An12 are digital and AN0-AN7 are analog
-        //Vref+ = Vdd and Vref- = Vss
+void ADCInit(){ //configuring A/D module
+    ADCON1 = 0b00000111; //channels AN8-An12 are digital and AN0-AN7 are analog
+    //Vref+ = Vdd and Vref- = Vss
 
-        ADCON2 = 0x8A; //Right justified, Tad=2xacquisition time
-        //conversion clock = 32Tosc
- }
+    ADCON2 = 0x8A; //Right justified, Tad=2xacquisition time
+    //conversion clock = 32Tosc
+}
 
  //function to read ADC channel
 int ADCRead( unsigned char ch){
 
-        ADCON0 = 0x00;//configuring analog channel
-        ADCON0 = (ch<<2); //selecting analog channel
-        ADON_bit = 1; //switch on adc module
-        GO_DONE_bit =1;//Start conversion
+    ADCON0 = 0x00;//configuring analog channel
+    ADCON0 = (ch<<2); //selecting analog channel
+    ADON_bit = 1; //switch on adc module
+    GO_DONE_bit =1;//Start conversion
 
-        while(GO_DONE_bit); //wait for the conversion to finish
-        ADON_bit =0; //switch off adc
+    while(GO_DONE_bit); //wait for the conversion to finish
+    ADON_bit =0; //switch off adc
 
-        return (ADRESL + (255*ADRESH));  // puts all ten bits into one variable (math might be off)
+    return (ADRESL + (255*ADRESH));  // puts all ten bits into one variable (math might be off)
  }
 
 
  char checkColumn1(){                //checks the first column of the keypad
-      PORTB = 0b00100000;
-      delay_ms(1);
+    PORTB = 0b00100000;
+    delay_ms(1);
 
-
-      if((PORTB & 0b00011111) == 0b00000010){
-              return '1';
-      }
-      else if ((PORTB & 0b00011111) == 0b00000100){
-              return '4';
-      }
-      else if ((PORTB & 0b00011111) == 0b00001000){
-              return '7';
-      }
-      else if ((PORTB & 0b00011111) == 0b00010000){
-              return '*';
-      }
-      else return 0;
+    if((PORTB & 0b00011111) == 0b00000010){
+          return '1';
+    }
+    else if ((PORTB & 0b00011111) == 0b00000100){
+          return '4';
+    }
+    else if ((PORTB & 0b00011111) == 0b00001000){
+          return '7';
+    }
+    else if ((PORTB & 0b00011111) == 0b00010000){
+          return '*';
+    }
+    else return 0;
 }
 
-char checkColumn2(){            //checks the second column of the keypad
-      PORTB = 0b01000000;
-      delay_ms(1);
+char checkColumn2(){  //checks the second column of the keypad
+    PORTB = 0b01000000;
+    delay_ms(1);
 
 
-      if((PORTB & 0b00011111) == 0b00000010){
-              return '2';
-      }
-      else if ((PORTB & 0b00011111) == 0b00000100){
-              return '5';
-      }
-      else if ((PORTB & 0b00011111) == 0b00001000){
-              return '8';
-      }
-      else if ((PORTB & 0b00011111) == 0b00010000){
-              return '0';
-      }
-      else return 0;
+    if((PORTB & 0b00011111) == 0b00000010){
+          return '2';
+    }
+    else if ((PORTB & 0b00011111) == 0b00000100){
+          return '5';
+    }
+    else if ((PORTB & 0b00011111) == 0b00001000){
+          return '8';
+    }
+    else if ((PORTB & 0b00011111) == 0b00010000){
+          return '0';
+    }
+    else return 0;
 }
 
-char checkColumn3(){                 //checks the third column of the keypad
-      PORTB = 0b10000000;
-      delay_ms(1);
+char checkColumn3(){   //checks the third column of the keypad
+    PORTB = 0b10000000;
+    delay_ms(1);
 
-      if((PORTB & 0b00011111) == 0b00000010){
-            return '3';
-      }
-      else if ((PORTB & 0b00011111) == 0b00000100){
-            return '6';
-      }
-      else if ((PORTB & 0b00011111) == 0b00001000){
-            return '9';
-      }
-      else if ((PORTB & 0b00011111) == 0b00010000){
-            return '#';
-      }
-      else return 0;
+    if((PORTB & 0b00011111) == 0b00000010){
+        return '3';
+    }
+    else if ((PORTB & 0b00011111) == 0b00000100){
+        return '6';
+    }
+    else if ((PORTB & 0b00011111) == 0b00001000){
+        return '9';
+    }
+    else if ((PORTB & 0b00011111) == 0b00010000){
+        return '#';
+    }
+    else return 0;
 }
 
 int checkPassword(){
-      int counter = 0;
-      long resetCounter = 0;
-          long lockCounter = 0;
-      int i = 0;
-      int keysPressed = 0;
+    int counter = 0;
+    long resetCounter = 0;
+    long lockCounter = 0;
+    int i = 0;
+    int keysPressed = 0;
 
-      while(1){
-            counter++;  //for timeouts
-            if(checkColumn1()){
-                  keysPressed++;
-                  counter = 0;  //reset timeout counter
+    while(1){
+        counter++;  //for timeouts
+        if(checkColumn1()){
+            keysPressed++;
+            counter = 0;  //reset timeout counter
 
-                  if(checkColumn1() == psw[i]){
-                        i++;
-                  }
-                  else
-                        i = 0;
-                  //checks for reset button being held to enter the reset mode
-                  while(PORTB & 0b00010000){ // the asterisk key
-                        resetCounter++;
-                        if((resetCounter >= resetLimit) && (i == 0)){
-                              return -1;
-                        }
-                  }
-                  resetCounter = 0;
-                  while(PORTB & 0b00011110); //debounce
+            if(checkColumn1() == psw[i]){
+                i++;
             }
-            else if(checkColumn2()){
-                  keysPressed++;
-                  counter = 0;
-
-                  if(checkColumn2() == psw[i]){
-                        i++;
-                  }
-                  else
-                        i = 0;
-
-                  while(PORTB & 0b00011110); //debounce
+            else
+                i = 0;
+            //checks for reset button being held to enter the reset mode
+            while(PORTB & 0b00010000){ // the asterisk key
+                resetCounter++;
+                if((resetCounter >= resetLimit) && (i == 0)){
+                      return -1;
+                }
             }
-            else if(checkColumn3()){
-                  keysPressed++;
-                  counter = 0;
+            resetCounter = 0;
+            while(PORTB & 0b00011110); //debounce
+        }
+        else if(checkColumn2()){
+            keysPressed++;
+            counter = 0;
 
-                  if(checkColumn3() == psw[i]){
-                        i++;
-                  }
-                  else
-                        i = 0;
-                                while((PORTB & 0b00010000) && (i == 0)){ // the pound key
-                    lockCounter++;
-                    if((lockCounter >= lockLimit) && (i == 0)){
-                        return 7;
-                    }
-                                }
-                                lockCounter = 0;
+            if(checkColumn2() == psw[i])
+                i++;
+            else
+                i = 0;
 
-                while(PORTB & 0b00011110); //debounce
+            while(PORTB & 0b00011110); //debounce
+        }
+        else if(checkColumn3()){
+            keysPressed++;
+            counter = 0;
+
+            if(checkColumn3() == psw[i])
+                i++;
+            else
+                i = 0;
+
+            while((PORTB & 0b00010000) && (i == 0)){ // the pound key
+                lockCounter++;
+                if((lockCounter >= lockLimit) && (i == 0)){
+                    return 7;
+                }
             }
+            lockCounter = 0;
 
-            if(counter >= timeOutLimit)    // timeout
-                  return 0;
+            while(PORTB & 0b00011110); //debounce
+        }
 
-            if(keysPressed == 4){
-                  if(i == 4){
-                        i = 0;
-                        keysPressed = 0;
-                        return 1;   // the password was correct
-                  }
-                  else{          //password wrong
-                        i = 0;
-                        keysPressed = 0;
-                        return 0;  // the password was wrong
-                  }
+        if(counter >= timeOutLimit)    // timeout
+              return 0;
+
+        if(keysPressed == 4){
+            if(i == 4){
+                i = 0;
+                keysPressed = 0;
+                return 1;   // the password was correct
             }
-
-      }
+            else{          //password wrong
+                i = 0;
+                keysPressed = 0;
+                return 0;  // the password was wrong
+            }
+        }
+    }
 }
 
 /*THIS RETURNS A 1 IF THE TWO PASSWORDS MATCH AND ARE THEREFORE CONFIRMED
 IN ALL OTHER SITUATIONS IT RETURNS A 0*/
 int newPassword(){
-      char temp1[sizeof(psw)];
-      char temp2[sizeof(psw)];
-      int counter = 0;
-      int i = 0;
-      int keysPressed = 0;
-      int j = 0;
-      int confirmed = 0;
-          PORTA |= 0b00001000;
+    char temp1[sizeof(psw)];
+    char temp2[sizeof(psw)];
+    int counter = 0;
+    int i = 0;
+    int keysPressed = 0;
+    int j = 0;
+    int confirmed = 0;
+    PORTA |= 0b00001000;
 
-      while((counter <= timeOutLimit) && keysPressed < 4){
-            counter++;
+    while((counter <= timeOutLimit) && keysPressed < 4){
+        counter++;
+        if(checkColumn1()){
+            keysPressed++;
+            counter = 0;
+
+            temp1[i] = checkColumn1();
+            i++;
+
+            while(PORTB & 0b00011110); //debounce
+        }
+        else if(checkColumn2()){
+            keysPressed++;
+            counter = 0;
+
+            temp1[i] = checkColumn2();
+            i++;
+
+            while(PORTB & 0b00011110); //debounce
+        }
+        else if(checkColumn3()){
+            keysPressed++;
+            counter = 0;
+
+            temp1[i] = checkColumn3();
+            i++;
+
+            while(PORTB & 0b00011110); //debounce
+        }
+    }
+
+    if(keysPressed != 4)    // the user timed out
+        return 0;
+
+    else if(keysPressed == 4){
+        PORTA |= 0b00001010; //green led (keeping reset led on)
+        //BEEP because you need to confirm the password
+        delay_ms(delay1);
+        PORTA &= 0b11111101;
+                    PORTA |= 0b00001000;
+
+        /*move onto confirming the password just entered*/
+        keysPressed = 0;
+        i = 0;
+        counter = 0;
+        while(counter < timeOutLimit && keysPressed < 4){
             if(checkColumn1()){
-                  keysPressed++;
-                  counter = 0;
+                keysPressed++;
+                counter = 0;
 
-                  temp1[i] = checkColumn1();
-                  i++;
+                temp2[i] = checkColumn1();
+                i++;
 
-                  while(PORTB & 0b00011110); //debounce
+                while(PORTB & 0b00011110); //debounce
             }
             else if(checkColumn2()){
-                  keysPressed++;
-                  counter = 0;
+                keysPressed++;
+                counter = 0;
 
-                  temp1[i] = checkColumn2();
-                  i++;
+                temp2[i] = checkColumn2();
+                i++;
 
-                  while(PORTB & 0b00011110); //debounce
+                while(PORTB & 0b00011110); //debounce
             }
             else if(checkColumn3()){
-                  keysPressed++;
-                  counter = 0;
+                keysPressed++;
+                counter = 0;
 
-                  temp1[i] = checkColumn3();
-                  i++;
+                temp2[i] = checkColumn3();
+                i++;
 
-                  while(PORTB & 0b00011110); //debounce
+                while(PORTB & 0b00011110); //debounce
             }
-      }
-      if(keysPressed != 4)    // the user timed out
+        }
+        if(keysPressed != 4)    // the user timed out
             return 0;
 
-      else if(keysPressed == 4){
-            PORTA |= 0b00001010; //green led (keeping reset led on)
-            //BEEP because you need to confirm the password
-            delay_ms(delay1);
-            PORTA &= 0b11111101;
-                        PORTA |= 0b00001000;
-
-            /*move onto confirming the password just entered*/
-            keysPressed = 0;
-            i = 0;
-            counter = 0;
-            while(counter < timeOutLimit && keysPressed < 4){
-                  if(checkColumn1()){
-                        keysPressed++;
-                        counter = 0;
-
-                        temp2[i] = checkColumn1();
-                        i++;
-
-                        while(PORTB & 0b00011110); //debounce
-                  }
-                  else if(checkColumn2()){
-                        keysPressed++;
-                        counter = 0;
-
-                        temp2[i] = checkColumn2();
-                        i++;
-
-                        while(PORTB & 0b00011110); //debounce
-                  }
-                  else if(checkColumn3()){
-                        keysPressed++;
-                        counter = 0;
-
-                        temp2[i] = checkColumn3();
-                        i++;
-
-                        while(PORTB & 0b00011110); //debounce
-                  }
+        else if(keysPressed == 4){
+            for(j = 0; j < sizeof(psw); j++){
+                if(temp1[j] == temp2[j])
+                    confirmed ++;
+                else
+                    confirmed = 0;
             }
-            if(keysPressed != 4)    // the user timed out
-                  return 0;
-
-            else if(keysPressed == 4){
-                  for(j = 0; j < sizeof(psw); j++){
-                        if(temp1[j] == temp2[j])
-                              confirmed ++;
-                        else
-                              confirmed = 0;
-                  }
-                  if(confirmed == sizeof(psw)){  // two passwords match, so change overall password
-                                                for(j = 0; j < sizeof(psw); j++){
-                                                        psw[j] = temp1[j];
-                                                }
-
-                        return 1;
-                                  }
-                  else
-                        return 0;
+            if(confirmed == sizeof(psw)){  // two passwords match, so change overall password
+                for(j = 0; j < sizeof(psw); j++){
+                        psw[j] = temp1[j];
+                }
+                return 1;
             }
-      }
+            else
+                return 0;
+        }
+    }
 }
 
-void resetMode(){
-      PORTA &= 0b11110111; //flashes blue LED indicating that the current password should be input
-      delay_ms(15);
-      PORTA |= 0b00001000;
-      if(checkPassword() == 1){ // password verified time to enter & verify new password
-            PORTA |= 0b00001010; //green LED
-            delay_ms(delay1);
-            PORTA &= 0b11111101;
-            //BEEP would be good here!
 
-            if(newPassword()){   //prompts for new password, confirms, and changes
-                  PORTA |= 0b00001010;  //green LED
-                  delay_ms(delay1);
-                  PORTA &= 0b11111101;
-                  //BEEP would be good here!
-            }
-            else{
-                  PORTA |= 0b00000100;  //red led
-                  //offensive beep indicating your two passwords were incorrect
-            }
-      }
-      else{
-            PORTA |= 0b00000100; //red led
-            //offensive beep indicating the password was wrong, timeout
-            // or you tried to enter reset mode while you were in reset mode!!!
-      }
+void resetMode(){
+    PORTA &= 0b11110111; //flashes blue LED indicating that the current password should be input
+    delay_ms(15);
+    PORTA |= 0b00001000;
+
+    if(checkPassword() == 1){ // password verified time to enter & verify new password
+        PORTA |= 0b00001010; //green LED
+        delay_ms(delay1);
+        PORTA &= 0b11111101;
+        //BEEP would be good here!
+
+        if(newPassword()){   //prompts for new password, confirms, and changes
+              PORTA |= 0b00001010;  //green LED
+              delay_ms(delay1);
+              PORTA &= 0b11111101;
+              //BEEP would be good here!
+        }
+        else{
+              PORTA |= 0b00000100;  //red led
+              //offensive beep indicating your two passwords were incorrect
+        }
+    }
+    else{
+        PORTA |= 0b00000100; //red led
+        //offensive beep indicating the password was wrong, timeout
+        // or you tried to enter reset mode while you were in reset mode!!!
+    }
 }
 
 
 void moveLock(){
 	long moveTimer = 800000;
 	int j = 0;
-      PORTA |= 0b00010010;  //unlock direction
-          delay_ms(50); //avoid voltage spike
-      while((ADCRead(0) <= 600) && j<moveTimer)
-		j++;  //wait, count though
-	  j=0;
-      PORTA &= 0b11101111; //turn off
-      delay_ms(100);
-      PORTA |= 0b00100010; // lock direction
-          delay_ms(50); //to allow any voltage spike to simmer down
-      while((ADCRead(0) >=300) && j<moveTimer) // Home position
-		j++;
-	  j=0;
-      PORTA &= 0b11011111;
-      delay_ms(10);
+    PORTA |= 0b00010010;  //unlock direction
+    delay_ms(50); //avoid voltage spike
+
+    while((ADCRead(0) <= 600) && j<moveTimer){ //wait until motor has moved far enough
+        j++;  //wait, count though
+    }    
+    j=0;
+    PORTA &= 0b11101111; //turn motor off
+    delay_ms(100);
+    PORTA |= 0b00100010; // lock direction
+    delay_ms(50); //to allow any voltage spike to simmer down
+
+    while((ADCRead(0) >=300) && j<moveTimer){ //wait for Home position
+        j++;
+    }
+
+    j=0;
+    PORTA &= 0b11011111;
+    delay_ms(2);
 }
 
 void moveUnlock(){
 	long moveTimer = 800000;
 	int j = 0;
-      PORTA |= 0b00100010;  //lock direction
-          delay_ms(50); //avoid voltage spike
-      while((ADCRead(0) >= 165) && j<moveTimer)
-		j++;
-	  j=0;
-      PORTA &= 0b11011111;  //turn off
-	  delay_ms(100);
-	  PORTA |= 0b00010000;  //unlock direction
-	  delay_ms(50); //voltage spike protection
-	  while((ADCRead(0) <= 300) && j<moveTimer)  //home position
-		j++;
-	  PORTA &= 0b11101111;
-	  j=0;
-      delay_ms(10);
-}
+    PORTA |= 0b00100010;  //lock direction
+    delay_ms(50); //avoid voltage spike
 
+    while((ADCRead(0) >= 165) && j<moveTimer){
+		j++;
+    }
+
+    j=0;
+    PORTA &= 0b11011111;  //turn off
+    delay_ms(100);
+    PORTA |= 0b00010000;  //unlock direction
+    delay_ms(50); //voltage spike protection
+
+    while((ADCRead(0) <= 300) && j<moveTimer){  //home position
+        j++;
+    }
+
+    PORTA &= 0b11101111;
+    j=0;
+    delay_ms(2);
+}
 
 
 int getCommand(void){
@@ -386,17 +400,17 @@ int getCommand(void){
 	j = 0; //clear the counter
 	for(i = 0; i < 9; i++ ){  //all 8 bits of data and the closing bracket. 9 total
 		while((!(PORTC & pulsePin))  ){ //  && (j < timeOut)){ // wait till pulse starts
-				j++;
+			j++;
 		}
 		delay_ms(1); //tiny delay to ensure we have good data before writing it
 
 		if( i < 8)
-				commandTemp[i] = (PORTC & dataPin); // WRITE DATA
+			commandTemp[i] = (PORTC & dataPin); // WRITE DATA
 		else if(i == 8)
-				commandTemp[i] = (PORTC & (dataPin + parityPin));  // closing bracket
+			commandTemp[i] = (PORTC & (dataPin + parityPin));  // closing bracket
 
 		while((PORTC & pulsePin)  ){   //&& (j < timeOut)){ // wait till pulse is over
-				j++;
+			j++;
 		}
 		delay_ms(1); //tiny delay to ensure pulse is really over before starting again
 
@@ -447,9 +461,9 @@ void sendStatus(char doorStatus){  // o = on, f = off
 	//and finally send...
 	if(doorStatus == 'l'){  //0b11111111
 		for(i=0; i<8; i++){
-				//writes all ones
-				PORTC |= dataPin;
-				PORTC |= pulsePin;
+			//writes all ones
+			PORTC |= dataPin;
+			PORTC |= pulsePin;
 
 			delay_ms(pulseDelay);
 			PORTC &= 0b10001111;  //clears comm pins
@@ -483,79 +497,77 @@ void sendStatus(char doorStatus){  // o = on, f = off
 
 
 void main() {
-      int input = 0;
-          int x = 0;
-          int lockTimer = 100;
-		  int keypadCmd = 0;
-		  char currentToSend = 'n';  //null
-      init_ports();
-      ADCInit();  // initialize A/D
-		//delay_ms(100);
-		//moveLock();
-		//delay_ms(1000);
-		//moveUnlock();  //debug for testing potentiometer
-		while(1){
+    int input = 0;
+    int x = 0;
+    int lockTimer = 100;
+    int keypadCmd = 0;
+    char currentToSend = 'n';  //null
+    init_ports();
+    ADCInit();  // initialize A/D
+    //delay_ms(100);
+    //moveLock();
+    //delay_ms(1000);
+    //moveUnlock();  //debug for testing potentiometer
+	while(1){
 
-			if((PORTC & 0b01010000) == 0b01010000){ //opening frame. The arduino is sending a command
-				keypadCmd = getCommand();
-				//PORTD = keypadCmd;   //debug
-				//delay_ms(2000);
-				if(keypadCmd == unlockDoorCmd){
-					moveUnlock();
-				}
-				else if(keypadCmd == lockDoorCmd){
-					moveLock();
-				}
+		if((PORTC & 0b01010000) == 0b01010000){ //opening frame. The arduino is sending a command
+			keypadCmd = getCommand();
+			//PORTD = keypadCmd;   //debug
+			//delay_ms(2000);
+			if(keypadCmd == unlockDoorCmd){
+				moveUnlock();
 			}
-
-			/************** Toggle Button *************/
-			if(PORTC & 0b10000000){ //direction from the wall panel, toggles on or off
-				delay_ms(15); 		//noise check
-				if(PORTC & 0b10000000){
-					if(currentStatus == 'u'){ //it was unlocked, so lock it
-						currentStatus = 'l';
-						currentToSend = 'l';
-						moveLock();  //locks door
-					}
-					else if(currentStatus == 'l'){  //it was locked, so unlock it
-						currentStatus = 'u';
-						currentToSend = 'u';
-						moveUnlock(); //unlock the door
-					}
-					sendStatus(currentStatus);  //sends the command
-				}
+			else if(keypadCmd == lockDoorCmd){
+				moveLock();
 			}
-			while(PORTC & 0b10000000); // waits for user to get off the button!!!!
-			PORTC &= 0b10001111; //turns off comm pins
-			currentToSend = 0;    // resets it for next time
+		}
 
+		/************** Toggle Button *************/
+		if(PORTC & 0b10000000){ //direction from the wall panel, toggles on or off
+			delay_ms(15); 		//noise check
+			if(PORTC & 0b10000000){
+				if(currentStatus == 'u'){ //it was unlocked, so lock it
+					currentStatus = 'l';
+					currentToSend = 'l';
+					moveLock();  //locks door
+				}
+				else if(currentStatus == 'l'){  //it was locked, so unlock it
+					currentStatus = 'u';
+					currentToSend = 'u';
+					moveUnlock(); //unlock the door
+				}
+				sendStatus(currentStatus);  //sends the command
+			}
+		}
+		PORTC &= 0b10001111; //turns off comm pins
+		currentToSend = 0;    // resets it for next time
 
 
 			/**************** keypad *******************/
-            PORTB = 0b11100000;
-            if(PORTB & 0b00011110){
-                input = checkPassword();
-                  if(input == 1){ // password correct
-                        PORTA |= 0b00000010; //green led
-                        moveUnlock();
-                        PORTA = 0x00;
-                  }
-                  else if(input == (-1)){ //enter reset mode
-                        PORTA |= 0b00001000;  //blue led
-                        delay_ms(delay1);
-                        resetMode();
-                        PORTA = 0x00;
-                  }
-                  else if(input == 7){   //lock button hit
-                       PORTA |= 0b00000010;  //green led
-                       moveLock();
-                       PORTA = 0x00;
-                  }
-                  else{                     //fail or timeout
-                        PORTA = 0b00000100; //red led
-                        delay_ms(delay1);
-                        PORTA = 0x00;
-                  }
+        PORTB = 0b11100000;
+        if(PORTB & 0b00011110){
+            input = checkPassword();
+            if(input == 1){ // password correct
+                PORTA |= 0b00000010; //green led
+                moveUnlock();
+                PORTA = 0x00;
             }
-      }
+            else if(input == (-1)){ //enter reset mode
+                PORTA |= 0b00001000;  //blue led
+                delay_ms(delay1);
+                resetMode();
+                PORTA = 0x00;
+            }
+            else if(input == 7){   //lock button hit
+                PORTA |= 0b00000010;  //green led
+                moveLock();
+                PORTA = 0x00;
+            }
+            else{                     //fail or timeout
+                PORTA = 0b00000100; //red led
+                delay_ms(delay1);
+                PORTA = 0x00;
+            }
+        }  
+    }
 }

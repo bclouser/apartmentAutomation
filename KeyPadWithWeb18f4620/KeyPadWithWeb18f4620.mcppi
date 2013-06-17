@@ -33,11 +33,12 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=4
+Count=5
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\uses\P18\
-Path2=C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_Keypad\KeyPadWithWeb18f4620\
-Path3=C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_Keypad\
+Path2=C:\Users\Home\apartmentAutomation\KeyPadWithWeb18f4620\
+Path3=C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_Keypad\KeyPadWithWeb18f4620\
+Path4=C:\Users\Home\Google Drive\Freelance_MicroProcessing\KC104_Keypad\
 [HEADER_PATH]
 Count=0
 [HEADERS]

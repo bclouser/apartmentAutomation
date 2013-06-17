@@ -1,4 +1,5 @@
-#line 1 "C:/Users/Home/Google Drive/Freelance_MicroProcessing/KC104_Keypad/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
+#line 1 "C:/Users/Home/apartmentAutomation/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
+#line 8 "C:/Users/Home/apartmentAutomation/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
 char psw[4] = {'1', '2', '3', '4'};
 const int delay1 = 200;
 const int delay2 = 200;
@@ -8,8 +9,6 @@ const int dataPin = 0b00010000;
 const int unlockDoorCmd = 0b11111111;
 const int lockDoorCmd =0b00000000;
 
-
-
 int timeOutLimit = 500;
 long resetLimit = 80000;
 long lockLimit = 3000;
@@ -18,31 +17,29 @@ const int moveMotorLock = 600;
 const int moveMotorUnlock = 600;
 
 
-static const int pulseDelay = 20;
+static const int pulseDelay = 5;
 char currentStatus = 'u';
 
 void init_ports(){
-
  PORTB = 0;
  TRISB = 0b00011111;
  PORTC = 0x00;
  TRISC = 0b11110000;
  PORTA = 0x00;
  TRISA &= 0b00000001;
-
  PORTD = 0x00;
  TRISD = 0x00;
 
 }
 
 
- void ADCInit(){
+void ADCInit(){
  ADCON1 = 0b00000111;
 
 
  ADCON2 = 0x8A;
 
- }
+}
 
 
 int ADCRead( unsigned char ch){
@@ -62,7 +59,6 @@ int ADCRead( unsigned char ch){
  char checkColumn1(){
  PORTB = 0b00100000;
  delay_ms(1);
-
 
  if((PORTB & 0b00011111) == 0b00000010){
  return '1';
@@ -150,9 +146,8 @@ int checkPassword(){
  keysPressed++;
  counter = 0;
 
- if(checkColumn2() == psw[i]){
+ if(checkColumn2() == psw[i])
  i++;
- }
  else
  i = 0;
 
@@ -162,11 +157,11 @@ int checkPassword(){
  keysPressed++;
  counter = 0;
 
- if(checkColumn3() == psw[i]){
+ if(checkColumn3() == psw[i])
  i++;
- }
  else
  i = 0;
+
  while((PORTB & 0b00010000) && (i == 0)){
  lockCounter++;
  if((lockCounter >= lockLimit) && (i == 0)){
@@ -193,10 +188,9 @@ int checkPassword(){
  return 0;
  }
  }
-
  }
 }
-#line 201 "C:/Users/Home/Google Drive/Freelance_MicroProcessing/KC104_Keypad/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
+#line 201 "C:/Users/Home/apartmentAutomation/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
 int newPassword(){
  char temp1[sizeof(psw)];
  char temp2[sizeof(psw)];
@@ -237,6 +231,7 @@ int newPassword(){
  while(PORTB & 0b00011110);
  }
  }
+
  if(keysPressed != 4)
  return 0;
 
@@ -294,7 +289,6 @@ int newPassword(){
  for(j = 0; j < sizeof(psw); j++){
  psw[j] = temp1[j];
  }
-
  return 1;
  }
  else
@@ -303,10 +297,12 @@ int newPassword(){
  }
 }
 
+
 void resetMode(){
  PORTA &= 0b11110111;
  delay_ms(15);
  PORTA |= 0b00001000;
+
  if(checkPassword() == 1){
  PORTA |= 0b00001010;
  delay_ms(delay1);
@@ -337,18 +333,23 @@ void moveLock(){
  int j = 0;
  PORTA |= 0b00010010;
  delay_ms(50);
- while((ADCRead(0) <= 600) && j<moveTimer)
+
+ while((ADCRead(0) <= 600) && j<moveTimer){
  j++;
+ }
  j=0;
  PORTA &= 0b11101111;
  delay_ms(100);
  PORTA |= 0b00100010;
  delay_ms(50);
- while((ADCRead(0) >=300) && j<moveTimer)
+
+ while((ADCRead(0) >=300) && j<moveTimer){
  j++;
+ }
+
  j=0;
  PORTA &= 0b11011111;
- delay_ms(10);
+ delay_ms(2);
 }
 
 void moveUnlock(){
@@ -356,20 +357,25 @@ void moveUnlock(){
  int j = 0;
  PORTA |= 0b00100010;
  delay_ms(50);
- while((ADCRead(0) >= 165) && j<moveTimer)
+
+ while((ADCRead(0) >= 165) && j<moveTimer){
  j++;
+ }
+
  j=0;
  PORTA &= 0b11011111;
  delay_ms(100);
  PORTA |= 0b00010000;
  delay_ms(50);
- while((ADCRead(0) <= 300) && j<moveTimer)
+
+ while((ADCRead(0) <= 300) && j<moveTimer){
  j++;
+ }
+
  PORTA &= 0b11101111;
  j=0;
- delay_ms(10);
+ delay_ms(2);
 }
-
 
 
 int getCommand(void){
@@ -400,7 +406,7 @@ int getCommand(void){
  j++;
  }
  delay_ms(1);
-#line 407 "C:/Users/Home/Google Drive/Freelance_MicroProcessing/KC104_Keypad/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
+#line 419 "C:/Users/Home/apartmentAutomation/KeyPadWithWeb18f4620/KeyPadWithWeb18f4620.c"
  }
  PORTA = 0x00;
 
@@ -524,10 +530,8 @@ void main() {
  sendStatus(currentStatus);
  }
  }
- while(PORTC & 0b10000000);
  PORTC &= 0b10001111;
  currentToSend = 0;
-
 
 
 
